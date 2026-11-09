@@ -1,0 +1,96 @@
+# Review of #475, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 475
+title: "Before Sputnik: the three claims the panel split on get their own evidence — star-like plate flaws are common ground, flash sharpness is sound but unsized, and the alignments paper is read in full"
+url: https://github.com/ejhong/aletheia/pull/475
+outcome: closed
+outcomeAt: 2026-11-08T14:23:03Z
+cases:
+  - transients
+rounds:
+  - commit: 718fd2e92d5b2ef22b385dcd3421329fb8bf767b
+    date: 2026-11-02
+    protocol: review-v1
+    outcome: hold
+    reason: "held until answered: the quote check failed (3 failures)"
+    seats: []
+    checks:
+      - 'transients TRN-E233: quoted passage not found in the text of SRC-TOKOVININ-2002 (read from https://doi.org/10.1086/342683, 46,253 characters): "Reduction of image motion variance depends on the relative drag of a wave front moving with speed"'
+      - 'transients TRN-E234: quoted passage not found in the text of SRC-WATTERS-2026 (read from https://doi.org/10.1017/pasa.2026.10230, 179,142 characters): "The following critical questions remain unanswered after Hambly & Blair (2024)"'
+      - 'transients TRN-E240: quoted passage not found in the text of SRC-WATTERS-2026 (read from https://doi.org/10.1017/pasa.2026.10230, 179,142 characters): "8 of 24 SPFs in Table 3 of Villarroel et al. (2025a) are located within 5"'
+  - commit: 7391f458c89ae9b426b0542e8cdb371651dfd19a
+    date: 2026-11-06
+    protocol: review-v1
+    outcome: hold
+    reason: "held until answered: the quote check failed (4 failures)"
+    seats: []
+    checks:
+      - 'transients TRN-E228: quoted passage not found in the text of SRC-HAMBLY-BLAIR-2024 (read from https://doi.org/10.1093/rasti/rzae004 (open-access copy via OpenAlex: https://doi.org/10.48550/arxiv.2402.00497), 5,016 characters): "We found more than 100 detections on E0086 in the overlap region with brightness, eccentricity and area similar to the 9 detections on E0070"'
+      - 'transients TRN-E228: quoted passage not found in the text of SRC-HAMBLY-BLAIR-2024 (read from https://doi.org/10.1093/rasti/rzae004 (open-access copy via OpenAlex: https://doi.org/10.48550/arxiv.2402.00497), 5,016 characters): "there are many hundreds of similar images on both plates in the overlap region between the two fields"'
+      - 'transients TRN-E231: quoted passage not found in the text of SRC-HAMBLY-BLAIR-2024 (read from https://doi.org/10.1093/rasti/rzae004 (open-access copy via OpenAlex: https://doi.org/10.48550/arxiv.2402.00497), 5,016 characters): "there is a large literature on the appearance of spurious microdots"'
+      - 'transients TRN-E231: quoted passage not found in the text of SRC-HAMBLY-BLAIR-2024 (read from https://doi.org/10.1093/rasti/rzae004 (open-access copy via OpenAlex: https://doi.org/10.48550/arxiv.2402.00497), 5,016 characters): "no such artefacts have been reported as occurring on the older coarse–grained varieties"'
+  - commit: 090ec601e8a5b0664e8b948f112f0da7541013f7
+    date: 2026-11-07
+    protocol: review-v1
+    outcome: hold
+    reason: "held for a harm until answered: fabrication (GPT-5.6 Sol (OpenAI))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm:
+          kind: fabrication
+          where: "content/cases/transients/editions/edition-2026-11-01-143821.yaml, “The account carries two debts”: “the commonest star-like flaw of later emulsions, the microdot”"
+          why: Hambly & Blair say there is a large literature on microdots in later emulsions, not that microdots are the commonest flaw. The operator explicitly acknowledges that this superlative exceeds the source, so it must be corrected before publication.
+        notes:
+          - In edition-2026-11-01-143821, replace the unsupported “commonest” wording with something the source carries, such as “microdots, widely documented in later fine-grained emulsions”; restamp or supersede the bound edition rather than leaving the admitted error live.
+          - At TRN-C102, separate the sound mechanism claim—that a brief flash avoids exposure-integrated tracking and wind blur—from the unmeasured proposition that it will have smaller FWHM and greater roundness than a magnitude-matched star on POSS-I emulsion. TRN-E233–E236 leave that net photographic prediction unresolved and calibration-dependent.
+          - Beside TRN-C104, add a distinct claim about whether the observed alignments exceed a survey-wide null after trials and the non-uniform plate background. Keep the present “alignments are reported” claim well supported, but grade the inferential significance separately so readers cannot mistake a supported report for a demonstrated excess.
+        summary: The change substantially improves three previously thin claims by adding direct evidence, reading the alignment paper in full, exposing its missing survey-wide significance, and turning flash sharpness and defect contamination into concrete calibration questions. The earlier quote-check holds are credibly answered through exact re-quoting and a stable full-text URL. Publication remains held because the article knowingly calls microdots the “commonest” later-emulsion flaw although the cited source does not establish that superlative.
+        cost:
+          inputTokens: 39188
+          outputTokens: 3254
+          usd: 0.221832
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - In the article's defect-debt section, replace 'the commonest star-like flaw of later emulsions' with 'the best-documented star-like flaw of later emulsions' in the next edition pass, aligning the narrative with the exact source wording in Hambly & Blair 2024 and the TRN-E231 evidence record.
+          - Re-read arXiv:2609.09461v2 (the September hotspot preprint revision) to check whether the companion paper's altitude range and associated project claims require adjustments in TRN-C119/TRN-C122.
+          - Convert older August-batch evidence records (especially TRN-E011 and TRN-E012 on the shadow deficit dispute) from paraphrases into exact verbatim quotations checkable by the automated quote checker.
+        summary: This change significantly improves the Before Sputnik case by directly reading three central papers and anchoring the three claims on which the panel previously split (TRN-C101, TRN-C102, TRN-C104) in fourteen new, well-qualified evidence records. It honestly contextualizes the defect rate calculations, seeing physics limitations, and alignment statistics, while adding two concrete research proposals. The quote-check issues from earlier rounds were cleanly resolved by pointing directly to the quoted PDF texts and exact matching substrings.
+        cost:
+          inputTokens: 44067
+          outputTokens: 1311
+          usd: 0.037967
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - In the article’s defect-debt paragraph (and any bound edition copy), replace “the commonest star-like flaw of later emulsions” with “the best-documented star-like flaw of later emulsions” — the operator already flagged this; Hambly & Blair only support “large literature” / best-documented, which E231 and the assessment already use.
+          - Retrieve Greiner et al. 1987 and Varady & Hudec 1992 (the lab rates behind TRN-E227) and promote or qualify E227 from second-hand Watters reporting once the emulsion types and inspection methods are in their own words.
+          - Point other quoted sources whose `url` is only a DOI at the full-text copy the quotes were taken from (same fix as SRC-HAMBLY-BLAIR-2024), so OpenAlex/landing-page swaps cannot re-break the quote check.
+        summary: This change gives the three panel-split claims (C101 defect contamination, C102 flash sharpness, C104 reported alignments) their own primary-text evidence, re-anchors two defective source anchors, reads the PASP alignments paper in full, lowers diagnosticity where the record is thin, and rewrites the article so defects, sharpness, and alignments are told with both camps’ concessions and limits. Quote-check holds from earlier rounds are answered by exact re-cuts and by pointing Hambly & Blair at the arXiv PDF actually quoted. The case verdict stays unresolved on a fairer, better-evidenced ledger; the only clear residue is the known “commonest” wording slip and still-second-hand lab rates.
+        cost:
+          inputTokens: 40334
+          outputTokens: 359
+          usd: 0.082937
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - "Fix the disclosed wording slip now that the panel has not yet ratified the case: the article's defect-debt paragraph still reads 'the commonest star-like flaw of later emulsions', while SRC-HAMBLY-BLAIR-2024 (and TRN-E231) support only 'best-documented' ('a large literature'). The queued next-edition correction is right, but since the case is unratified and a new edition is already expected, make it the first item of the next pass rather than letting the overstatement stand even briefly on the live article."
+          - "Reconcile TRN-E231's exactLocator with the 2026-11-07 fix session: the record says '§4 Discussion, p. 5' while the session that verified the passages against the arXiv PDF reports them at 'p. 5, §3'. The page and quotations are confirmed; the section label is not. Correct whichever is wrong so the locator is exact."
+          - Update the origin/locator phrasing on TRN-E228 and TRN-E231 ('read via the arXiv text the DOI resolves to') to name the arXiv PDF directly, as SRC-HAMBLY-BLAIR-2024's url now does. The 2026-11-07 session showed the DOI resolves unstably through OpenAlex, so a locator that depends on which copy the resolver returns is not exact provenance; the source record was fixed but the evidence records' reading provenance still points through the unstable hop.
+        summary: "The change replaces three unresolved, defectively anchored claims with fourteen primary-sourced evidence records, a new seeing source, corrected anchors, two concrete research items, and an article that now states what both camps concede — defect contamination as common ground, sharpness as sound but unsized, and the alignments paper read in full with its own caveats and internal inconsistency recorded. The diagnosticity drops (high to moderate, high to low) are justified on the records shown, and the blind seats' split is displayed rather than smoothed away. Two quote-check holds were answered by re-cutting quotations to the served text and re-pointing the Hambly & Blair source to the arXiv PDF it was actually quoted from, with the reasoning recorded. Verdict: better — the one overstated adjective the operator itself disclosed ('commonest') is queued for correction and does not outweigh the gain."
+        cost:
+          inputTokens: 40839
+          outputTokens: 3351
+          usd: 0.007801
+harvestedAt: 2026-11-08T14:43:32.908Z

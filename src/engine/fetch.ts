@@ -125,6 +125,8 @@ export function looksLikeWall(text: string): string | null {
     [/enable javascript and cookies to continue|please enable cookies/, "bot challenge page"],
     [/access denied|you don.t have permission to access/, "access denied page"],
     [/attention required!? *\| *cloudflare/, "bot challenge page"],
+    // 2026-11-09: IOPscience's "Radware Bot Manager Captcha", 389 characters, was read as a PASP article and held #480.
+    [/bot manager captcha|confirm you are a human/, "bot challenge page"],
   ];
   if (text.length < 4000) for (const [re, why] of patterns) if (re.test(head)) return why;
   return null;
@@ -495,7 +497,11 @@ async function xPost(url: string, opts: FetchOptions): Promise<FetchedSource> {
 }
 
 export async function retrieve(target: RetrievalTarget, opts: FetchOptions & { retryDelayMs?: number } = {}): Promise<FetchedSource> {
-  const doi = target.doi ?? (target.url ? doiFromUrl(target.url) : null);
+  // A Wayback capture is read as itself: a DOI in the captured address is not a route to the capture, and the
+  // publisher's copy it leads to is the page the capture stands in for (2026-11-09: a capture of an IOPscience
+  // article that failed to load was answered with IOPscience's bot page, reported as the archived copy, on #480).
+  const capture = /^https?:\/\/web\.archive\.org\/web\//i.test(target.url ?? "");
+  const doi = target.doi ?? (target.url && !capture ? doiFromUrl(target.url) : null);
   const key = target.url ?? (doi ? `https://doi.org/${doi}` : "");
   if (target.url && xStatusOf(target.url)) return xPost(target.url, opts);
   // An arXiv abstract page is the record's public locator, but the paper's text is the PDF: read that

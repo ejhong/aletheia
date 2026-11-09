@@ -1,0 +1,72 @@
+# Review of #476, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 476
+title: "Fire From the Sky: the chronology, the blind test, the volcanic rival and the comet scenario read from their own texts — synchrony weaker than the case said"
+url: https://github.com/ejhong/aletheia/pull/476
+outcome: merged
+outcomeAt: 2026-11-02T17:57:08Z
+cases:
+  - ydih
+rounds:
+  - commit: 1b794b13003244f8657ed865bdd75fc3751a43ef
+    date: 2026-11-02
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "Assessment synthesis and “Where this leaves the hypothesis”: reconsider the weakly-supported case verdict after all five blind seats returned Contradicted. “Nothing excludes an event” and unperformed decisive tests establish residual possibility, not affirmative support; either adopt the panel’s calibration or explain what positive evidence warrants the higher grade."
+          - "YDIH-E043 and the chronology paragraph: temper the claim that Lake Cuitzeo’s age selection simply “assumes the synchrony being tested.” Establish whether the regional paleoclimate constraints were independently dated; otherwise describe the narrower, well-supported point that selecting the model by fit to the Younger Dryas transition prevents that site from independently demonstrating synchrony."
+          - "YDIH-E009 and SRC-HOLLIDAY-2016: reconcile the metadata saying only the abstract was read with quotations from Methods, Acknowledgments, and Conclusions. Also make explicit in the article which laboratory split supplied the reported two-to-four-orders-of-magnitude post-boundary result and separately state what the other split showed."
+        summary: The change substantially strengthens the case by replacing summary-derived records with direct quotations, correcting the overstatement of volcanic forcing as measured, presenting proponents’ answers, and giving chronology and volcanic evidence their important limitations. The revised article is fairer and more precise, especially about the blind test, platinum timing, and Napier’s possibility argument. The retained weakly-supported case verdict appears under-calibrated against both the evidence and the unanimous blind panel, but the overall evidential and narrative gains clearly leave the site better.
+        cost:
+          inputTokens: 37514
+          outputTokens: 2913
+          usd: 0.208316
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - In SRC-SUROVELL-2009 and SRC-SUN-2020, the url field points to a Europe PMC REST API search query that returns raw XML when clicked by readers; point the canonical URL to the human-facing landing page (or DOI/PMC reader page) once the quote-checking tool supports alternate fetch targets.
+          - For YDIH-C010 (synchrony), the operator grade moved from mixed to weakly supported despite adding evidence (Meltzer's error-weighted re-regressions and Kennett's circular age assignment at Lake Cuitzeo) that severely undercuts synchrony; clarify why an absence of definitive disproof constitutes 'weakly supported' rather than 'unresolved' or 'mixed'.
+          - In YDIH-E029, check whether the noted discrepancy in Nana Yobo et al. 2026's introduction (stating the Greenland platinum anomaly is 50 years earlier than the onset rather than later) was an author slip or references a different chronostratigraphic tie point.
+        summary: This change replaces August summary-level records for the Younger Dryas impact case with first-hand extractions from primary literature (Meltzer 2014, Kennett 2015, Holliday 2016, Napier 2010, Nana Yobo 2026, and Sweatman 2024). It rectifies previous overstatements regarding the volcanic trigger's radiative forcing (reconstructed rather than measured) and sharpens the synchrony critique with direct citations of proponents' and critics' methods. The resulting ledger and narrative are substantially more precise, better evidenced, and fairer to both sides.
+        cost:
+          inputTokens: 41977
+          outputTokens: 1288
+          usd: 0.036313
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - Continue primary-text rewrites of the remaining open August evidence (Firestone 2007, Kennett et al. 2009, Moore et al. 2017 and others still on summary-level statements in evidence.yaml).
+          - Obtain a readable copy of Holliday et al. 2023 or a Boslough airburst-physics critique and add it against YDIH-C012 so the provisional viability grade is not one-sided.
+          - Point SRC-SUROVELL-2009 and SRC-SUN-2020 at human-readable PMC pages rather than Europe PMC REST XML URLs; keep any alternate reading address only for the quote checker.
+        summary: This edition rebuilds the chronology, blind test, volcanic rival, and comet-scenario records from the papers’ own texts, fixes the prior overclaims on synchrony and “measured” forcing, and records the proponents’ answers on platinum timing and dating standards. C010 and C012 are regraded on clearer propositions with the case left weakly supported and the unanimous panel “contradicted” still shown as contested. For a truth-seeking reader the ledger is more accurate, better evidenced, and fairer, with nothing true dropped and no publication harm identified.
+        cost:
+          inputTokens: 38425
+          outputTokens: 271
+          usd: 0.078591
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - All five blind-check seats and the previous panel return 'Contradicted' against the draft's 'Weakly supported', yet the draft's stated reason (nothing excludes an event; decisive tests unrun) does not engage the seats' word directly. In the assessment reasoning for YDIH-C010 and the synthesis's closing sentence, state explicitly what evidence or argument would move the draft to adopt 'contradicted', and draft the article's closing sections so they survive that outcome — otherwise the same loop recurs at every ratification.
+          - "Two evidence records (YDIH-E045, YDIH-E046) rest on SRC-SWEATMAN-ACI-2024, of which only selected passages of a 120-page document were read, and the source record itself notes a discrepancy: the repository's citation lists four authors while the deposited manuscript's author block names three. Next pass, read the chronology sections in full and reconcile the author list on the source record, so the proponents' timing answer does not hang on a partially read, inconsistently attributed text."
+          - YDIH-C012's new verdict 'provisionally supported' is not one of the states the §3.15 amendment names on the graded scale (supported, weakly supported, unresolved, presently untestable, mixed, contradicted). Confirm the site's scale and concurrence arithmetic recognize it — or map it to an existing state — so the seat display and ratification measurement do not mis-handle the claim when the panel sits.
+        summary: This change replaces summary-level August records with primary-text readings for the chronology, blind test, volcanic rival and comet scenario, adds the proponents' own words on synchrony standards and the platinum's timing, corrects the 'measured forcing' overstatement and the 'securely dated' overstatement in both directions, and discloses funding and author-overlap per the site rules. The two claim moves are reasoned from the texts and told with their weaknesses attached, and the case verdict is left to the panel with the split displayed, as the constitution requires. I can point to no fabrication, misattribution or other publication harm, and nothing true is lost; the added words are earned, so the site is left better.
+        cost:
+          inputTokens: 39227
+          outputTokens: 11105
+          usd: 0.011437
+harvestedAt: 2026-11-08T14:43:32.908Z

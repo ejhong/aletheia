@@ -416,13 +416,14 @@
   direction: supports
   strength: moderate
   sourceStatement: >-
-    Working with 532 plate pairs (1934–1957) from the Hamburg 0.6-m
-    Doppel-Reflektor — chosen because its parabolic optics produce strong
-    off-axis coma — the author reports that transient candidate images
-    exhibit the coma aberration pattern expected from off-axis point
-    sources recorded through the telescope optics, a signature plate
-    artifacts cannot naturally reproduce; the paper states the data do not
-    by themselves establish the physical origin of the light.
+    Working with "A total of 278 plate pairs, assembled from a total of 398
+    plates" (1934–1957) from the Hamburg 0.6-m Doppel-Reflektor, chosen
+    because its parabolic optics produce strong off-axis coma, the author
+    reports: "we show that transient images exhibit the coma aberration
+    pattern expected from off-axis point sources recorded through the
+    telescope optics, a signature that plate artifacts cannot naturally
+    reproduce." The abstract adds that the data do not by themselves
+    establish the physical origin of the light.
   editorInference: >-
     Potentially the highest-information positive development in the case:
     a physical discriminant between light-through-the-optics and
@@ -430,10 +431,12 @@
     negatives. Everything now rests on whether the discriminant survives
     blind validation against known defects and deliberately produced short
     flashes (TRN-R003).
-  exactLocator: "Abstract, §2–3 (read via arXiv 2606.08319)"
+  exactLocator: "pp. 1–2 (Abstract and §3), arXiv 2606.08319 version 4"
   limitations:
     - "Single-author preprint; the coma classifier has not been blind-validated, and defect classes that mimic directional asymmetry have not been excluded."
     - "Applies to Hamburg candidates only; it does not validate any Palomar event."
+    - "Corrected 2026-11-08 (claude-opus-5-5, session 2026-11-08-session-site-142304): this record said 532 plate pairs, following the text of the preprint's first version; that version's own Table 1 gave 532 plates and 407 pairs, and version 4 (8 Oct 2026) gives 278 pairs from 398 plates. The eleven transients reported are unchanged."
+    - "Eleven transients on six plate pairs, found visually; the author writes that concerns about confirmation bias in visual identification are valid at the fainter end (version 4, p. 3)."
   reviewState: ai_extracted
   origin:
     ref: "transients research report — source-mining layer"
@@ -1591,3 +1594,336 @@
     extractedBy: claude-fable-5-1
     runId: 2026-09-10-verify-transients-174405
     date: 2026-09-10
+
+# Session 2026-11-08-session-site-142304: records for the three claims the
+# blind panel of 2026-09-30 split on (TRN-C101, TRN-C102, TRN-C104), each of
+# which the adopted assessment held on its anchor alone. Every quotation
+# below was read through the site's reading tool at the source's url.
+
+- id: TRN-E227
+  title: "PASP alignment paper: 83 aligned groups of three or more, a shortlist of five, one at ~3.9σ"
+  claimIds: [TRN-C104]
+  sourceId: SRC-VILLARROEL-2025-PASP
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The authors searched the Solano et al. (2022) catalog of 298,165
+    single-plate POSS-I transients for groups lying along a narrow band
+    within boxes of a few to 30 arcminutes. Their Table 1 counts 83 aligned
+    groups of three or more, 20 of four or more and 2 of five or more; "All
+    83 candidates are presented in the Appendix." From those with at least
+    four members they present five candidates (plates of 1952-07-27,
+    1954-08-05, 1954-10-04, 1954-12-21 and 1955-01-14), and the abstract
+    states: "We provide a shortlist of the most promising candidate
+    alignments, including one with ∼3.9 σ statistical significance."
+  editorInference: >-
+    This is the report the claim names, now read in full: alignments are
+    reported, in a peer-reviewed paper, among single-plate POSS-I
+    transients. The claim asks no more than that, so the record carries it.
+    What the report does not carry is the step above it: the significance
+    is computed per image, for a group already picked out of a search over
+    the whole catalog (TRN-E228).
+  exactLocator: "Abstract; §4 and Table 1; §5, Tables 2–3 (IOPscience full text at the DOI)"
+  limitations:
+    - "Proponent-team paper; the alignment search, the box sizes and the 0.99 correlation threshold were chosen by the authors and not preregistered."
+    - "The transient count in each field, on which the probability depends, comes from the authors' visual blinking of POSS-I against POSS-II images."
+    - "Measured on digitized copy scans (DSS and SuperCOSMOS); no original negative was examined for these five candidates."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — full reading of SRC-VILLARROEL-2025-PASP for TRN-C104"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
+
+- id: TRN-E228
+  title: "PASP alignment paper, in its own words: three-point alignments are not significant, and the search-wide odds cannot be estimated"
+  claimIds: [TRN-C104]
+  sourceId: SRC-VILLARROEL-2025-PASP
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Setting the strip width to the smallest image width in each group, the
+    authors find that "all 3-point alignments are non-interesting events"
+    apart from a borderline Candidate 2, and that "The interesting cases are
+    the 4-point and 5-point cases, namely Candidates 3, 4 and 5." Two
+    factors would decide the total probability of an event in their search:
+    the chance of several star-like plate flaws in one area, and the number
+    of multiple-transient groups in the whole data set, which raises the
+    odds that some line up. Of these: "Unfortunately, we have no grasp or
+    means of estimating either of the two factors." They add that "one could
+    argue that without an inspection with a microscope one still cannot
+    exclude plate defects", and of two candidates whose members are not all
+    clearly point sources, that "the alignment is possibly a combination of
+    transients and plate defects—or objects in the sky within our
+    atmosphere."
+  editorInference: >-
+    The quoted 3–4σ figures are odds for one picture, not for a search that
+    examined 83 groups across the survey. The authors say plainly that the
+    correction for having searched cannot yet be made. So the reported
+    alignments exist as reports; whether they exceed what chance and the
+    plates' own defect pattern produce over the whole catalog is untested.
+  exactLocator: "§5 (text after Figure 5) and §6"
+  limitations:
+    - "The authors' own caveats; they argue elsewhere in the paper that the rarity of star-like flaws would lower, not raise, the total probability."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — full reading of SRC-VILLARROEL-2025-PASP for TRN-C104"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
+
+- id: TRN-E229
+  title: "Watters et al.: a third of the aligned features sit on infrared catalogue objects, and some are not star-like"
+  claimIds: [TRN-C104]
+  sourceId: SRC-WATTERS-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Reviewing the alignment candidates of the PASP paper, the critics argue
+    that plate artefacts need not be spread uniformly at random — "In light
+    of these observations, discovering clusters of aligned SPFs is not
+    especially surprising." They report: "We have confirmed that 8 of 24
+    SPFs in Table 3 of Villarroel et al." lie within 5 arcseconds of a
+    NeoWISE catalogue position (a ninth at about 5.1 arcseconds), objects
+    that the catalog's makers had removed from their vetted set. On
+    magnified scans, one aligned member described by the proponents as
+    slightly dubious in shape "is clearly an asymmetrical feature and not
+    representative of a star-like optical transient", and another shows
+    clear elongation.
+  editorInference: >-
+    Bears on the "consistent with point sources" part of the claim and on
+    what the alignments are worth. If a third of the aligned members
+    coincide with infrared catalogue objects, they may not be transients at
+    all, and a line through them says nothing about a moving glint. The
+    critics did not compute their own alignment statistics; the record
+    reports an audit of members, not a test of the alignments.
+  exactLocator: "§4.5, with Table 2 and Figure 9 (Cambridge Core full text at the DOI)"
+  limitations:
+    - "Critics' reanalysis; the positional match to NeoWISE objects shows coincidence within 5 arcseconds, not identity."
+    - "Morphology judged by eye on scans of copy plates."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — re-reading of SRC-WATTERS-2026 §4.5 for TRN-C104"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
+
+- id: TRN-E230
+  title: "Hambly & Blair: more than 100 transient-like detections in one plate-overlap region"
+  claimIds: [TRN-C101]
+  sourceId: SRC-HAMBLY-BLAIR-2024
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Searching the small overlap between fields E0070 and E0086 for the
+    reverse of the 1950 event — sources on E0086 absent from E0070 — the
+    authors write: "We found more than 100 detections on E0086 in the
+    overlap region with brightness, eccentricity and area similar to the 9
+    detections on E0070". Their conclusions state "that there are many
+    hundreds of similar images on both plates in the overlap region between
+    the two fields."
+  editorInference: >-
+    The one measured count in the ledger of single-plate, star-like
+    detections in a defined area of POSS-I copy material: over a hundred in
+    a strip a fraction of a plate wide. At that density, look-alikes of
+    the canonical nine are commonplace on these copy plates, so a
+    single-exposure search must expect many per plate whatever their
+    origin. That is the condition under which contamination matters. It
+    does not show the detections are defects; that inference rests on the
+    authors' classifier.
+  exactLocator: "pp. 4–6 (the overlap search in §2, on p. 4; the conclusions in §4, on p. 6), arXiv copy"
+  limitations:
+    - "A count of transient-like detections, not of demonstrated defects; under the proponents' reading some could be real transients, and the classifier's spurious class is defined by lack of a modern counterpart (see TRN-E004)."
+    - "Two adjacent fields on one copy-plate set; no survey-wide rate."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — re-reading of SRC-HAMBLY-BLAIR-2024 for TRN-C101"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
+
+- id: TRN-E231
+  title: "The proponents concede that star-like plate defects exist and coexist with candidates"
+  claimIds: [TRN-C101]
+  sourceId: SRC-VILLARROEL-2025-PASP
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    In their section on plate defects the proponents write that "Certain
+    plate defects are known to resemble stellar profiles", that
+    distinguishing them from authentic observations "remains a non-trivial
+    task", and that on an ambiguous plate "authentic events may coexist on
+    the same plate as numerous star-like defects".
+  editorInference: >-
+    On the existence of star-like defects the two camps agree; the
+    proponents' case is that independent diagnostics (alignments, the
+    Earth's shadow) can see a real signal through the contamination, not
+    that the contamination is absent.
+  exactLocator: "§2, 'Plate Defect or Technosignature?'"
+  limitations:
+    - "A concession about existence, not a measured rate."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — full reading of SRC-VILLARROEL-2025-PASP for TRN-C101"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
+
+- id: TRN-E232
+  title: "Neither camp has measured the defect rate: both say so"
+  claimIds: [TRN-C101]
+  sourceId: SRC-HAMBLY-BLAIR-2024
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Proposing that holes and bubbles in the intermediate copy positives
+    would print as dark, star-like spots on the copy negatives, the critics
+    add: "Unfortunately we cannot make any quantitative assessment of the
+    prevalence of holes and bubbles like those illustrated in Figure 1",
+    because the digitization programmes recorded only dark detections. They
+    also note that the spurious microdots documented on late
+    twentieth-century fine-grained emulsions have not been seen elsewhere:
+    "no such artefacts have been reported as occurring on the older
+    coarse–grained varieties."
+  editorInference: >-
+    The copy-defect mechanism is proposed and its plausibility shown, but
+    its rate is unmeasured by the critics' own account. The proponents'
+    PASP paper says the same from the other side (TRN-E233). The claim's
+    "at rates sufficient" rests on the overlap count (TRN-E230), on the
+    Hamburg experience (TRN-E234) and on the history of plate searches, not
+    on a census.
+  exactLocator: "p. 5 (§3, Discussion), arXiv copy"
+  limitations:
+    - "Silence about microdots on older emulsions is absence of report, not a measured absence."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — re-reading of SRC-HAMBLY-BLAIR-2024 for TRN-C101"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
+
+- id: TRN-E233
+  title: "PASP paper: no study has measured the fraction of single-plate detections that are real"
+  claimIds: [TRN-C101]
+  sourceId: SRC-VILLARROEL-2025-PASP
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    "To date, no study has systematically quantified the fraction of
+    single-plate detections that are authentic transient phenomena versus
+    coincidentally star-like emulsion defects."
+  editorInference: >-
+    The proponents' statement of the same gap the critics admit
+    (TRN-E232). The claim can be judged likely on what the plates show,
+    but the rate it names has not been measured by anyone.
+  exactLocator: "§7, 'Assessment of Conventional Explanations'"
+  limitations:
+    - "Authors' statement about the literature as of 2025."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — full reading of SRC-VILLARROEL-2025-PASP for TRN-C101"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
+
+- id: TRN-E234
+  title: "Busko, Hamburg plates: a persistent set of artefacts mimics stars well enough to pass the filters"
+  claimIds: [TRN-C101]
+  sourceId: SRC-BUSKO-2026B
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Of the many kinds of plate artefact, most are removed after scanning,
+    "But a small but persistent subset will remain, because they mimic so
+    well the appearance of real stars that were truly imaged by the
+    telescope." On the Hamburg Schmidt plates of his first search, "There is
+    a small but significant population of artifacts that look very round,
+    and sometimes even a bit sharper that star images", to the point that
+    common profile, width and circularity measures cannot tell them apart.
+    His automated candidate lists had to be vetted by eye, "since the
+    filters are far from perfect and let a significant number of artifacts
+    to be tagged as valid transient candidates."
+  editorInference: >-
+    The same problem met on a different archive, telescope, emulsion and
+    digitization, by a searcher who argues that real transients exist. It
+    is the reason he moved to a coma-afflicted telescope. Independent of
+    the Palomar copy chain, so the problem is not peculiar to POSS-I
+    copies.
+  exactLocator: "pp. 1–2 (§1 and §2–3), arXiv version 4"
+  limitations:
+    - "Qualitative: 'small but significant' is not a rate per plate."
+    - "Author works within the VASCO project's question but with his own data and method; independent of the Palomar plate lineage, not of the hypothesis's advocates."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — re-reading of SRC-BUSKO-2026B (v4) for TRN-C101"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
+
+- id: TRN-E235
+  title: "Busko: comatic transient images narrower than stars of the same peak flux, and why a flash would be"
+  claimIds: [TRN-C102]
+  sourceId: SRC-BUSKO-2026B
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Three transients on a Hamburg plate of 19 April 1953 appear
+    "narrower than stars of same peak flux" while still showing coma
+    oriented like that of neighbouring stars. The author's explanation:
+    because the temporal power spectrum of atmospheric seeing falls steeply
+    with frequency, "most of what the photographic plate records as seeing
+    is caused by image wander. A short flash of light will be less affected
+    by that effect, and thus will result in a sharper image." He adds a
+    caution: "That signature might in turn be rendered less visible, in weak
+    images, due to emulsion reciprocity failure at these short exposure
+    times."
+  editorInference: >-
+    The first observation in the ledger, not just an argument, that bears
+    on the claim: images that carry an optical-path signature (coma) and
+    are sharper than stars of matching peak brightness, which is what the
+    claim predicts for a brief flash. Its weight is limited because the
+    same paper says some artefacts are also rounder and sharper than stars
+    (TRN-E234), so sharpness alone stays ambiguous. What gives the
+    observation its value is the coma beside it. The controlled-flash
+    calibration (TRN-R002) has still not been done.
+  exactLocator: "p. 7 (§4, discussion of Figure 8), arXiv version 4"
+  limitations:
+    - "Three faint events on one plate, identified visually; the author notes that confirmation bias is a valid concern at the faint end."
+    - "Hamburg 0.6-m reflector with 10–30-minute exposures, not the Palomar Schmidt; the seeing argument carries over, the emulsion response may not."
+    - "No measured flash duration: the author states nothing is known about how long any of the transients lasted."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — re-reading of SRC-BUSKO-2026B (v4) for TRN-C102"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
+
+- id: TRN-E236
+  title: "Profiles commentary: the sub-second-flash prediction, stated as a consequence of seeing, wind shake and tracking"
+  claimIds: [TRN-C102]
+  sourceId: SRC-VILLARROEL-2025-PROFILES
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    The commentary attributes 1 to 3 arcseconds of blur in the 1950s
+    Palomar exposures to seeing, wind shake and tracking error, and states:
+    "The prediction is that such sub-second, transient point sources will
+    have a profile that is narrower, i.e. sharper, and more circular than
+    the images of stars". On one digitized plate (XE282) it reports that a
+    large fraction of the vanishing objects, a few tens, have
+    systematically lower FWHM and elongation than Gaia-matched stars.
+  editorInference: >-
+    The proponents' statement of the mechanism the claim names, with
+    standard references on seeing. It is an argument; the measurement it
+    cites shows that the candidates are sharp, not that sharpness comes
+    from brevity.
+  exactLocator: "pp. 2–3, arXiv 2507.15896v1"
+  limitations:
+    - "A physics argument in a three-page commentary, not peer reviewed; no calibration of flash images on period emulsions."
+    - "The same commentary argues that photographic non-linearity makes fainter sources narrower, a second cause of sharpness unrelated to duration."
+  reviewState: ai_extracted
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — full reading of SRC-VILLARROEL-2025-PROFILES for TRN-C102"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"

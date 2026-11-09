@@ -83,7 +83,23 @@ describe("walls", () => {
   it("a short challenge page served with 200 is not a retrieval", () => {
     expect(looksLikeWall("Client Challenge\nA required part of this site couldn’t load. This may be due to a browser extension.")).toBe("bot challenge page");
     expect(looksLikeWall("Just a moment...\nEnable JavaScript and cookies to continue")).toBe("bot challenge page");
+    expect(looksLikeWall("Radware Bot Manager Captcha\n\nWe apologize for the inconvenience...\n\nTo ensure we keep this website safe, please can you confirm you are a human by ticking the box below.")).toBe("bot challenge page");
     expect(looksLikeWall("The Queen's Chamber — Pyramid of Khufu. " + "Petrie measured the chamber in 1881. ".repeat(200))).toBeNull();
+  });
+  it("a Wayback capture that cannot be read is not answered by the DOI in its address", async () => {
+    const capture = "https://web.archive.org/web/20260519084437/https://iopscience.iop.org/article/10.1088/1538-3873/ae0afe";
+    const calls: string[] = [];
+    const fetchImpl = (async (input: string | URL | Request) => {
+      const url = String(input);
+      calls.push(url);
+      if (url === capture) return new Response("busy", { status: 503 });
+      if (url.startsWith("https://api.openalex.org/")) return new Response(JSON.stringify({ best_oa_location: { pdf_url: "https://repo.test/pasp.pdf" } }), { headers: { "content-type": "application/json" } });
+      return new Response(Buffer.from(miniPdf("The publisher's copy")), { headers: { "content-type": "application/pdf" } });
+    }) as typeof fetch;
+    const r = await retrieve({ url: capture }, { fetchImpl });
+    expect(r.ok).toBe(false);
+    expect(r.status).toBe(503);
+    expect(calls).toEqual([capture]);
   });
   it("a page that only redirects is not the document, and the open copy is read instead", async () => {
     // 2026-10-28: Elsevier's hop from a DOI answers 200 with a meta-refresh page whose whole text is "Redirecting".

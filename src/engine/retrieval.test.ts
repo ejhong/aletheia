@@ -83,6 +83,8 @@ describe("walls", () => {
   it("a short challenge page served with 200 is not a retrieval", () => {
     expect(looksLikeWall("Client Challenge\nA required part of this site couldn’t load. This may be due to a browser extension.")).toBe("bot challenge page");
     expect(looksLikeWall("Just a moment...\nEnable JavaScript and cookies to continue")).toBe("bot challenge page");
+    expect(looksLikeWall("Radware Bot Manager Captcha\n\nWe apologize for the inconvenience...\n\nTo ensure we keep this website safe, please can you confirm you are a human by ticking the box below.")).toBe("bot challenge page");
+    expect(looksLikeWall("Making sure you're not a bot!\nLoading...")).toBe("bot challenge page");
     expect(looksLikeWall("The Queen's Chamber — Pyramid of Khufu. " + "Petrie measured the chamber in 1881. ".repeat(200))).toBeNull();
   });
   it("a page that only redirects is not the document, and the open copy is read instead", async () => {

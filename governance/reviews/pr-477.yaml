@@ -1,0 +1,66 @@
+# Review of #477, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 477
+title: Each case card says when the case last changed
+url: https://github.com/ejhong/aletheia/pull/477
+outcome: merged
+outcomeAt: 2026-11-02T18:34:54Z
+cases: []
+rounds:
+  - commit: fba12251780e435b1b0a27f37492cd8a01cbc123
+    date: 2026-11-02
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "In `src/domain/reading.test.ts`, add focused tests for `caseUpdated`: a later edition wins, a later substantive changelog entry wins, and a housekeeping entry is ignored."
+          - In `src/components/CaseCard.tsx`, consider making `updated` required rather than optional so future card call sites cannot silently omit the promised update date.
+        summary: The change gives readers a useful freshness signal on case cards and centralizes the existing update-date rule so cards and dossier headers remain consistent. The implementation uses semantic `<time>` markup, preserves the established exclusion of housekeeping entries, and adds basic formatting coverage without weakening any checks.
+        cost:
+          inputTokens: 6670
+          outputTokens: 660
+          usd: 0.03988
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes: []
+        summary: Unifies the calculation of a case's last updated date into `caseUpdated` and displays it on case cards in `CaseGrid` using a new `shortDate` helper. The change cleanly improves reader awareness of case activity without introducing bugs or violating site constraints.
+        cost:
+          inputTokens: 7340
+          outputTokens: 446
+          usd: 0.007177
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - "Add a unit test for caseUpdated in editions (or reading) tests: newer-of-changelog-vs-edition, and that housekeeping entries do not win — shortDate is covered, the shared rule is not."
+          - CaseCard leaves updated optional; if another caller omits it the card silently drops the line. Prefer requiring it (or deriving inside the card from a LoadedCase) so the glance date cannot go missing by accident.
+        summary: Case cards now show the same last-updated date the dossier header already used, via a shared caseUpdated helper and a shortDate formatter, so readers can see at a glance which cases are moving. The change is small, founder-requested, keeps card and header consistent, and does not touch checks or content records. It leaves the site clearer for a truth-seeking reader with no epistemic downside.
+        cost:
+          inputTokens: 6981
+          outputTokens: 192
+          usd: 0.015229
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - "`caseUpdated` (src/domain/editions.ts) compares dates by lexicographic string sort (`[...].sort().at(-1)!`), which is only correct if both inputs are zero-padded YYYY-MM-DD. It works today, but a short comment stating that assumption — or comparing via Date.parse — would keep it safe if a changelog or edition ever carries a differently formatted date."
+          - "`shortDate` (src/domain/text.ts) derives the abbreviated month by regex surgery on the long form. A direct months-array lookup (mirroring `longDate`'s own table) would be clearer and can't mis-truncate on any input the long formatter produces; the fallback path is tested, so this is polish rather than a defect."
+          - Consider whether a card whose latest change is its original publication should read differently (e.g. 'added' rather than 'updated'), so 'updated' always signals movement rather than mere existence. Optional refinement to the founder's request.
+        summary: "A small, coherent UI change: case cards now show the case's last-changed date, sourced from a single new `caseUpdated` function so the card and the dossier header cannot disagree, with a `shortDate` helper and tests for both. The logic moved unchanged from the case page, the code paths and mechanical checks are intact, nothing is weakened, and readers get an accurate at-a-glance signal of which cases are moving. That leaves the site better for a reader seeking the truth; the notes above are non-blocking polish."
+        cost:
+          inputTokens: 7752
+          outputTokens: 1238
+          usd: 0.001782
+harvestedAt: 2026-11-10T16:07:48.969Z

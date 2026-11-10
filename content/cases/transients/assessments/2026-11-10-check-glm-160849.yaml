@@ -1,0 +1,355 @@
+# Cross-model check run — an independent judge (GLM 5.3 Flash (Z.ai, via Venice)), blind to all
+# prior assessments and to the editions (aletheia check, check-v2; run 2026-11-10-check-transients-160849).
+# role: check — never displayed as the case narrative; feeds the concurrence panel.
+# basis.ledgerHash is the ledger it judged. Append-only; NOT human reviewed.
+runId: 2026-11-10-check-glm-160849
+producedBy: 2026-11-10-check-transients-160849
+model: GLM 5.3 Flash (Z.ai, via Venice) — independent check run via z-ai-glm-5-3-flash
+date: 2026-11-10
+promptVersion: check-v2
+humanReviewed: false
+role: check
+basis:
+  ledgerHash: fd95292cdd0488d35f036af0cdff2a9c4f1be3c82a3cf3180cbd284c91c70d5e
+caseAssessment:
+  verdict: mixed
+  components: []
+  loadBearing:
+    - TRN-C001
+    - TRN-C002
+    - TRN-C024
+    - TRN-C007
+    - TRN-C005
+    - TRN-C006
+  weakestLinks:
+    - TRN-C023
+    - TRN-C118
+    - TRN-C108
+    - TRN-C117
+    - TRN-C104
+  synthesis: "The case splits cleanly by rung, and the split is the finding. At
+    the observation rung the evidence is unusually strong and largely supplied
+    by the critics' side: the nine April 1950 marks are physically present on
+    the Edinburgh copy glass (TRN-E002), on the original telescope negative
+    itself per the microscopy manuscript (TRN-E022), are recovered by a fully
+    independent extraction pipeline (TRN-E008), and their sharper-than-stellar
+    profiles are common ground between the camps (TRN-E003). The July 1952
+    triple is likewise peer-reviewed with deep non-detection follow-up. Whatever
+    these marks are, they are not scanner ghosts. At the mechanism rung the two
+    rival accounts are both incomplete: the copy-stage genealogy (TRN-C007) is
+    real but demonstrably cannot reach the two flagship events, while the flash
+    account cannot clear the hurdle its own proponents report — microscopy
+    cannot separate a sub-second flash from an emulsion defect (TRN-E024), the
+    inspecting microscopist leaned defect, and the one physical discriminant
+    that could break the tie (the Hamburg coma signature, TRN-C011) is an
+    unvalidated single-author preprint. At the attribution rung the ensemble
+    statistics are contested in both directions with real replication on each
+    side: Doherty independently reproduces the shadow deficit and nuclear-window
+    correlation on the authors' own rows (TRN-E010) and ML artifact-scoring
+    leaves both intact (TRN-E015), yet Hayes's independent extraction dissolves
+    the nuclear effect (TRN-E009) and Watters shows the shadow result fails once
+    the false uniform-background assumption is corrected (TRN-E011). The highest
+    rungs are carried almost entirely by the proponents' own model-dependent
+    elaborations: the 20,000–35,000 km altitude range is by the authors' own
+    statement not a confidence interval, the NHI toy-model claim presupposes
+    features contested elsewhere, and the extraterrestrial-artifact claim is
+    conceded unfalsifiable by the proponents themselves. The honest roll-up: the
+    marks are real, their origin as light-through-the-optics versus emulsion
+    defect is genuinely unresolved, the near-Earth population statistics are
+    contested with no decisive winner, and the artificial/extraterrestrial
+    attribution has no independent support at all. The case is therefore mixed,
+    not unresolved: real structure at the bottom, active contradiction in the
+    middle, and no test yet run that could promote or kill the top. The decisive
+    missing measurements — flash-profile calibration on period emulsion, blind
+    validation of the coma discriminant, and a preregistered shadow analysis on
+    independently extracted catalogs — are all identified in the agenda and none
+    has been performed."
+  steelman: "The strongest unanswerable argument for the featured hypothesis is
+    the coma aberration reported on Hamburg Doppel-Reflektor transients
+    (TRN-C011, TRN-E014): a directional off-axis distortion consistent with
+    light that passed through the telescope's parabolic optics, recorded on an
+    archive outside the Palomar copy genealogy that the copy-defect mechanism
+    cannot reach. No skeptic has examined this discriminant at all, no defect
+    mechanism that reproduces position-matched coma has been proposed, and
+    Busko's classifier has never been blind-tested — the observation sits
+    unrebutted and untested in both directions. Combined with the fact that all
+    nine canonical 1950 marks sit physically on the original emulsion with sharp
+    edges and no elongation, a proponent can rightly say: the one physical
+    signature that would prove incident light exists, points positive, and the
+    only reason it is not decisive is that nobody has run the validation
+    experiment (TRN-R003)."
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: weakly_supported
+    reasoning: The claim depends on TRN-C020 (flash vs defect, unresolved) and
+      TRN-C021 (near-Earth reflections, contested), so it inherits at most weak
+      support. The ensemble correlations that would indicate a near-Earth
+      population replicate on the original rows and survive ML artifact-scoring,
+      but Hayes's independent extraction and Watters's reanalysis undercut them,
+      and Cann's natural dusty-plasma proposal shows that even a real near-Earth
+      population need not be artificial. Nothing in the record independently
+      establishes artificiality; the residual support is the persistence of the
+      ensemble signals under one artifact filter.
+    confidence: low
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    reasoning: No evidence record in the case bears on extraterrestrial origin
+      specifically; the only support is the NHI toy-model fit (TRN-E072), which
+      presupposes contested features and is hedged by its own authors. The
+      proponents' hotspot paper states the intelligence interpretation is
+      "unfortunately not falsifiable" (TRN-E083), and no discriminating test
+      between artificial and natural near-Earth reflectors — or between
+      near-Earth and anything else — has been run. This is a testability
+      verdict, not a truth verdict.
+    confidence: moderate
+  - claimId: TRN-C021
+    verdict: mixed
+    reasoning: "Support comes from the Earth-shadow deficit (replicated on the
+      original rows by Doherty, strengthened under ML filtering) and the absence
+      of any competing natural mechanism that fits all ensemble features.
+      Opposition is strong: Watters derives a proper null on the non-uniform
+      background and finds no significant deficit, and the modeling preprint
+      concedes the background non-uniformity partially. The nuclear-window
+      correlation, if real, is also direction-ambiguous (fallout contamination
+      predicts it too). Both directions have genuine, methodologically
+      substantive evidence."
+    confidence: low
+  - claimId: TRN-C020
+    verdict: mixed
+    reasoning: "The part of the claim excluding the copying chain and digitization
+      is now supported for the two canonical events: the nine marks are on the
+      original negative (TRN-E022) and the 1952 triple appears in the original
+      survey digitization, disfavouring the copy-plate hypothesis for those
+      specific sources (TRN-E023). But the core assertion — light during the
+      original exposure rather than an intrinsic emulsion defect — is expressly
+      beyond microscopy by the manuscript's own statement (TRN-E024), the
+      classifier groups the marks with artifacts, and the one positive
+      discriminant (coma) is unvalidated and applies only to Hamburg. Partially
+      established, core unresolved."
+    confidence: low
+  - claimId: TRN-C007
+    verdict: well_supported
+    reasoning: "The genealogy is documented by Hambly, the SuperCOSMOS authority,
+      from the archival copy-production records: both modern datasets descend
+      from independent copy negatives printed from one shared intermediate
+      positive (TRN-E005). The Yang & Villarroel microscopy qualifies the
+      argument's reach over the two flagship events but does not touch the
+      genealogical fact, which remains a live contamination route for the
+      ~100,000 uninspected catalog candidates. The strongest opposing
+      consideration is only that no measured occurrence rate for copy-stage
+      star-like defects exists yet."
+    confidence: high
+  - claimId: TRN-C001
+    verdict: established
+    reasoning: The nine marks are physically confirmed on the Edinburgh copy glass
+      by the skeptical authors (TRN-E002, strength strong), recovered by an
+      independent pipeline (TRN-E008), confirmed on the original telescope
+      negative by microscopy (TRN-E022), and their absence from the overlapping
+      plate and deep modern surveys is undisputed in the literature. The only
+      opposing consideration — that physical presence does not settle origin —
+      bears on TRN-C020, not on this observation claim as stated.
+    confidence: high
+  - claimId: TRN-C024
+    verdict: provisionally_supported
+    reasoning: The microscopy manuscript reports all nine sources on the Caltech
+      original glass at their published positions, with registration against
+      field stars, and it is candid against its own side's interest throughout
+      (TRN-E022). It remains an unreviewed preprint whose registration analysis
+      — the load-bearing step — has not been independently checked, the
+      inspection was not blinded, and the figures could change in review.
+      Provisional support is exactly what the evidence warrants.
+    confidence: moderate
+  - claimId: TRN-C002
+    verdict: well_supported
+    reasoning: "The sharpness measurement is common ground: SuperCOSMOS profile
+      statistics place all nine on the sharp side of the stellar distribution
+      with joint probability of order 0.1⁹, reported by the critics themselves
+      (TRN-E003) and confirmed qualitatively under the microscope (TRN-E022).
+      The bitter dispute is over interpretation — artifact-like classifier
+      scores versus the sub-second-flash physics argument — not over the
+      measurement. The strongest opposing consideration is that emulsion
+      nonlinearity makes fainter sources naturally narrower, complicating the
+      comparison baseline."
+    confidence: high
+  - claimId: TRN-C003
+    verdict: well_supported
+    reasoning: "The triple is peer-reviewed with 71 years of non-detection including
+      GTC imaging to magnitude 25.5 (TRN-E007) and recovered 3-for-3 by the
+      independent Hayes pipeline (TRN-E008); a Harvard copy plate shows the
+      candidate and it appears in the original survey digitization (TRN-E022).
+      The opposing considerations: no physical inspection of the 1952 original
+      negative exists, the proponent team produced the discovery, and the
+      star-like (not sharper) profiles of this event sit in tension with the
+      1950 nine, meaning any single-mechanism account must accommodate both."
+    confidence: moderate
+  - claimId: TRN-C004
+    verdict: well_supported
+    reasoning: "Hayes's from-scratch pipeline recovers 8/9 and 3/3 canonical sources
+      at ~0.2 false positives per control field and matches 63.9% of the
+      published catalog without reference to the original software (TRN-E008).
+      The limitations are real: it reads the same digitized lineage, and the
+      full-sky sweep used preliminary loose parameters, with a 500-fold gap
+      between raw candidates and the vetted set showing how extraction choices
+      dominate the population. Replication of the detections is solid;
+      replication of the catalog's size is not."
+    confidence: moderate
+  - claimId: TRN-C101
+    verdict: well_supported
+    reasoning: "The gamma-ray-burst-era searches provide the measured base rate the
+      defect account lacked: star-like faults are a routine, countable
+      population on survey plates, varying more than twentyfold between plate
+      series, with a blink-test count matching the fault-rate prediction
+      (TRN-E227); Watters confirms inspection removed most but not all flaws
+      (TRN-E230), and Hambly & Blair found a visible defect population on the
+      very copy plates in dispute. The main opposing consideration is transfer:
+      the rates come from Harvard patrol plates searched by eye, not POSS-I
+      scans, so the \"sufficient to contaminate\" clause is an
+      order-of-magnitude inference, not a POSS-I measurement — which the
+      proponents' own paper concedes is missing."
+    confidence: moderate
+  - claimId: TRN-C102
+    verdict: mixed
+    reasoning: The seeing-and-tracking argument supports the claim (TRN-E006), but
+      the earlier flash-search literature records a live dispute in which
+      reciprocity failure predicts flash images shallower, not steeper, than
+      stars (TRN-E231), and Watters marks both the flash-sharpness and the
+      defect-sharpness questions as untested (TRN-E232). No controlled flash has
+      ever been exposed on period emulsion, so the claim rests on competing
+      theoretical arguments whose net effect on POSS-I red emulsion is unknown.
+      The provisional PASP restatement cannot be counted.
+    confidence: low
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    reasoning: "The Hamburg search is genuinely independent — different telescope,
+      emulsion, archive, and digitization lineage, so the copy-defect mechanism
+      cannot reach it (TRN-E013). But it is explicitly preliminary: 41 plates,
+      no false-positive calibration, no injection/recovery testing, and no
+      measured candidate rate against matched controls, which leaves \"similar
+      phenomenon\" and \"similar defect susceptibility\" indistinguishable. The
+      claim's statement is supported as a preliminary report; its significance
+      is not yet determined."
+    confidence: low
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    reasoning: The coma signature is potentially the highest-information positive
+      result in the case — a physical discriminant between
+      light-through-the-optics and after-the-fact marks that bypasses the
+      Palomar genealogy entirely (TRN-E014). But it is a single-author preprint
+      whose classifier has never been blind-validated against a defect bestiary,
+      directional-asymmetry-mimicking defect classes have not been excluded, and
+      the paper itself states the data do not establish the physical origin of
+      the light. Everything rests on the unrun validation.
+    confidence: low
+  - claimId: TRN-C005
+    verdict: mixed
+    reasoning: Doherty independently reproduces the 0.46%-versus-1.4% shadow
+      classification with independently written code (TRN-E010), and the deficit
+      persists and strengthens under ML artifact-scoring (TRN-E015). Against
+      this, Watters shows the uniform-random background assumption is false for
+      these datasets and that with a proper null there is no statistically
+      significant deficit (TRN-E011), and the modeling preprint itself concedes
+      edge effects and post-hoc spatial cuts (TRN-E051). The proponents'
+      rebuttal raises genuine power concerns but does not answer the background
+      objection. Genuinely contested on both sides.
+    confidence: low
+  - claimId: TRN-C129
+    verdict: provisionally_supported
+    reasoning: "The modeling preprint reports the deficit strengthening at all
+      altitudes after quality filtering (TRN-E052, TRN-E053), but the filter is
+      the same group's ML classifier: a filter that removes defect-like rows
+      would strengthen any signal that defects dilute, whether or not the
+      residual is astrophysical. Only 17 filtered transients fall in shadow at
+      high altitudes, a small-number regime, and nothing independent checks the
+      result. Reported and internally consistent, but non-independent by
+      construction."
+    confidence: low
+  - claimId: TRN-C108
+    verdict: weakly_supported
+    reasoning: "The altitude range rests entirely on the proponents' own modeling of
+      their own contested catalog: the χ² estimator prefers 20,000 km with
+      reduced χ² of 3.5–5.4 (a poor absolute fit), the authors state the range
+      is \"rather than a formal statistical confidence interval,\" and the
+      companion hotspot paper projects everything at 35,786 km — inconsistent
+      with the χ² preference and enough to relocate every hotspot. Watters's
+      background critique, which undermines the deficit underneath the altitude
+      inference, is not engaged. The support is a conditional elaboration, not
+      evidence."
+    confidence: low
+  - claimId: TRN-C006
+    verdict: mixed
+    reasoning: The correlation replicates on the original catalog with independent
+      code, surviving negative-binomial regression with weather controls and a
+      permutation test (TRN-E010), persists under ML artifact-scoring
+      (TRN-E015), and Cann rules out the geomagnetic/airglow confounder with
+      reference populations (TRN-E017). But Hayes's independently extracted
+      catalog gives a null result under the same windows with schedule modeling
+      (TRN-E009), and Watters shows the effect is almost completely determined
+      by the Palomar observing schedule (TRN-E011). A correlation that lives on
+      one catalog's rows and dies under independent extraction is a property of
+      the catalog until proven otherwise.
+    confidence: low
+  - claimId: TRN-C103
+    verdict: provisionally_supported
+    reasoning: The dose-response across Kp bins is reported by a single independent
+      author on the same contested 107,875-row lineage, with no independent
+      extraction or replication (SRC-CANN-2026). Cann's companion result that
+      plate sensitivity is Kp-invariant removes one confounder route in the
+      claim's favor (TRN-E017), but the Watters objections to the catalog's
+      composition and normalization apply to every statistic run on it. A
+      reported pattern, not yet a finding.
+    confidence: low
+  - claimId: TRN-C104
+    verdict: mixed
+    reasoning: The alignments are genuinely reported in a refereed paper — Watters's
+      own member-by-member check presupposes the report — and Doherty
+      independently reports alignments on seven plates (TRN-E018). But the
+      primary support records are provisional and cannot be counted, Watters
+      finds 8 of 24 shortlist members within 2 arcsec of objects the catalog's
+      builders had themselves removed as ambiguous, the non-uniform background
+      makes alignments unsurprising under the right null, and the paper concedes
+      it cannot estimate the trials factor or exclude plate defects without
+      microscopy. The report exists; its meaning is contested.
+    confidence: low
+  - claimId: TRN-C119
+    verdict: provisionally_supported
+    reasoning: The 16-of-137 excess is a reported result computed on the group's own
+      working catalog with the group's own control, at a single assumed altitude
+      the authors acknowledge all locations depend on — and the companion
+      paper's χ² estimator prefers a different altitude, which would move every
+      cell. The largest O/E ratios sit in cells fed by one to three plates, so a
+      high-defect plate projects its excess wherever the geometry assigns it.
+      The statistical machinery (including ChatGPT-assisted sample preparation)
+      is unrepeated by anyone independent.
+    confidence: low
+  - claimId: TRN-C122
+    verdict: provisionally_supported
+    reasoning: "The negative-control result is clearly reported: random plate-aware
+      samples produce two or three clusters with silhouette 0.50–0.60, meeting
+      the 0.50 threshold the authors themselves adopt as indicating non-random
+      clustering (TRN-E079). This is a genuine internal problem for the
+      clustering method — silhouette alone does not separate sky structure from
+      survey footprint. Its weight is limited by the source: only three control
+      draws, no null distribution of silhouette values, single unreviewed
+      preprint."
+    confidence: moderate
+  - claimId: TRN-C117
+    verdict: weakly_supported
+    reasoning: The exclusion derives entirely from the proponents' own size
+      inference, which assumes altitude, specularity, flash duration and
+      reflectivity, and is selection-biased by the bright-source exclusion the
+      authors themselves flag (TRN-E062, TRN-E063). One model-dependent toy
+      calculation excluding another model-dependent mechanism does not carry
+      much weight, and the claim is self-limiting by construction — it dissolves
+      if the size inference is revised, which nothing currently pins down.
+    confidence: low
+  - claimId: TRN-C118
+    verdict: weakly_supported
+    reasoning: The source does state the NHI toy model uniquely accommodates all
+      five features (TRN-E072), so the claim as an interpretive report is
+      supported at the level of what the authors argue. But three of the five
+      "features" are contested at the catalog level (TRN-C005, TRN-C006,
+      TRN-C103), the PSF narrowness is read both ways, the model set is
+      hand-chosen by the authors, and their own caveat ("nature can always
+      surprise us," TRN-E073) concedes the inference's limits. An argument from
+      residual explanatory fit, not a test.
+    confidence: low

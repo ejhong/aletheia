@@ -1,0 +1,69 @@
+# Review of #479, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 479
+title: The open-copy fallback reads the published article before a preprint
+url: https://github.com/ejhong/aletheia/pull/479
+outcome: merged
+outcomeAt: 2026-11-02T18:49:27Z
+cases: []
+rounds:
+  - commit: e2447683cee589e005116f408ae8562dc7a3ad3e
+    date: 2026-11-02
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "In `src/engine/fetch.ts` (`versionOf`/`oaCopies`), classify an OpenAlex location as a unit: when its PDF is on a preprint host but its landing page is `doi.org`, the landing page currently trusts `publishedVersion` and can still be tried as published. Add a test with both URLs and a falsely published-labelled medRxiv or bioRxiv location."
+          - Narrow `PREPRINT_HOST` or classify OSF and Zenodo copies as unknown unless path or metadata identifies a preprint; both services host published-version deposits and other materials, so the current definitive “earlier version ... not the published article” can be false.
+          - In the Europe PMC path, account for PMC author manuscripts rather than assuming every DOI-matched full text is the published version; inspect available JATS/version metadata or use provenance wording that does not claim version-of-record status, with a test for an NIH author manuscript.
+        summary: The change substantially improves retrieval by preferring known published copies and Europe PMC over accepted manuscripts and preprints, while clearly identifying fallback use of an earlier version. The tests cover the motivating failure and the revised ordering. Some version classification remains overconfident, especially for DOI landing pages, general-purpose repositories, and PMC author manuscripts, but these limitations do not outweigh the improvement.
+        cost:
+          inputTokens: 8332
+          outputTokens: 1691
+          usd: 0.067148
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - In `src/engine/fetch.ts` (`versionOf`), preprint landing pages accessed via DOI resolvers (e.g. `https://doi.org/10.1101/...`) have hostname `doi.org` rather than the preprint host; consider recognizing standard preprint DOI prefixes (such as 10.1101 for bioRxiv/medRxiv or 10.48550 for arXiv) in addition to hostnames when OpenAlex misclassifies version metadata.
+        summary: This change updates the open-access retrieval pipeline to prioritize verified published versions over preprints and accepted manuscripts, ordering published OpenAlex copies and Europe PMC before any earlier versions. It also explicitly annotates preprint copies in the fetch provenance when only an earlier version is obtainable. The change is well-tested and directly prevents quotation verification failures caused by wording differences between preprints and published articles.
+        cost:
+          inputTokens: 9230
+          outputTokens: 1178
+          usd: 0.01134
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - In oaCopies (fetch.ts), open_access.oa_url inherits best_oa_location.version; if those point at different copies the version label can be wrong — attribute version only when the URL comes from the same location object.
+          - PREPRINT_HOST is a fixed regex; a short comment or test listing known misses (e.g. chemrxiv, eartharxiv) would make the next extension obvious without re-deriving the Bloom failure.
+          - The stable ‘PDFs first within rank’ behavior depends on Map insertion order plus a stable sort — a one-line secondary key in the comparator would make that guarantee explicit.
+        summary: The open-copy fallback now ranks published versions ahead of unknown and earlier ones, forces preprint-server hosts to ‘earlier’ regardless of OpenAlex labels, tries Europe PMC by DOI before non-published copies, and labels preprint substitutes in via. That directly fixes the erebus#138 failure mode (preprint text read under the journal citation) and is covered by tests built from the real Bloom 2023 OpenAlex record. The change strengthens provenance for quote checks and leaves the site better for readers and reviewers; no constitution or check is weakened.
+        cost:
+          inputTokens: 8665
+          outputTokens: 264
+          usd: 0.019029
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - A copy of unknown version still ranks ahead of Europe PMC's published text and is not named in `via` (only `earlier` gets the "not the published article" wording). A preprint served from a host not on PREPRINT_HOST — an institutional repository, a personal site — would be read silently as if it might be the article, and a later quote failure would not say what was actually read. Consider giving `unknown` copies a milder form of the same disclosure in `via`, so every non-published read names itself.
+          - "The PREPRINT_HOST list is a hardcoded allowlist that will age: new preprint servers will be misclassified as `unknown` until someone edits the regex. If OpenAlex's location records carry a source/host-organisation field, prefer deriving preprint status from that, or at least add a comment in `fetch.ts` documenting how and when the list should be extended."
+          - The version classification currently lives only in the `via` string. Consider storing the resolved `OaCopy["version"]` on the FetchedSource record itself, so downstream code (and the operator's follow-up on the erebus#138 limitation about copy identity) can branch on it rather than parsing prose.
+        summary: "This fixes a real retrieval bug found in erebus#138: the open-access fallback could read a preprint in place of the published article, so preprint wording could be quoted under a journal's name and a correct quotation could fail the quote check. The change ranks copies by version, trusts hostnames over OpenAlex's mislabeling for preprint servers, moves the Europe PMC full-text read ahead of any non-published copy, and names an earlier version in the read's provenance when one is all that serves. Tests cover the ordering, the mislabeled-host case, the Europe PMC priority, and the preprint disclosure, and the fix honestly records what remains undone (verifying copy identity against the session's read). This strengthens rather than weakens the site's checks, so the site is better for a reader seeking the truth."
+        cost:
+          inputTokens: 9414
+          outputTokens: 1704
+          usd: 0.002264
+harvestedAt: 2026-11-10T16:07:48.969Z

@@ -1,0 +1,151 @@
+runId: "2026-11-10-check-opus"
+model: "Opus 5.5 (Anthropic), independent check run"
+date: "2026-11-10"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing: [TRN-C020, TRN-C005, TRN-C021, TRN-C101, TRN-C011]
+  weakestLinks: [TRN-C020, TRN-C102, TRN-C011, TRN-C006, TRN-C108]
+  synthesis: >-
+    The featured hypothesis is that star-like transients on 1950s plates record real optical flashes from objects near Earth. It spans two rungs of the ledger's ladder: C020, light entering the telescope, and C021, sunlit objects near Earth. The evidence sorts by rung more cleanly than the public argument does.
+
+    The bottom rung is settled. The April 1950 nine are physical features of surviving glass. The critics' own inspection confirmed them, an independent pipeline recovered them, and, pending review, they are present on the original negative (C001, C024). The July 1952 triple is equally secure as an observation (C003). That retires scanning and copy-chain explanations for the canonical events. The copy genealogy itself (C007) stays true for the uninspected catalog. Sharpness is common ground (C002), but the premise that would make it a flash signature (C102) is undecided. One physical effect predicts sharper flash images and another predicts shallower ones, and nothing has been calibrated.
+
+    Everything therefore turns on C020, and the record cannot yet decide it. The proponents' own microscopy concedes that inspecting a single source cannot separate a flash from an emulsion flaw (E024). The bridge must therefore come from population statistics or from an optical signature.
+
+    The statistics all run on one working catalog that no one has independently rebuilt. On those rows the shadow deficit and the nuclear association reproduce under independent code and survive artifact scoring (E010, E015). Against them, a reanalysis on related datasets that models the non-uniform background removes both (E011). The one independently extracted catalog returns a null for the nuclear effect once nightly coverage is modelled (E009). The coma signature (C011) is the best discriminant on offer, but it is unvalidated and comes from a different telescope. The defect account has a viable mechanism and an outside base rate (C101), not a demonstration that these marks are flaws.
+
+    I call this unresolved rather than mixed for two reasons. Most items on both sides establish only that their own account is viable. The discriminating tests (R002, R003, R004, R005, R204) are specified and feasible.
+
+    C021 inherits C020 and adds altitude modelling that fits poorly and finds a deficit at every altitude tested. My further reluctance there is a disclosed prior, not a recorded finding: no known population of reflectors occupied those altitudes before 1957. The artificial and extraterrestrial rungs (C022, C023) have no evidential support of their own. The toy-model argument (C118) is accommodation by an unconstrained hypothesis. The size argument excluding the natural dusty-plasma alternative (C117) misdescribes that mechanism.
+
+    Steelman for: the shadow deficit is the one observation a defect population has no evident way to produce. It holds in a center-of-plate subset and strengthens as defect-like candidates are filtered out.
+
+    Steelman against: the nine sit in a plate corner where defects congregate, and the overlapping plate carries its own unpaired point sources (E002). The one outside microscopist leaned defect. The only ensemble test that varied the extraction step came back null.
+
+    Sensitivity: the record whose removal would most change this verdict is TRN-E011. Without it, the shadow deficit would stand as an internally replicated geometric signal, opposed only by the source group's own concession about stripes and edges (E051). I would then move C005 to well_supported, and C020, C021 and the case to weakly_supported. The verdict does not survive that removal intact. It hangs substantially on one critique run on datasets related to, but not identical with, the working catalog. That is why an independent reconstruction and a preregistered shadow test (R004, R005) are the highest-value next steps.
+  steelman: >-
+    The Earth-shadow deficit is the one observation in this case that an emulsion-defect population has no evident way to produce, and this assessment does not explain it. On the working catalog it reproduces under independently written code: 0.46% of candidates fall in the umbral cone against about 1.4% expected. It holds at 0.45% in a center-of-plate subset, where corner and edge excesses should not reach. It persists against per-plate random controls at every assumed altitude. It grows stronger rather than weaker as an artifact classifier strips out defect-like candidates, which is the pattern a real sunlit population diluted by flaws would show. The reanalysis that dissolves it used related datasets some twenty times smaller. No record identifies a specific plate, schedule or time-of-night mechanism that yields a deficit centred on the modelled umbra, and the time-of-night channel raised in this assessment is a hypothesis, not a finding. Rating C005 mixed records the dispute; it does not answer the observation.
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      No evidence record bears on artificiality as such. The alignment-kinematics preprint (E018) is weak, unpreregistered and post hoc. The one recorded mechanism for near-Earth reflectors (E020) is natural, which would make C021 true while removing any reason for this claim. The claim also inherits two unestablished rungs, C020 and C021, and cannot stand higher than they do. My reading leans on historical background rather than the records: no human hardware existed at these altitudes before October 1957, so the claim reduces to non-human hardware, the least probable reading of any outcome the open tests could return. Strongest opposing consideration: if the shadow deficit and the five-to-eight-source alignments both survived independent catalogs and trials-corrected nulls, repeated glints along a track would favour rotating flat facets over natural bodies, a route by which this claim, unlike C023, could gain support from the plates themselves.
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: moderate
+    reasoning: >-
+      Nothing in the ledger supports an extraterrestrial maker. The toy-model passages were reassigned at intake to C118 because they do not bear on this claim, and the hotspot preprint's authors write of the intelligence interpretation that it is unfortunately not falsifiable (E083). No item in the research agenda would discriminate extraterrestrial hardware from any other origin even if C022 were established, and no second-site or physical recovery is possible for 1950s events. The verdict describes the discriminating step, not a reprieve: the claim sits on three unestablished rungs (C020, C021, C022) and carries no evidential weight of its own. Strongest opposing consideration: the claim remains refutable through its presuppositions, since it falls with C020 if the marks prove to be emulsion flaws; untestable describes what could confirm it, not what could kill it.
+  - claimId: TRN-C021
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      The only observation that points specifically to sunlit objects near Earth is the shadow deficit (C005). It is contested at the level of its null model and has never been run on an independently extracted catalog. The record linked here (E074) derives its one-third solar reflections from that same deficit and is an elaboration, not a test. The altitude modelling that would make the population geosynchronous-like fits poorly (reduced chi-squared 3.5-5.4) and finds a significant deficit at every assumed altitude from 20,000 to 60,000 km (E025, E054), so it does not localize a shell. The claim presupposes C020, which is unresolved, and a disclosed prior adds reluctance: no known natural or human population of reflectors occupied these altitudes before 1957, so a contested within-catalog statistic cannot carry it. Strongest opposing consideration: the deficit reproduces under independent code, holds in a center-of-plate subset and strengthens under artifact filtering (E010, E015), and no record names a mundane process that produces it.
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      No measurement yet separates flash from flaw for any POSS-I mark. The proponents' own microscopy of the original plate states that inspecting a single source cannot make the distinction, and its microscopist leaned defect, noting the nine lie in a plate corner where defects congregate (E024). At least some is a modest bar, but the routes that could clear it are weak. They are population statistics on a catalog no one has independently rebuilt (C005 and C006 both mixed, with the one independent extraction null on the nuclear test, E009), and a coma signature (E014) that is unvalidated and comes from a different Hamburg telescope. The defect side is equally undemonstrated for these marks: star-like faults are routine on other archives (E227) and the overlapping plate E0086 carries its own unpaired point sources (E002), but no POSS-I rate exists. This is unresolved rather than mixed because most items on either side establish only that their account is viable, and the discriminating tests (R003, R004, R005, R204) are specified and feasible. Strongest opposing consideration: if its null survives, the shadow deficit is a geometric signature a defect population has no evident way to produce, and it would carry this rung for at least some marks.
+  - claimId: TRN-C007
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The copy chain runs from the original negative to one intermediate glass positive, then to separate second-generation copy negatives scanned for DSS and SuperCOSMOS. This genealogy is documented from the copy-production procedure (E005), and the proponents' own microscopy manuscript accepts it while disputing only its reach (E023). The pathway the claim states follows directly: a flaw printed onto the shared positive appears in both scans without existing on the original. The claim asserts a mechanism, not a frequency, and no record disputes it. Strongest opposing consideration: it is a pathway without a measured rate (R007, R204), and for the April 1950 nine it no longer applies if the original-glass registration (E022) survives review, which narrows its relevance to the uninspected catalog without touching its truth.
+  - claimId: TRN-C001
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The critics themselves confirmed nine point-like detections at the published positions on the Edinburgh glass copy of E0070, absent from E0086 exposed six days later (E002). An independent pipeline recovers eight of the nine as vanishing sources against later epochs and Pan-STARRS (E008), and microscopy of the original plate finds all nine present (E022). Absence from deeper modern surveys comes from the discovery paper (E001). Adversaries, an outside pipeline and two physical inspections agree on this rung, which by itself says nothing about origin. Strongest opposing consideration: deep GTC imaging to r ~ 26 shows possible faint counterparts that could equally be chance projections (E001), a residual caveat on absence from deeper imaging that does not touch presence on the copy material.
+  - claimId: TRN-C024
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      The only record is the Yang and Villarroel preprint (E022). It registers microscopy of the original April 1950 plate at Caltech against the digitization, using field stars as fiducials, and finds all nine at their published positions. A semi-independent eye adds weight: the microscopist was directed to the objects by the copy-defect argument's principal author. They described sharp-edged, non-stellar features and attributed them to emulsion defects (E024), a reading that presupposes the features are on the original emulsion. It stays provisional because the registration, the load-bearing step, was done by the proponent group, unblinded and unreviewed, with no outside repetition (R001). Strongest opposing consideration: the microscopist's account reaches the record only through private correspondence quoted in the authors' footnote, and in a defect-rich plate corner a registration error could match a nearby flaw to a catalogued position.
+  - claimId: TRN-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The measurement is the critics' own. SuperCOSMOS profile statistics put all nine on the sharp side of the zero-mean stellar distribution (roughly -3 to -1), with a joint chance probability of order 0.1^9, and under the microscope the marks look more concentrated and circular than stars of similar brightness (E003). The proponents accept the measurement and argue over its meaning (E006), and the original-plate inspection independently describes the features as marginally sharper than stars, sharp-edged and non-stellar (E022, E024). The classifier record filed as undermining (E004) disputes the interpretation and reuses the same statistics without contesting them; what sharpness implies is carried by C102 and C020. Strongest opposing consideration: the quantitative statistic was computed once, on one digitization of copy material, and the 1952 triple's most isolated member has a nearly stellar profile (E007), so sharpness characterizes this event rather than the phenomenon.
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The peer-reviewed discovery report gives three ~16 mag point sources within 10 arcsec on one 19 July 1952 exposure (E007). They are absent from the consecutive exposure and from 71 years of later imaging, including GTC to magnitude 25.5. An independent pipeline recovers all three as vanishing sources against POSS-I Blue, POSS-II Red and Pan-STARRS (E008), and the Yang and Villarroel inspection finds the triple on a Harvard copy plate and in the original survey digitization (E022). No record disputes the observation. Strongest opposing consideration: no one has examined the 1952 original negative, the depth-25.5 non-detection is a single proponent-team observation, and the observation is silent on origin, since a localized defect cluster would satisfy it as well as a flash.
+  - claimId: TRN-C004
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      One documented from-scratch pipeline (E008) recovers 8 of 9 April 1950 sources and 3 of 3 July 1952 sources, at roughly 0.2 false positives per 10-arcmin control field. It also matches 3,450 of Solano's 5,399 candidates (63.9%) without VASCO software or candidate lists, so the canonical detections do not depend on the original team's code. The plural pipelines overstates the record: this is the only independent extraction on file. Strongest opposing consideration: it reads the same DSS descendants of the same copies, and the catalog-level match came from a preliminary 2.85-million-candidate sweep, a net some 500 times larger than the vetted list, so recovery there says nothing about the catalog's purity.
+  - claimId: TRN-C101
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Star-like faults are a routine, countable population in a plate search with no stake in this dispute. Harvard plate series show 5e-5 to 1.2e-3 star-like faults per square millimetre, a blink test turned up unexplained spots matching the predicted count (E227), and at those densities every plate of POSS-I's size would carry such faults. The gamma-ray-burst searches stalled on exactly this residue of star-like candidates that inspection could not classify (E230). This case's own plates show blemishes and unpaired point sources on both E0070 and E0086 (E002), and the VASCO pipeline itself removed 3,592 artifacts by cross-scan comparison (E016). The rate clause holds only as an order-of-magnitude transfer across emulsion, telescope, copy generation and from eye-and-lens to scan-based vetting, and the provisional PASP passages (E228, E229) are set aside. Strongest opposing consideration: in the older searches nearly all defects were rejected on close inspection (E230), so the contaminating fraction depends on the vetting, and no POSS-I rate exists (R204).
+  - claimId: TRN-C102
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      The expectation rests on one physical effect: a sub-second flash escapes the guiding, wind-shake and seeing smear that a 50-minute star image accumulates (E006). On general grounds, a prior rather than a record, that effect should narrow an image somewhat. The earlier plate-flash literature records an opposing effect, reciprocity failure making flash images shallower than stars (Schaefer 1981, via E231). The critics list both flash FWHM on POSS1-E plates and artefact FWHM as open questions (E232). No calibration on period emulsion exists (R002), the proponents' refereed restatement (E233) is provisional and set aside, and the canonical events do not settle it: the 1950 nine are sharper than stars while the most isolated 1952 member is nearly stellar (E007). Strongest opposing consideration: the image-motion argument is sound in direction, so the claim may well prove right; what is undecided is whether it dominates the emulsion response on POSS-I red plates, and by how much.
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      A single, explicitly preliminary preprint (E013) finds single-exposure candidates with systematically narrow FWHM in same-night plate pairs from the Hamburg 1.2-m Schmidt. The sample is 41 plates of 1954-1957 digitized by APPLAUSE, an archive the Palomar copy genealogy cannot reach. That candidates occur is a low bar the record clears, and analogous rests on the narrow-profile similarity. Strongest opposing consideration: with no false-positive calibration or injection-recovery, analogous events and analogous defect susceptibility are indistinguishable. An independent lineage removes the copy mechanism but not the emulsion-defect mechanism that other archives also show (E227).
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      One single-author preprint (E014) reports that candidates on 532 plate pairs from the Hamburg 0.6-m Doppel-Reflektor show the coma pattern expected of point sources imaged through the optics. The telescope was chosen for its strong off-axis coma, and the paper's acceptance at Scientific Reports is reported by the proponent group but unconfirmed. These are not the Schmidt candidates of C010, and Schmidt optics are designed to suppress coma (a background point), so the dependency is looser than drawn. The second clause, that surface artifacts should not reproduce a radially oriented, field-dependent asymmetry, is reasonable on general optics but untested. Strongest opposing consideration: the classifier has not been blind-validated against known defects and deliberately produced flashes (R003), and the critics report marked asymmetry among non-transient POSS-I features (E236), so a detector of generic asymmetry could pass for a detector of coma.
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: moderate
+    reasoning: >-
+      On the working catalog the arithmetic is secure. Independently written code reproduces 0.46% of sources in the umbral cone against about 1.4% expected, and 0.45% in a center-of-plate subset (E010); the deficit persists after ML artifact scoring (E015). But the stated geometric expectation is exactly what is disputed. The one analysis that modelled the non-uniform background found no significant deficit (E011), and the source group's own modelling paper concedes that empty stripes and edge effects may influence the result (E051); the sides have not run each other's nulls on the same rows, and no independently extracted catalog has been tested (R004, R005). A further untested channel, my prior rather than a recorded finding: a plate's overlap with the umbra near the antisolar point tracks the hour and season of exposure. If candidate counts per plate vary with those, an area- or plate-weighted expectation would show a deficit with no orbital physics, and no record reports weighting the expectation by each plate's candidate count. Strongest opposing consideration: Watters worked on related datasets some twenty times smaller, and the proponents' charge that this costs power (E012) is unanswered in the record.
+  - claimId: TRN-C129
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      The modelling preprint's Table 1 shows a larger deficit in the p > 0.7 sample than in the full sample at every assumed altitude, peaking at 35,000 km (E052, E053). The group's peer-reviewed ML paper reports the same direction, with the deficit largest among highest-probability transients (E015). That is consistent reporting, but it all sits inside one group's catalog, classifier and control, and nobody outside has recomputed the table. At 35,000 km and above only 17 filtered transients fall in shadow. Strongest opposing consideration: strengthening under a defect filter is what a diluted real signal predicts, but equally what any confound correlated with the classifier's scores would produce, so the claim can be true without adding independent weight to C005 or C021.
+  - claimId: TRN-C108
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      No evidence record attaches to this claim, and the records filed under its neighbours do not localize a shell. The estimators disagree by sample and method: the largest deficit falls at 25,000 km in the full sample and 35,000 km when filtered, while the chi-squared minimum sits at 20,000 km. The fits are poor (reduced chi-squared 3.5-5.4) under a model without orbital dynamics, the authors call the range variation rather than a formal statistical confidence interval (E057), and the deficit is significant at every altitude tested up to 60,000 km (E025). The 20,000 km preference coincides with the lowest altitude the deficit table tested, so it may be a boundary value rather than a located minimum. Above all, the claim presupposes a near-Earth reflective population (C021), which is unresolved. Strongest opposing consideration: the estimators do fall inside 20,000-35,000 km rather than scattering across the tested range, so a preregistered fit with orbital dynamics on an independent catalog (R012) could firm the band up.
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: moderate
+    reasoning: >-
+      On the working catalog the association reproduces under independent code (RR 1.45, p = .011) and survives weather and lunar controls and a permutation test (E010). It persists after ML artifact scoring (E015) and survives an autocorrelation-aware Bayesian model in attenuated form (p = 0.037, E019), and one geomagnetic confound is closed (E017). Against it, the analysis that varies the disputed extraction step and models nightly coverage as exposure is null (IRR 1.03, p = .71, E009). Watters finds the signal insignificant once normalized by observation days and almost wholly set by the Palomar schedule (E011). The split tracks the denominator, which R008 is designed to settle, and as R008 notes, even a real association would not say whether fallout affected the plates or objects glinted. Strongest opposing consideration, for upgrading: Hayes's independent catalog averages ~7,250 mostly-noise candidates a night, and its point estimate (RR 1.35, 95% CI 0.91-2.00) does not exclude the original 1.45.
+  - claimId: TRN-C103
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      No evidence record links to this claim. The monotonic decline its anchor quotes (from 17.4% at quiet Kp to 2.4% at Kp 8-9) comes from a single-author preprint on the working catalog. It is attested in the records only through the same author's later papers, one of which closes the plate-sensitivity route by showing that star counts and limiting magnitude do not vary with Kp (E017). The second clause, that controlling for Kp strengthens the nuclear association, appears in the source's title but in no recorded result, and the nuclear association itself fails under independent extraction (E009). No one else has reproduced the dose-response. Strongest opposing consideration, a prior rather than a record: Kp follows the solar cycle and the seasons, both entangled with the survey's calendar, which is the schedule confound that undoes the nuclear signal in E011, so the dose-response needs an exposure-controlled rerun before it says anything about the sky.
+  - claimId: TRN-C104
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The direct reads of the alignments paper (E234, E235) are provisional and set aside, but the claim that such alignments are reported has an independent basis. The critics checked the candidate linear clusters in Table 3 of Villarroel et al. member by member (E236, also E011). A separate preprint reports alignments of five to eight point-like sources on seven plates exceeding Monte Carlo expectations (E018). As a statement about the literature, the claim holds. Strongest opposing consideration, which bears on meaning rather than on the report: 8 of 24 shortlisted members lie within 2 arcsec of objects the catalog builders had removed as not confidently distinguished from catalogued sources, some show marked asymmetry, and a non-uniform background makes aligned clusters unsurprising (E236). The second preprint's criterion and trials accounting were not preregistered (E018), so the claim's truth lends no weight to C022.
+  - claimId: TRN-C119
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      The result is reported once (E041), in an unreviewed preprint whose data are available only on request; ChatGPT assisted in preparing the samples and the Bonferroni-corrected tests, and nobody has reproduced it. The excess is measured against the group's own plate-aware control at one assumed altitude, and every cell location moves if that altitude changes (E078). The largest excesses (O/E up to 17.9) come from cells fed by one to three plates. A binomial test that treats transients as independent therefore likely overstates significance when they cluster by plate, a statistical prior rather than a recorded finding. Strongest opposing consideration: Bonferroni correction across 137 cells is conservative for multiplicity, and the per-plate breakdown shows most significant cells drawing excess from two or more plates (E075).
+  - claimId: TRN-C122
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      This is the hotspot preprint's own negative control, reported against the authors' interest. The first random sample of 897 plate-aware positions, projected and clustered by the same procedure, gave three clusters at an average silhouette of 0.50, just meeting the minimal criterion for non-random clustering (E079). The claim's source anchor adds that a later control clustered more strongly and that the clusters might be artifacts of POSS-I observing parameters. Locally, then, the 0.50 threshold cannot separate sky structure from survey footprint, which leaves the transients' 0.70 without a proper null (R011). Strongest opposing consideration: only three control draws were run and only the first is documented in an evidence record, so the exact 0.50-0.60 range and the two-or-three-cluster count rest partly on the anchor rather than on a recorded result.
+  - claimId: TRN-C117
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      The only supporting record is the modelling paper's own assertion (E038), and its premise misdescribes the mechanism it rejects. The dusty-plasma preprint's abstract has charged dust aggregating into partially reflective icy bodies 1-4 m across, which it finds sufficient to reach the observed plate magnitudes (E020, filed under C021 and C022). That is inside, not outside, the centimetre-to-3-metre range the claim invokes. The range is itself derived from assumed specular planar facets, durations and reflectivities (E060, E061), and its authors say the bright-object exclusion biases it toward small sizes (E062, E063), so correcting it would widen the overlap rather than close it. The stated inconsistency therefore does not hold for the mechanism as published, and the exclusion does not follow. Strongest opposing consideration: E020 is abstract-only, the aggregation step may be physically implausible or rebutted in text not recorded here, and dusty plasma may fail on other grounds; this verdict concerns the size argument the claim states, not the mechanism's viability.
+  - claimId: TRN-C118
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The records show only that the authors make this comparison (E072), hedged by their own caveat that nature can always surprise us (E073). An agent hypothesis accommodates any pattern, and the companion hotspot preprint calls the intelligence interpretation unfortunately not falsifiable (E083), so winning on accommodation is not evidence of fit. The toy set omits the artifact-and-schedule account the critics defend. Three of the five features are contested (C005 and C006 mixed, C103 weak), the fourth, sharpness, is read both ways, and the dusty-plasma exclusion rests on a size argument that misdescribes the mechanism (C117). Strongest opposing consideration: within the toy set as specified, no recorded alternative accommodates the nuclear-window timing, so the narrow comparative statement may be accurate as the paper's internal finding even though it carries little evidential weight.

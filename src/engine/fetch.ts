@@ -125,6 +125,10 @@ export function looksLikeWall(text: string): string | null {
     [/enable javascript and cookies to continue|please enable cookies/, "bot challenge page"],
     [/access denied|you don.t have permission to access/, "access denied page"],
     [/attention required!? *\| *cloudflare/, "bot challenge page"],
+    // IOPscience's Radware wall (2026-11-10): "Radware Bot Manager Captcha … confirm you are a human".
+    [/bot manager captcha|confirm you are a human/, "bot challenge page"],
+    // DIGITAL.CSIC's repository wall, the same day: "Making sure you're not a bot!".
+    [/making sure you.re not a bot/, "bot challenge page"],
   ];
   if (text.length < 4000) for (const [re, why] of patterns) if (re.test(head)) return why;
   return null;

@@ -226,3 +226,32 @@
     extractedBy: claude-fable-5-1
     runId: 2026-09-10-draft-transients-173620
     date: 2026-09-10
+- id: TRN-R204
+  title: Star-like fault rate on POSS-I glass, by the gamma-ray-burst searchers' method
+  summary: Repeat on POSS-I material what the gamma-ray-burst plate searches did on Harvard plates. Choose control regions on original negatives and on Edinburgh copy plates, away from candidate positions and with plate edges recorded. Count every star-like image that has no counterpart on the overlapping plate, examine each under a lens and a microscope, and report the rate per square millimetre and per plate, with the share that survives inspection. Run the same count on SuperCOSMOS and DSS scans of the same regions, so the physical rate and the scan rate can be compared. If the surviving star-like rate on original glass is of the order of the 5 × 10⁻⁵ to 1.2 × 10⁻³ per mm² measured on Harvard plates, the defect claim gains a measured POSS-I base rate. Rates far below the catalog's density would force the defect account to explain the excess.
+  claimIds:
+    - TRN-C101
+    - TRN-C020
+    - TRN-C007
+  track: small_grant
+  effortTier: lab
+  informationGain: Gives the defect account the rate on the survey's own glass that both camps now say is missing, and separates flaws that inspection removes from the residue that survives it, which is where the earlier searches stalled.
+  origin:
+    ref: "Gorosabel & Castro-Tirado 1998, Table 2; Villarroel et al. 2025 (PASP), §7"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-11-10-session-site-154020"
+    runId: "2026-11-10-session-site-154020"
+    date: "2026-11-10"
+- id: TRN-R205
+  title: Alignment counts against a null built from the plates themselves, with the full trials factor
+  summary: Re-run the 2025 alignment search with its own settings (boxes up to 30 arcminutes, |α| > 0.99, confirmation on a second scan) and count every box and plate searched. Then run the identical search on null catalogs that keep each plate's real candidate density, edge gradient and clustering but scramble positions within those structures. Run it also on the Edinburgh and DSS defect lists and on a catalog extracted independently (Hayes). Report the observed number of four- and five-point alignments against the null distribution of that number. If the shortlisted four- and five-point alignments are rarer in the nulls by a trials-corrected margin, the alignment report gains weight. If comparable numbers turn up in the scrambled and defect catalogs, the alignments are what clustered candidates produce.
+  claimIds:
+    - TRN-C104
+    - TRN-C022
+  track: publication_prize
+  effortTier: desk
+  informationGain: Turns per-image probabilities, which the authors say they cannot correct for the search's size, into a test against the plates' real structure. It can be run on public scans and catalogs.
+  origin:
+    ref: "Villarroel et al. 2025 (PASP), §6; Watters et al. 2026, §4.5 and §7.3"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-11-10-session-site-154020"
+    runId: "2026-11-10-session-site-154020"
+    date: "2026-11-10"

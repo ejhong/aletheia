@@ -1,0 +1,170 @@
+runId: "2026-11-12-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-11-12"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: well_supported
+  loadBearing:
+    - AMZ-C001
+    - AMZ-C003
+    - AMZ-C010
+    - AMZ-C011
+    - AMZ-C014
+    - AMZ-C016
+    - AMZ-C017
+  weakestLinks:
+    - AMZ-C005
+    - AMZ-C021
+    - AMZ-C023
+  synthesis: >-
+    The central thesis of "The Emptied Amazon" posits that the pre-Columbian Amazon was neither an untouched, uniform wilderness incapable of supporting dense populations nor a wall-to-wall civilization, but rather a profoundly heterogeneous social landscape. In this mosaic, densely populated, politically organized, and hydraulically engineered societies flourished along major river bluffs, floodplains, and seasonal savannas, while vast interfluvial terra-firme tracts remained lightly utilized and relatively sparse. Gaspar de Carvajal's 1542 chronicle of the Orellana expedition, long dismissed as fabulation, emerges from this ledger as qualitatively credible: independent sixteenth-century accounts from Diogo Nunes (1538) and the Pedro de Ursúa expedition (1560) confirm dense towns, vast food stores, straight roads, and fine ceramics along the Solimões corridor. Simultaneously, manuscript collation reveals that Carvajal's most staggering troop figures and settlement lengths derive from the Medina/Muñoz textual tradition rather than Oviedo's primary redaction, showing that while his numerical counts are textually unstable, his qualitative social geography is remarkably sound. Modern LiDAR and archaeological surveys corroborate extensive monumental earthworks, defensive enclosures, and raised fields from southwestern Amazonia to the Llanos de Mojos, the southern rim, and the Belterra Plateau, with multiple systems sustaining populations well into the contact era. Conversely, cumulative palaeoecological coring and predictive spatial models demonstrate that distance to rivers is the paramount predictor of occupation, with almost eighty percent of the basin exhibiting near-zero probability for monumental earthworks and negative phytolith/charcoal signatures in sampled interfluves. Following European arrival, regional reconstructions such as Linda Newson's document catastrophic declines of sixty to nearly ninety percent through combined epidemics, slave raids, and flight, providing a clear mechanism for the swift transition from Carvajal's crowded river corridor to later silence. The single evidence record whose removal would most challenge this case is AMZ-E007 (Lopes et al. 2024), which provides decisive, independent sixteenth-century documentary corroboration of Carvajal's qualitative Solimões geography. Without AMZ-E007, the historical bridge between early contact narrative and late prehistoric archaeology would lean much more heavily on retrospective modeling, yet the verdict robustly survives because primary archaeological datings at Belterra, Cacoal, and the Upper Xingu independently confirm large, planned settlements flourishing directly into the early colonial horizon.
+  steelman: >-
+    Palaeoecological soil and lake coring across interfluvial terra firme represents only a few hundred sample points across millions of square kilometers, and as Bush et al. (2025) demonstrated at Lake Cormorán, multi-century forest succession can completely erase the floristic composition of intensive pre-Columbian land use, leaving the vast, unexcavated interfluves potentially harboring unmeasured agroforestry systems that modern proxies fail to capture.
+claimAssessments:
+  - claimId: AMZ-C001
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Denevan's analysis of the manuscript branches and Lopes et al.'s historical review confirm that Carvajal systematically describes dense riverbank settlements, roads, pottery, and stores alternating with uninhabited reaches. The bluff model provides an empirical environmental logic for this alternating spatial distribution along the riverway. The strongest opposing consideration is that early Spanish conquest chronicles routinely utilized formulaic exaggeration to aggrandize discoveries and lobby for royal patronage.
+  - claimId: AMZ-C002
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Denevan's direct textual comparison verifies that the extreme tallies of 8,000 to 50,000 warriors and multi-league settlements appear solely in the Medina/Muñoz recension, whereas Oviedo preserves a single mention of approximately 5,000 warriors. This establishes textual instability within the transmission history. The opposing argument is that Oviedo may have selectively abbreviated or smoothed out difficult details based on his own editorial inclinations.
+  - claimId: AMZ-C074
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Medina's critical edition quotes Oviedo directly acknowledging that he supplemented Carvajal's manuscript with oral debriefings from Captain Orellana and other surviving expedition members in Santo Domingo. This demonstrates that Oviedo's text is a composite redaction rather than an unadulterated primary transcript of Carvajal's lost field draft. The opposing view is that Oviedo's preface constitutes conventional historiographical scene-setting rather than proof of substantive structural alterations.
+  - claimId: AMZ-C003
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Lopes et al. (2024) document that Diogo Nunes in 1538 and ten independent chronicles from the 1560 Ursúa expedition report identical cultural features—dense populations, abundant maize stores, Inca-like roads, and fine ceramics—along the middle Solimões. These separate accounts, written for rival crowns by mutually hostile witnesses, corroborate Carvajal's qualitative description. The opposing argument is that later explorers may have traded in common expeditionary legends or projected Andean expectations onto lowland populations.
+  - claimId: AMZ-C068
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Medina's 1894 critical introduction explicitly cites Francisco López de Gómara applying the label 'mentirosa' to Orellana's relación. This verifies the historical existence of the accusation in sixteenth-century historiography. The opposing consideration is that Medina notes Gómara stated the pejorative judgment without specifying his documentary grounds.
+  - claimId: AMZ-C065
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Achmatowicz's 2018 study explicitly concludes in its published abstract that Carvajal's account is a trustworthy historical source based on an analysis of its geographic coordinates and league distances. The evidence record directly confirms the stated claim. The opposing consideration is that the assessment evaluates geographical itinerary verisimilitude rather than confirming Carvajal's social or demographic counts.
+  - claimId: AMZ-C017
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Corroboration from independent sixteenth-century voyages, archaeological verification of late prehistoric road and settlement complexes, and textual variance between manuscript branches support Carvajal's qualitative credibility while discounting his extreme headcounts. The friar correctly captured the broad political and settlement geography of the main river corridor. The strongest objection is that separating qualitative accuracy from quantitative fantasy risks post-hoc cherry-picking of an inherently rhetorical colonial text.
+  - claimId: AMZ-C004
+    verdict: established
+    confidence: high
+    reasoning: >-
+      LiDAR survey across 4,430 square kilometers documented 432 earthworks (396 new), circumscribing a 183,000 square kilometer Aquiry region with an estimated 24,000 to 30,000 total structures as published by Pärssinen et al. (2026). The claim accurately reports the paper's physical findings and model bounds. The opposing consideration is that the 24,000 to 30,000 figure is a regional extrapolation that diverges substantially from earlier basin-wide predictions such as Peripato et al.'s 10,000 to 24,000 structures.
+  - claimId: AMZ-C005
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The text of Pärssinen et al. (2026) demonstrates that their headline estimate of 1.25 to 3 million inhabitants collapses to 250,000 to 600,000 (or 315,000 to 760,000 canopy-corrected) if mounds are assumed to shelter a single family rather than large communal groups. The claim precisely captures the model's structural sensitivity. The opposing consideration is that the authors defend the communal occupancy model using ethnographic analogies from regional longhouses.
+  - claimId: AMZ-C006
+    verdict: established
+    confidence: high
+    reasoning: >-
+      de Souza et al. (2018) confirm the continuous occupation of fortified villages along an 1,800-kilometer arc of the southern Amazon rim between AD 1250 and 1500, explicitly presenting their 500,000 to 1,000,000 population estimate as conditional on site contemporaneity and MaxEnt extrapolation. The claim's wording reflects the paper's stated findings and limitations. The opposing point is that MaxEnt modeling represents an ecological potential surface rather than a direct census of simultaneous occupation.
+  - claimId: AMZ-C011
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Stenborg et al. (2018) document late prehistoric to seventeenth-century occupation with dark earths and roads on the Belterra Plateau, Schaan (2000) dates Marajoara cultural permanence at Cacoal to AD 1300–1650, and Upper Xingu circular plazas extended into the eighteenth century. These sites confirm complex sedentary settlement persisting directly into the contact era. The opposing caveat is that Upper Xingu continuity is represented in the ledger via secondary science journalism rather than a primary archaeological excavation report.
+  - claimId: AMZ-C007
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Lombardo et al. (2025) demonstrate through 178 phytolith samples across 18 profiles, combined with remote sensing of canals and farm ponds, that the Casarabe culture maintained intensive year-round maize monoculture in the Llanos de Mojos. The multi-proxy empirical grounding is exceptionally robust. The opposing consideration is that the Casarabe cultural floruit ended around AD 1400, well before Carvajal's 1542 voyage.
+  - claimId: AMZ-C008
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Anthropogenic dark earths, forest islands, and raised fields demonstrate extensive landscape engineering, while Levis et al. (2017) and Peripato et al. (2023) show significant spatial associations of 53 domesticated tree species with archaeological sites and earthwork probability surfaces. The physical engineering record is undisputed. The opposing argument, raised by McMichael et al. (2017), is that five centuries of post-Columbian indigenous and colonial forest management likely drove much of the observed modern floristic patterning.
+  - claimId: AMZ-C009
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Lombardo et al. (2011) and Rodrigues et al. (2015) show through stratigraphic OSL and radiocarbon dating that raised fields in Bermeo were constructed intermittently during discrete flood-hazard episodes from AD 570–770 onwards, rather than as permanently cultivated intensive systems. The data directly challenge green-revolution interpretations of raised fields. The opposing consideration is that field systems in other lowland regions may have experienced different cultivation and flooding regimes.
+  - claimId: AMZ-C019
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Blatrix et al. (2018) map zigzag weirs and straight causeways across the San Joaquín floodplains, demonstrating that 231 of 382 ponds lie within 35 meters of these features, an association verified as highly non-random (p < 0.0001) across 10,000 spatial simulations. The spatial measurement is verified. The opposing consideration is that the dataset is restricted to two sub-basins selected specifically for unobstructed canopy visibility.
+  - claimId: AMZ-C087
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Blatrix et al. (2018) explicitly postulate in their discussion that the lack of gaps at the vertices of the V-shaped weir structures indicates they served to trap and concentrate fish into adjacent ponds during receding floodwaters. The claim accurately reports the authors' stated functional hypothesis. The opposing consideration is that the authors also acknowledge that ponds could have originated as natural hydrodynamic scours and report no archaeological fish bones from within the pond sediments.
+  - claimId: AMZ-C026
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Prestes-Carneiro et al. (2019) analyzed over 17,000 fish bones from Loma Salvatierra (occupied AD 500–1400), demonstrating continuous exploitation of dry-season swamp species like lungfish and tiger-fish in an interfluvial savanna setting 50 km from the Mamoré River. The zooarchaeological analysis is methodologically rigorous. The opposing consideration is the notable absence of large riverine migratory fish, indicating that subsistence was tied to local ponds rather than open river access.
+  - claimId: AMZ-C012
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Denevan (2003) explicitly recanted the habitat-density method that produced his widely cited 5.1 to 6.8 million estimate due to extreme intra-habitat density variance, while maintaining that 5 to 6 million remained an intuitive regional baseline. The claim accurately characterizes the sociological and methodological state of Amazonian demographic modeling. The opposing argument is that later spatial and computational models have superseded Denevan's early revisions.
+  - claimId: AMZ-C015
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Arroyo-Kalin and Riris (2021) demonstrate that summed radiocarbon probability distributions across the Amazon biome follow a logistic growth curve approaching carrying capacity prior to AD 1492, arguing that the post-1500 proxy downturn reflects European contact compounded by sampling biases. The statistical fit is robust within its framework. The opposing point is that summed radiocarbon distributions are notoriously vulnerable to taphonomic loss and geographic research biases.
+  - claimId: AMZ-C010
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Newson's (2003) archival study documents depopulation ratios of roughly 88% in Napo-Aguarico and 62–64% in Mainas by 1700, showing that catastrophic collapse was driven by a complex nexus of smallpox, slave raids, mission crowding, forced labor, and indigenous flight. The historical reconstruction is rigorous. The opposing consideration is that these rates derive from upper Amazonian mission frontiers and cannot be uncritically assumed for unadministered central Amazonian floodplains.
+  - claimId: AMZ-C023
+    verdict: unresolved
+    confidence: high
+    reasoning: >-
+      The ledger contains no active evidence record mapped to AMZ-C023, as AMZ-E008 is mapped exclusively to AMZ-C010. Under the rules requiring assessment solely against provided evidence records, the claim cannot be empirically affirmed despite its source citation. The opposing consideration is that Newson's underlying historical analysis provides an epidemiological mechanism that explains why depopulation was protracted and interactive rather than a single epidemic wave.
+  - claimId: AMZ-C088
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Bush et al. (2025) report that the sediment core from Lake Cormorán shows human agricultural activity and maize cultivation declining gradually between 200 and 550 CE, culminating in site abandonment around 550 CE without evidence of an abrupt ashfall or sudden catastrophe. The sedimentological evidence is clearly documented. The opposing argument is that a single lake core reflects local land abandonment around that specific catchment rather than an immediate valley-wide demographic cessation.
+  - claimId: AMZ-C013
+    verdict: established
+    confidence: high
+    reasoning: >-
+      McMichael et al. (2025) analyzed 7,363 archaeological locations from the AmazonArch database and found that distance from rivers was the single most powerful predictor (21.5% permutation importance) of pre-Columbian human presence, with interfluves consistently showing lower probabilities. The spatial statistical analysis is rigorous. The opposing consideration is that recorded archaeological sites strongly inherit modern survey bias along accessible waterways.
+  - claimId: AMZ-C014
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Piperno et al. (2024) synthesize soil phytolith and charcoal records across 14 lowland regions and confirm that most sampled terra-firme interfluvial settings show negligible evidence of pre-Columbian crop cultivation, intensive clearing, anthropogenic soils, or anthropogenic fires. The multi-regional empirical proxy baseline is solid. The opposing counter-argument is that soil cores represent minute sediment volumes that could miss localized swidden patches across vast forested expanses.
+  - claimId: AMZ-C020
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Walker et al. (2023) show through machine-learning models that earthworks and dark earths occupy limited predicted geographic niches, while other non-earthwork/non-dark-earth archaeological site types dominate more than two-thirds of the Amazon basin. The claim accurately quotes and reports the study's conclusions. The opposing caveat is that the model predicts relative site types given an occupation rather than estimating absolute human population densities.
+  - claimId: AMZ-C021
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Clement et al. (2015) published a direct methodological critique pointing out that the negative conclusions regarding western Amazonia relied on 124 soil cores totaling 1.17 cubic meters clustered across three localities to characterize two million square kilometers. The claim faithfully reports the content of the published reply. The opposing consideration is that palaeoecological cores sample atmospheric and hydrologic catchments rather than merely the physical cylinder of excavated sediment.
+  - claimId: AMZ-C022
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Bush et al. (2025) demonstrate that a millennium of forest succession at Lake Cormorán largely erased the floristic legacy of pre-Columbian Upano agriculture from the modern canopy, whereas colonial-era land use left persistent modern botanical markers. The core provides clear empirical evidence of time-graded ecological recovery. The opposing caveat is that this erasure occurred over nearly a thousand years, making it an imperfect proxy for contact-era sites abandoned only 400 years ago.
+  - claimId: AMZ-C029
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Peripato et al. (2023) report that almost 80% of Amazonian 1-km² cells have a predicted earthwork probability between 0 and 1%, concentrated in northern, northwestern, and central Amazonia. The claim accurately conveys the paper's modeled distribution. The opposing qualification, noted by the authors themselves, is that low earthwork probability does not imply an absence of human occupation, as anthropogenic dark earths and other non-earthwork settlements are widespread across central Amazonia.
+  - claimId: AMZ-C016
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Synthesizing the structural convergence of LiDAR earthworks, defensive settlements, Casarabe maize monoculture, and contact-era stability against river-distance models and negative interfluvial soil cores decisively confirms a heterogeneous mosaic landscape. Major sedentary populations transformed river bluffs and seasonal wetlands while vast interfluvial forests remained lightly occupied. The opposing perspective contends that existing interfluvial sampling is still too sparse to prove that the forest matrix was truly empty rather than managed via low-visibility agroforestry.

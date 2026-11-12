@@ -1,0 +1,72 @@
+# Review of #481, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 481
+title: "Before Sputnik: the flaw-rate, flash-sharpness and alignment claims read from their sources — a measured rate of star-like plate flaws, and an older rival expectation for flash images"
+url: https://github.com/ejhong/aletheia/pull/481
+outcome: merged
+outcomeAt: 2026-11-10T16:42:24Z
+cases:
+  - transients
+rounds:
+  - commit: 07daad49ac815ee496695d4479f33b4aac4fe042
+    date: 2026-11-10
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "In TRN-E234/TRN-E235 and SRC-VILLARROEL-2025-PASP, re-read the published PDF and verify the detailed group counts, caveats, and denominator discrepancy before promoting the five provisional records. Until then, the 2026-11-10 assessment should not describe the source anchor itself as carrying weight: under AGENTS.md §3.6, rely explicitly on TRN-E236 or label the alignment details provisional in the article."
+          - Split TRN-C104 into the narrow observation that aligned groups were reported and a separate claim about whether they exceed a survey-wide, trials-corrected null built from each plate’s non-uniform structure. The present supported report claim and low diagnosticity should not be mistaken for evidence that the alignments are statistically anomalous.
+          - Narrow or split TRN-C101’s wording. TRN-E227 provisionally supports a measurable contamination rate for star-like faults on other archival plate series, but it does not establish that emulsion, copying, and scanning flaws all contaminate “any search”; keep the POSS-I-specific rate and the other mechanisms separately unresolved.
+        summary: The change materially improves the case by adding a measured archival-plate fault rate, documenting the competing photographic expectation for brief flashes, and replacing a title-level account of the alignment paper with its reported results and caveats. It also proposes sharper decisive tests and strengthens retrieval by recognizing two additional bot-wall pages. The remaining overbreadth in TRN-C101 and provisional status of the PASP extractions warrant correction, but the ledger and reader account are substantially better evidenced and fairer overall.
+        cost:
+          inputTokens: 35546
+          outputTokens: 2806
+          usd: 0.198304
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - Promote or resolve the five provisional evidence records (TRN-E228, TRN-E229, TRN-E233, TRN-E234, TRN-E235) once an open full-text or repository copy (such as the ETH Zurich PDF under doi:10.3929/ethz-c-000786523) can be fetched without triggering bot walls.
+          - Trim the article narrative in the next edition pass to bring it back within the ~2,500-word target budget (currently at 2,833 words).
+          - Anchor TRN-C103 (geomagnetic correlation) and TRN-C108 (characteristic altitude) in primary extractions from Cann's tables rather than leaving them reliant solely on summary anchors.
+        summary: This change significantly strengthens the Before Sputnik case by anchoring three previously contested, evidence-poor claims (plate flaw rates, sub-second flash profile sharpness, and reported alignments) in primary literature. It adds historical baseline defect data from gamma-ray-burst archival searches (Gorosabel & Castro-Tirado 1998), introduces the rival reciprocity-failure expectation against the seeing-smear argument, and balances the Villarroel 2025 alignments report against Watters' counterpart analysis. The previous harm from PR-475 regarding unsupported microdot claims is completely eliminated, and bot-wall handling in fetch.ts is improved.
+        cost:
+          inputTokens: 39848
+          outputTokens: 2045
+          usd: 0.037555
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - Re-read Villarroel et al. 2025 PASP (IOPscience or the ETH CC BY PDF) and promote or refuse TRN-E228, E229, E233, E234, E235 once every quoted passage checks; until then keep them weightless as marked.
+          - Trim edition-2026-11-10-160408 toward the ~2,500-word reader budget (now ~2,833); cut repeated crux restatement and compress the alignments and GRB-history paragraphs first.
+          - "Next ledger pass: read Cann’s tables for TRN-C103/TRN-C108 (still anchor-only) and, if reachable, Greiner / Hudec / Vrba primary texts behind TRN-E230 so the GRB-era residue is not only Watters’ summary."
+        summary: "The change anchors the three panel-split claims in primary text: a measured star-like fault rate from Gorosabel & Castro-Tirado 1998, the older rival (shallower vs steeper) flash-image expectation, and the alignments report plus the critics’ shortlist check, with five PASP quotations correctly held provisional and weightless after the publisher wall. TRN-C101 and the report-claim TRN-C104 move to provisionally supported with stated limits; TRN-C102 stays unresolved on real disagreement rather than silence; the article and research items tell debts and decisive tests more honestly. The fetch wall-detector patterns strengthen retrieval checks. For a truth-seeking reader the ledger and telling are clearer and better evidenced, with nothing true dropped."
+        cost:
+          inputTokens: 36543
+          outputTokens: 355
+          usd: 0.075331
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - The production build was not run this session (`npm run build` skipped; only `npm test` and `status`). AGENTS.md §10 requires the build to pass; run it before the next merge, since the static export is what readers see and `status` does not exercise it.
+          - When a readable copy of the PASP paper returns, promote TRN-E228, E229, E233, E234 and E235 only after a fresh quote check against the full text — and specifically re-verify TRN-E234's described-but-unquoted Table 1 counts (83/20/2 groups, five shortlisted, 298,165-row catalog), since those figures currently rest on the single pre-wall read and no mechanical check can ever re-confirm them in the form they are recorded.
+          - "Per §3.7 (primary sources first): TRN-E231's rival expectation rests on Gorosabel's 1998 summary of Schaefer 1981, and the flaw-rate account still leans on the Greiner et al. papers the session could not read. Read those primaries next pass so the sharpest new evidential moves do not stand on a secondary retelling; TRN-E230's limitations already flag the same structure for the Watters history."
+        summary: The change reads the three panel-split claims' sources for the first time, adds a measured star-like flaw rate from the gamma-ray-burst era (Gorosabel & Castro-Tirado 1998), restores the older literature's rival expectation on flash sharpness, and tells the alignments from the now-read paper and the critics' check, with five PASP-quoting records conservatively entered provisional after the publisher walled the text. The judgment moves are modest and rest on non-provisional records; the assessment and article state the transfer limits honestly; the fetch.ts wall patterns strengthen rather than weaken the quote check, with tests. Nothing true is lost; the added words are mostly earned, and the over-budget length is already queued for trimming — so the site is left better.
+        cost:
+          inputTokens: 37182
+          outputTokens: 4794
+          usd: 0.007974
+harvestedAt: 2026-11-12T16:21:08.503Z

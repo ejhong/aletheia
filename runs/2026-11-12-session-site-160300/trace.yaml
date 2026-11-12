@@ -1,0 +1,160 @@
+# What operator session 2026-11-12-session-site-160300 did, as its trace recorded it: the digest the workflow made on the session's machine
+# (src/engine/trace.ts), checked here (src/engine/session.ts). The session's own account of its work is its log.
+version: 1
+ended: success
+model: claude-opus-5-5
+permissionMode: dontAsk
+turns: 105
+minutes: 16
+usd: 4.643
+compactions: 0
+unreadableLines: 0
+tools:
+  - tool: Bash
+    calls: 48
+    failed: 0
+    refused: 7
+  - tool: Grep
+    calls: 18
+    failed: 0
+    refused: 0
+  - tool: Edit
+    calls: 17
+    failed: 0
+    refused: 0
+  - tool: Read
+    calls: 15
+    failed: 0
+    refused: 0
+  - tool: Write
+    calls: 3
+    failed: 0
+    refused: 0
+  - tool: WebSearch
+    calls: 2
+    failed: 0
+    refused: 0
+  - tool: ToolSearch
+    calls: 1
+    failed: 0
+    refused: 0
+commands:
+  - command: node scripts/site.ts read
+    calls: 15
+    failed: 0
+    refused: 0
+  - command: tail
+    calls: 4
+    failed: 0
+    refused: 0
+  - command: head
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts check-quotes
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: grep
+    calls: 2
+    failed: 0
+    refused: 1
+  - command: ls
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts archive
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts status
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: sed
+    calls: 2
+    failed: 0
+    refused: 1
+  - command: (other)
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: awk
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: cat
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: cp
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: for
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: git log
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: git show
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: git status
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts ids
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts stamp
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm run build
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm test
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: wc
+    calls: 1
+    failed: 0
+    refused: 0
+fetched: []
+read:
+  - source: web.archive.org
+    calls: 3
+    failed: 0
+  - source: 10.1126/science.ade2541
+    calls: 2
+    failed: 0
+  - source: nature.com
+    calls: 2
+    failed: 0
+  - source: pmc.ncbi.nlm.nih.gov
+    calls: 2
+    failed: 0
+  - source: revistadeindias.revistas.csic.es
+    calls: 2
+    failed: 0
+  - source: 10.3989/revindias.2003.i227.555
+    calls: 1
+    failed: 0
+  - source: 10.7717/peerj.15137
+    calls: 1
+    failed: 0
+  - source: ncbi.nlm.nih.gov
+    calls: 1
+    failed: 0
+  - source: peerj.com
+    calls: 1
+    failed: 0
+filesEdited: 8
+repeatedFailures: 0

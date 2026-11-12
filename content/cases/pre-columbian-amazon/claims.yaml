@@ -344,13 +344,13 @@
 
 - id: AMZ-C019
   statement: >-
-    Pre-Columbian societies of the Llanos de Mojos engineered fisheries at landscape scale: zigzag weirs and straight causeways cross the San Joaquín floodplains, and most of the 382 detected ponds sit within 35 meters of such a feature — a system whose V-shaped structures functioned to concentrate fish as floodwater receded.
+    On the San Joaquín floodplains of the Llanos de Mojos, vestiges of zigzag earthen weirs and straight causeways cross the grassland, and 231 of the 382 ponds detected in two studied sub-basins lie within 35 meters of such a feature, more than random placement of the ponds would give.
   theme: landscapes
   rung: observation
   claimType: measurement
   sourceAnchor:
-    locator: "Blatrix et al. 2018, Sci. Rep. 8:5998 — results and Fig. 2"
-    quote: "we postulate that the principal function of the V-shaped structures was to concentrate fish in ponds"
+    locator: "Blatrix et al. 2018, Sci. Rep. 8:5998 — Results, 'Ponds are spatially associated with weirs and causeways', and Fig. 3"
+    quote: "most ponds are spatially associated with these features"
     sourceId: SRC-BLATRIX-2018
   parentClaimIds: [ AMZ-C007 ]
   dependsOnClaimIds: []
@@ -403,13 +403,13 @@
 
 - id: AMZ-C021
   statement: >-
-    The sampling behind "sparse western Amazonia" conclusions has been formally criticized as thin: roughly 300 soil cores clustered in five small areas — about 1.17 cubic meters of sediment — standing in for two million square kilometers.
+    A published reply criticizes the sampling behind "sparse western Amazonia" conclusions as too thin for the claim: the 300 soil cores behind them are clustered in five small areas, and the 124 cores from western Amazonia amount to about 1.17 cubic meters of sediment set against some two million square kilometers.
   theme: limits
   rung: observation
   reviewState: ai_extracted
   sourceAnchor:
-    locator: "Clement et al. reply (PMC4707766)"
-    quote: "to represent the 2 000 000 km2 of western Amazonia"
+    locator: "Clement et al. 2015, Proc. R. Soc. B 282:20152459 (PMC4707766), main text"
+    quote: "are clustered in five small areas, with only one long transect"
     sourceId: SRC-CLEMENT-REPLY
   origin:
     ref: "verification ledger A20"
@@ -419,12 +419,12 @@
 
 - id: AMZ-C022
   statement: >-
-    In the Upano Valley, "a long period of forest recovery largely eradicated the influence of Pre-Columbian occupations" on the ecological record, while the later Colonial-period signal persisted in the same profiles.
+    A sediment record from Lake Cormorán, beside Ecuador's Upano Valley, indicates that a long period of forest recovery largely erased the influence of the pre-Columbian occupations on the composition of the modern forest, whereas Indigenous forest use in the Colonial period left a lasting legacy on it.
   theme: limits
   rung: observation
   reviewState: ai_extracted
   sourceAnchor:
-    locator: "Bush et al. 2025, Nat. Commun. 16:7408"
+    locator: "Bush et al. 2025, Nat. Commun. 16:7408 — Discussion, closing paragraph"
     quote: "A long period of forest recovery largely eradicated the influence of Pre-Columbian occupations"
     sourceId: SRC-BUSH-2025-UPANO
   origin:
@@ -768,3 +768,39 @@
     extractedBy: claude-fable-5-1 (operator, by hand)
     runId: session_01AiXD4y5Y91KC7iM3uBhWmu
     date: 2026-09-17
+
+- id: AMZ-C087
+  statement: The investigators of the San Joaquín floodplain earthworks in the Llanos de Mojos postulate that the principal function of the V-shaped structures in the weirs was to concentrate fish in ponds as floodwater receded.
+  theme: landscapes
+  rung: attribution
+  claimType: interpretive
+  sourceAnchor:
+    locator: "Blatrix et al. 2018, Sci. Rep. 8:5998 — Discussion, first paragraph"
+    quote: we postulate that the principal function of the V-shaped structures was to concentrate fish in ponds
+    sourceId: SRC-BLATRIX-2018
+  parentClaimIds: []
+  dependsOnClaimIds: [AMZ-C019]
+  reviewState: ai_extracted
+  origin:
+    ref: "split of AMZ-C019 by the operator on re-reading SRC-BLATRIX-2018 in full: the claim had stated the authors' postulated function as a fact beside the measured layout (§3.2, §3.9); the layout stays AMZ-C019, the function is this claim"
+    extractedBy: claude-opus-5-5 (operator, session 2026-11-12-session-site-160300)
+    runId: 2026-11-12-session-site-160300
+    date: 2026-11-12
+
+- id: AMZ-C088
+  statement: The Lake Cormorán sediment record beside the Upano Valley shows human activity declining gradually between about 200 and 550 CE, ending in an apparent abandonment around 550 CE, rather than an abrupt end.
+  theme: collapse
+  rung: observation
+  claimType: historical
+  sourceAnchor:
+    locator: "Bush et al. 2025, Nat. Commun. 16:7408 — Discussion"
+    quote: we found no evidence of an abrupt abandonment, but rather of a protracted decline
+    sourceId: SRC-BUSH-2025-UPANO
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: "added by the operator on re-reading SRC-BUSH-2025-UPANO in full; meets the reopen condition of the 2026-09-17 disposition on AMZ-C022 (the paper's own text states when the occupation whose signal was erased ended)"
+    extractedBy: claude-opus-5-5 (operator, session 2026-11-12-session-site-160300)
+    runId: 2026-11-12-session-site-160300
+    date: 2026-11-12

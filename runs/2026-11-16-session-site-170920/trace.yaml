@@ -1,0 +1,140 @@
+# What operator session 2026-11-16-session-site-170920 did, as its trace recorded it: the digest the workflow made on the session's machine
+# (src/engine/trace.ts), checked here (src/engine/session.ts). The session's own account of its work is its log.
+version: 1
+ended: success
+model: claude-opus-5-5
+permissionMode: dontAsk
+turns: 133
+minutes: 22.1
+usd: 6.8516
+compactions: 0
+unreadableLines: 0
+tools:
+  - tool: Bash
+    calls: 56
+    failed: 0
+    refused: 5
+  - tool: Read
+    calls: 21
+    failed: 0
+    refused: 0
+  - tool: Grep
+    calls: 19
+    failed: 0
+    refused: 0
+  - tool: Edit
+    calls: 14
+    failed: 1
+    refused: 0
+  - tool: WebSearch
+    calls: 13
+    failed: 0
+    refused: 0
+  - tool: Write
+    calls: 5
+    failed: 0
+    refused: 0
+  - tool: Glob
+    calls: 3
+    failed: 0
+    refused: 0
+  - tool: ToolSearch
+    calls: 1
+    failed: 0
+    refused: 0
+commands:
+  - command: node scripts/site.ts read
+    calls: 31
+    failed: 0
+    refused: 0
+  - command: cd
+    calls: 7
+    failed: 0
+    refused: 2
+  - command: ls
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts check-quotes
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: for
+    calls: 2
+    failed: 0
+    refused: 2
+  - command: grep
+    calls: 2
+    failed: 0
+    refused: 1
+  - command: node scripts/site.ts status
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: git diff
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: git status
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts archive
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts stamp
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm run build
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: tail
+    calls: 1
+    failed: 0
+    refused: 0
+fetched: []
+read:
+  - source: archive.org
+    calls: 6
+    failed: 0
+  - source: museogarcilaso.culturacusco.gob.pe
+    calls: 5
+    failed: 0
+  - source: perseus.tufts.edu
+    calls: 4
+    failed: 0
+  - source: ans-names.pitt.edu
+    calls: 3
+    failed: 0
+  - source: aymara.org
+    calls: 3
+    failed: 0
+  - source: reichert-verlag.de
+    calls: 2
+    failed: 0
+  - source: sacred-texts.com
+    calls: 2
+    failed: 0
+  - source: neonvagabond.xyz
+    calls: 1
+    failed: 0
+  - source: persee.fr
+    calls: 1
+    failed: 0
+  - source: repository.si.edu
+    calls: 1
+    failed: 0
+  - source: revistas.pucp.edu.pe
+    calls: 1
+    failed: 0
+  - source: rudaw.net
+    calls: 1
+    failed: 0
+  - source: web.archive.org
+    calls: 1
+    failed: 0
+filesEdited: 12
+repeatedFailures: 0

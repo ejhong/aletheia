@@ -1,0 +1,72 @@
+# Review of #482, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 482
+title: "The Emptied Amazon: five claims the panel split on read from their sources — the erasure study concerns the living forest, not the cores, and the basin models bound earthworks, not people"
+url: https://github.com/ejhong/aletheia/pull/482
+outcome: merged
+outcomeAt: 2026-11-12T16:45:53Z
+cases:
+  - pre-columbian-amazon
+rounds:
+  - commit: 8b0d44b81d0dde14d086d081ddda579940a74c9e
+    date: 2026-11-12
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "AMZ-C021/AMZ-E121 and the article’s “The sparse Amazon” section: read and record the McMichael–Piperno–Bush comment and, ideally, the underlying 2012 study before judging how far Clement et al.’s sampling criticism holds; until then keep the point explicitly framed as Clement et al.’s critique rather than a settled methodological defect."
+          - "AMZ-C088/AMZ-E124 and “The disappearance”: localize the ashfall and abandonment language to what the Lake Cormorán core shows. Replace “no catastrophic ashfall to end it” with “no terminal ashfall signal in this core,” and distinguish declining forest exploitation around the lake from valley-wide abandonment."
+          - "SRC-BLATRIX-2018 verificationNote: remove the residual wording that the V-structures “functioned to concentrate fish,” which conflicts with the newly corrected statement that this was the authors’ postulate; use “were proposed to have concentrated fish” throughout."
+        summary: "The change substantially improves the case by replacing unresolved, source-anchor-only claims with specific evidence records and by correcting three consequential conflations: measured weir layout versus inferred function, total versus western-core sampling figures, and erasure from modern forest composition versus erasure from sediment records. It also properly narrows the basin models to predictions about earthworks and site types rather than people, while preserving their limitations and alternatives. Some local wording and one stale source note should be tightened, but the published account would be more accurate, transparent, and useful overall."
+        cost:
+          inputTokens: 27832
+          outputTokens: 2171
+          usd: 0.154748
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - Read the McMichael, Piperno & Bush 2015 comment in Proc. R. Soc. B to document the critics' defense of the sparse-west sampling alongside Clement et al.'s critique (AMZ-E121, AMZ-C021).
+          - Obtain Linda Newson's 2003 paper or 1995 book to resolve AMZ-C023, the last remaining unresolved featured claim.
+          - Trim the narrative article in the next edition pass toward the 2,500-word budget (currently 2,693 words), tightening the transparency and Hancock sections.
+        summary: This change significantly improves the Emptied Amazon case by reading five previously unread sources in full and grounding five contested claims in primary evidence records. It sharpens crucial distinctions—separating the spatial mapping of Mojos weirs from their postulated trapping function, clarifying that the Upano erasure study applies to living tree composition rather than sediment cores, and noting that the basin models bound earthworks rather than human populations. The resulting evidence ledger and updated narrative are much more precise and well-calibrated.
+        cost:
+          inputTokens: 31634
+          outputTokens: 2293
+          usd: 0.032324
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - Read the McMichael–Piperno–Bush 2015 comment and enter the critics’ defence of their sampling beside AMZ-E121; C021 and C014 still turn on one side of that exchange.
+          - Retry Newson 2003 (or the parallel passage in her 1995 book) so AMZ-C023 can leave unresolved or be refused with a real record; do not attach AMZ-E008 to it until the fade-out wording is verified.
+          - Tighten AMZ-E123’s locator to the Discussion span that holds the 570 BCE maize onset, and in a polish pass trim ~200 words (Hancock section and transparency paragraph are the stated candidates) while updating the erasure-calibration research item to name soil proxies specifically.
+        summary: This change finally grounds five panel-split claims in full-text evidence, splits the Mojos weir measurement from the authors’ fish-trap postulate, corrects the sampling-volume mix-up and the Upano erasure claim, and re-reads the basin models as bounding earthworks rather than people. The article and draft assessment now state what the sources actually carry, with honest debts (unread Newson, unread McMichael reply, SI not read). For a truth-seeking reader the case is more accurate, better evidenced, and fairer, with nothing true dropped.
+        cost:
+          inputTokens: 28721
+          outputTokens: 295
+          usd: 0.059327
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - "AMZ-E123: tighten the locator. The record cites 'Discussion; Results (pollen zones)' for the 570 BCE maize onset, but the quoted span sits in the Discussion; cite the specific Discussion paragraph (or label the Results part unverified) so §3.8's exactness is restored."
+          - "Edition-2026-11-12-161705, 'Engineered ground': the sentence 'One excavated pond filled in between roughly AD 1030 and 1424' compresses E116's two calibrated spans (Cal. AD 1030–1180 charcoal, Cal. AD 1310–1424 soil humin) into one range that no single measurement gives; reword to match the record, e.g. infill beginning by about 1030 with a humin date of 1310–1424."
+          - "Proceed with the queued trim toward the 2,500-word target, taking the Hancock section first (two seats already suggested halving it), and fold in the research-item edit the operator deferred: the erasure-calibration crux should name soil proxies specifically, since E123 shows the lake core kept its 2,500-year-old signal."
+        summary: "The change reads five contested claims' sources in full for the first time and writes the missing evidence records, which is exactly the correction the panel split demanded. It fixes real faults found on reading: C019's fish-trapping function is split out as an attribution claim (C087) with the authors' own natural-origin alternative recorded, C021's conflated core counts are corrected, C022's erasure is re-scoped from the ecological record to modern forest composition, and the models are re-read as bounding earthworks rather than people, with diagnosticity lowered accordingly. Four source records gain their true titles and hosts; unread material (Newson, the McMichael comment, Blatrix's supplement) is honestly dispositioned as blocked rather than cited secondhand. Quote checks, tests and build pass; the five blind seats concur. The gains are substantial and nothing true is dropped — better."
+        cost:
+          inputTokens: 29426
+          outputTokens: 1597
+          usd: 0.005212
+harvestedAt: 2026-11-16T17:33:30.465Z

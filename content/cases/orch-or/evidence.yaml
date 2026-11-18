@@ -316,7 +316,7 @@
 
 - id: ORCH-E009
   title: "β-tubulin identified as a direct anesthetic target with functional consequences in vivo"
-  claimIds: [ORCH-C011, ORCH-C012]
+  claimIds: [ORCH-C011, ORCH-C012, ORCH-C126]
   sourceId: SRC-EMERSON-2013
   direction: supports
   strength: moderate
@@ -390,7 +390,7 @@
 
 - id: ORCH-E011
   title: "Epothilone B delays loss of righting reflex by 69 s in rats (d = 1.9)"
-  claimIds: [ORCH-C023, ORCH-C012, ORCH-C002]
+  claimIds: [ORCH-C023, ORCH-C012, ORCH-C002, ORCH-C126]
   sourceId: SRC-KHAN-2024
   direction: supports
   strength: moderate
@@ -429,7 +429,7 @@
 
 - id: ORCH-E012
   title: "Same effect in mice (+29 s, d = 0.8) — same laboratory, not independent"
-  claimIds: [ORCH-C023, ORCH-C012]
+  claimIds: [ORCH-C023, ORCH-C012, ORCH-C126]
   sourceId: SRC-HUANG-2026
   direction: supports
   strength: weak
@@ -464,7 +464,7 @@
 
 - id: ORCH-E013
   title: "Independent laboratory: chronic epothilone D and vinblastine both INCREASE isoflurane sensitivity"
-  claimIds: [ORCH-C024, ORCH-C012, ORCH-C002]
+  claimIds: [ORCH-C024, ORCH-C012, ORCH-C002, ORCH-C126]
   sourceId: SRC-LI-2025
   direction: undermines
   strength: strong
@@ -2184,3 +2184,121 @@
     extractedBy: claude-fable-5-1
     runId: 2026-09-11-verify-orch-or-120610
     date: 2026-09-11
+- id: ORCH-E125
+  title: "LISA Pathfinder's acceleration noise puts the Diósi–Penrose cutoff above 40 fm, larger than any nucleus"
+  claimIds:
+    - ORCH-C046
+  sourceId: SRC-HELOU-2017
+  direction: supports
+  strength: strong
+  sourceStatement: The abstract states that the authors "bound the regularization cut-off scale used in the DP model to prevent divergences to be at least 40.1 ± 0.5 fm, which is larger than the size of any nucleus. Thus, we rule out the DP model if the cut-off is the size of a fundamental particle." The method section says the analysis "attributes all acceleration noise to the collapse", because the Brownian thermal contribution that dominates between 1 and 20 mHz "is not precisely known".
+  editorInference: The claim restates the paper's own result, and the paper's method makes the bound conservative rather than optimistic, since any noise not caused by collapse would only loosen what collapse is allowed to contribute. The record therefore carries the claim as worded. What the bound means for Penrose's own lifetime rule is a separate question, weighed on ORCH-C030 (ORCH-E046).
+  exactLocator: "[p. 1] (abstract; 'Constraining the collapse models'), arXiv PDF 1606.03637v3"
+  limitations:
+    - A re-derivation from the spacecraft's published noise curve by a group outside the LISA Pathfinder collaboration, not a dedicated collapse experiment.
+    - Applies to the regularized Diósi–Penrose model with a point-like cut-off; Penrose's own formulation treats the mass distribution differently.
+    - Superseded in size by the radiation searches (ORCH-C031, ORCH-C047, ORCH-C125); its distinct value is the mechanical channel, not the number.
+  reviewState: ai_extracted
+  origin:
+    ref: "Helou et al. 2017 (Phys. Rev. D 95, 084054), arXiv PDF v3 read through the site's reading tool on 2026-11-18"
+    extractedBy: claude-opus-5-5 (operator)
+    runId: 2026-11-18-session-site-163255
+    date: 2026-11-18
+- id: ORCH-E126
+  title: "XENONnT finds no collapse radiation in xenon and tightens the Markovian Diósi–Penrose bound about fivefold"
+  claimIds:
+    - ORCH-C125
+  sourceId: SRC-APRILE-2026
+  direction: supports
+  strength: strong
+  sourceStatement: The abstract reports a search for collapse-induced X-rays in 1–140 keV electronic-recoil data from XENONnT's first science run, setting new limits on the Markovian continuous spontaneous localization and Diósi–Penrose models and "improving previous best constraints by two orders of magnitude and a factor of five, respectively." For the Diósi–Penrose model the text reports a local discovery significance of 0.2σ and a lower limit on R0 of 4.9 × 10⁻¹⁰ m at 90% confidence, which "constitutes an improvement by approximately a factor of five compared to the previous world-leading limit by the Majorana Demonstrator".
+  editorInference: A third underground null, and the first in a different target element (xenon rather than germanium) and a different detector technology, so detector-specific background errors are now an unlikely explanation for the absence of the signal. It moves the excluded region for the white-noise model further than either germanium search.
+  exactLocator: "pp. 2–5 of arXiv PDF 2506.05507v2: the abstract on p. 2, the Diósi–Penrose fit and summary on p. 5"
+  limitations:
+    - Tests only the Markovian (white-noise) formulations; the authors note that coloured and dissipative extensions leave a wider range open.
+    - The expected spectrum comes from a 2024 emission model written partly by the same theorists (Curceanu, Piscicchia) who analysed the Gran Sasso germanium search, so the three nulls share their theory input.
+    - The Diósi–Penrose rate used follows Diósi's convention, which the supplement says differs from Penrose's by a factor of 8π.
+  reviewState: ai_extracted
+  origin:
+    ref: "Aprile et al. (XENON Collaboration) 2026, PRL 136, 120201; arXiv:2506.05507v2 read through the site's reading tool on 2026-11-17 and re-read 2026-11-18"
+    extractedBy: claude-opus-5-5 (operator)
+    runId: 2026-11-18-session-site-163255
+    date: 2026-11-18
+- id: ORCH-E127
+  title: "XENONnT's own scope: coloured and dissipative collapse models remain to be probed"
+  claimIds:
+    - ORCH-C030
+  sourceId: SRC-APRILE-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: The Letter says it investigates the Markovian formulation, in which "a white stochastic noise is assumed in time", and closes that "A wider parameter range remains to be probed for colored or dissipative model extensions". The supplement says its Diósi–Penrose emission rate follows Diósi's convention rather than Penrose's, the two differing by a factor of 8π.
+  editorInference: The radiation bound on the white-noise model is now about five times tighter than the bound the 2026-09-30 judgment weighed, but it bears on Penrose's lifetime rule only through a chosen dynamics. The authors themselves mark the coloured and dissipative variants as open. The squeeze on ORCH-C030 tightens without becoming a test of the ℏ/E_G lifetime relation itself.
+  exactLocator: "pp. 2–8 of arXiv PDF 2506.05507v2: the Markovian formulation in the introduction on p. 2, the closing paragraph on p. 5, the supplemental material on p. 8"
+  limitations:
+    - Says nothing about whether a coloured or dissipative version reproducing Penrose's rate is physically motivated; it only marks such versions as untested here.
+    - The radiation channel is the one the no-radiation escape (ORCH-E019) addresses; the mechanical channel is recorded separately (ORCH-E046).
+  reviewState: ai_extracted
+  origin:
+    ref: "Aprile et al. (XENON Collaboration) 2026, PRL 136, 120201; arXiv:2506.05507v2 read through the site's reading tool on 2026-11-17 and re-read 2026-11-18"
+    extractedBy: claude-opus-5-5 (operator)
+    runId: 2026-11-18-session-site-163255
+    date: 2026-11-18
+- id: ORCH-E128
+  title: "The tubulin-photolabelling laboratory: clinical anesthetics promote tubulin polymerization in vitro, like taxol"
+  claimIds:
+    - ORCH-C126
+  sourceId: SRC-EMERSON-2013
+  direction: undermines
+  strength: moderate
+  sourceStatement: "In their discussion the authors report that \"Our in vitro data with propofol and isoflurane (Figure S9) indicate that these smaller and clinically used general anesthetics also promote tubulin polymerization, much like taxol\", the opposite of the anthracene anesthetics they studied. They conclude that \"microtubule destabilization, per se, may not be a unitary mechanism for achieving general anesthesia\" and that \"anesthetics may destabilize in either direction.\""
+  editorInference: If isoflurane itself pushes tubulin toward polymerization, as a stabilizer does, then a stabilizer delaying isoflurane's effect cannot be read simply as a stabilizer undoing a destabilization. The laboratory that showed tubulin is on an anesthetic pathway expects no single direction, which is the opposite of what ORCH-C126 asserts. This is an in-vitro polymerization result, not an animal sensitivity result, so it bears on the mechanism behind the direction rather than on the animal data.
+  exactLocator: "Discussion, paragraph on conserved pharmacology (PMC author manuscript PMC3671381, served for the DOI; no pagination)"
+  limitations:
+    - The propofol and isoflurane data are in a supplementary figure the reading tool did not show; only the authors' summary of them was read.
+    - In-vitro polymerization at the concentrations used may not reflect neuronal microtubules in a living brain.
+    - Read from the author manuscript; the published wording may differ.
+  reviewState: ai_extracted
+  origin:
+    ref: "Emerson et al. 2013 (JACS 135: 5389), PMC author manuscript read through the site's reading tool on 2026-11-17 and re-read 2026-11-18"
+    extractedBy: claude-opus-5-5 (operator)
+    runId: 2026-11-18-session-site-163255
+    date: 2026-11-18
+- id: ORCH-E129
+  title: "In peer review, the epothilone B authors accept that they had not shown destabilization and drop the stability reading"
+  claimIds:
+    - ORCH-C126
+    - ORCH-C002
+  sourceId: SRC-KHAN-2024
+  direction: qualifies
+  strength: moderate
+  sourceStatement: "In the published review history, the authors answer a reviewer's point on the abstract: \"We agree with the Reviewer's point: You haven't shown destabilization which is not necessarily the mechanism. The simplest explanation for your results is that the epothilone B blocked access to, or partially occupies the isoflurane binding pocket (as taxane does).\" They add: \"This suggestion is adopted in our revised manuscript, and we have revised all references to stability disruption in the paper.\""
+  editorInference: The study most often cited for a stabilizer protecting against anesthesia has, by its authors' own account, not shown that stability is what mattered. The delay it measured is as well explained by the stabilizer occupying or blocking isoflurane's binding site on tubulin. That reading still puts tubulin on the anesthetic pathway, but it removes the rat result as evidence that direction follows stability (ORCH-C126), and it says nothing about a quantum state (ORCH-C002).
+  exactLocator: "Peer-review synthesis and authors' response, point 5 ('Abstract. Lines 15, 16. Destabilization vs blocking binding'); eNeuro HTML, no pagination"
+  limitations:
+    - A concession about what the experiment shows, not a new measurement; the binding-pocket reading is itself untested here.
+    - Covers the rat study only; the mouse follow-up (SRC-HUANG-2026) was not checked for the same wording.
+  reviewState: ai_extracted
+  origin:
+    ref: "Khan et al. 2024 (eNeuro 11(8)), full text with review history read through the site's reading tool on 2026-11-17 and re-read 2026-11-18"
+    extractedBy: claude-opus-5-5 (operator)
+    runId: 2026-11-18-session-site-163255
+    date: 2026-11-18
+- id: ORCH-E130
+  title: "Independent mouse study: paclitaxel, the one stabilizer that went the expected way, moved sensitivity only marginally"
+  claimIds:
+    - ORCH-C126
+  sourceId: SRC-LI-2025
+  direction: supports
+  strength: weak
+  sourceStatement: The Results report that "paclitaxel produced a marginal but significant rightward shift of LORR" (EC50 1.05 against 0.98 for saline), while the stabilizer epothilone D shifted the curve leftward. The Discussion notes that among the epothilones "only epothilone D can cross the blood-brain barrier".
+  editorInference: The one stabilizer in this study that moved sensitivity toward resistance moved it slightly. The stabilizer the authors describe as reaching the brain moved it the other way, by a larger amount. Read together with ORCH-E013, the study gives the directional claim one weak point in its favour and one stronger point against.
+  exactLocator: "Results (LORR concentration–response) and Discussion; PMC11869693 HTML, no pagination"
+  limitations:
+    - Chronic dosing for more than two weeks, with saline as an imperfect vehicle for poorly soluble compounds.
+    - No measurement of brain drug concentration appears in the text read, so how much of each drug reached the brain is inferred, not shown.
+  reviewState: ai_extracted
+  origin:
+    ref: "Li et al. 2025 (BMC Anesthesiology 25: 109), PMC full text read through the site's reading tool on 2026-11-17 and re-read 2026-11-18"
+    extractedBy: claude-opus-5-5 (operator)
+    runId: 2026-11-18-session-site-163255
+    date: 2026-11-18

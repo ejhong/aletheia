@@ -1,0 +1,72 @@
+# Review of #484, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 484
+title: "Collapse, Not Computation: the 2026 XENONnT collapse bound enters the ledger as a source and claim; the session stopped before its evidence and edition"
+url: https://github.com/ejhong/aletheia/pull/484
+outcome: merged
+outcomeAt: 2026-11-17T17:12:34Z
+cases:
+  - orch-or
+rounds:
+  - commit: 7922389eca3c154a41545549ebbe758377323c1a
+    date: 2026-11-17
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "ORCH-C125: replace the fragmentary source-anchor quotation with a passage that includes the 4.9 × 10⁻¹⁰ m bound, 90% confidence level, model scope, and antecedent for “factor of five”; the current quote supports only the comparison and leaves most of the claim implicit in its locator."
+          - "ORCH-C125/SRC-APRILE-2026: add the missing evidence record before the next assessment, explicitly recording the null result, conditional dependence on the Markovian emission model and Diósi convention, the open coloured/dissipative variants, and theory-side overlap with the Gran Sasso work."
+          - "ORCH-R013 and the case history: revise the research summary itself to name the XENONnT bound rather than only adding C125 to claimIds, and add changelog entries for these source, claim, and research edits; complete the fresh quote check, tests, and build as planned."
+        summary: The change modestly improves the ledger by adding an important, current primary result that substantially strengthens experimental bounds on the Markovian Diósi–Penrose model, documenting its limitations and dependence with earlier work, and linking it to the relevant research audit. It also improves access provenance for two existing sources. The work remains incomplete because the new claim lacks an evidence record, assessment integration, and history entry, but it does not yet alter the case verdict or overstate the result in the public article.
+        cost:
+          inputTokens: 11474
+          outputTokens: 1867
+          usd: 0.083236
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - "content/cases/orch-or/evidence.yaml: complete and attach the evidence record for ORCH-C125 from SRC-APRILE-2026, as well as the evidence record for ORCH-C046 from Helou 2017."
+          - "content/cases/orch-or/claims.yaml: proceed with splitting ORCH-C012 to distinguish the general observation of susceptibility shifts from the contested directional claim (stabilizer resistance), reflecting the full-text readings of Emerson 2013, Khan 2024, and Li 2025."
+          - "content/cases/orch-or/assessments/ and edition: update the case narrative and assessment to place the XENONnT electronic-recoil bound in context with the Germanium and LISA Pathfinder limits, and submit for panel review."
+        summary: This change adds the 2026 XENONnT collapse bound as a new source and claim, links it to research crux ORCH-R013, tightens source provenance and open-access locators for Emerson 2013 and Li 2025, and records review history for PR 482. Although the operator's session stopped before evidence records and narrative updates were authored, the additions make the case ledger more current and accurately documented with no regressions. The change leaves the site better.
+        cost:
+          inputTokens: 12723
+          outputTokens: 2404
+          usd: 0.018557
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - "ORCH-C125 sourceAnchor: replace or supplement the abstract improvement-factor quote with the exact passage that states the R0 > 4.9 × 10⁻¹⁰ m (90% C.L.) figure so the numerical claim is anchored, not only the ‘factor of five’ clause."
+          - Add the deferred evidence records (ORCH-C125/ORCH-C030 from SRC-APRILE-2026; ORCH-C046 from Helou 2017) and append history entries for this session’s source, claim, and ORCH-R013 edits before any assessment or edition.
+          - "SRC-APRILE-2026 authors list: record the bibliographic author string as published (Collaboration form) and keep Curceanu/Piscicchia/Manti in reliabilityNotes for the independence caveat, rather than a partial personal shortlist that can look like misattribution."
+        summary: The change adds the 2026 XENONnT collapse-radiation paper as a verified primary source, extracts a measurement claim for its Markovian Diósi–Penrose R0 bound, links that claim into ORCH-R013, and improves Emerson/Li source provenance after full-text reads. Nothing is presented as assessed or ratified, and the case narrative and verdicts are untouched. For a truth-seeking reader the ledger is strictly richer and more current than before, even though evidence rows and history stamps remain for the next pass.
+        cost:
+          inputTokens: 11718
+          outputTokens: 319
+          usd: 0.025465
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - "ORCH-R013: claimIds now includes ORCH-C125, but the summary still enumerates only three bounded channels (the Gran Sasso search ORCH-C031, the germanium search ORCH-C047, and the LISA Pathfinder bound ORCH-C046). Update the summary in the next pass so the agenda text names the XENONnT electronic-recoil bound too, and when the evidence record lands, carry the 8π Diósi/Penrose convention note beside the claim so later comparisons to ORCH-C031/ORCH-C047 don't silently mix conventions."
+          - "ORCH-C125: the locator says \"[p. 2] (abstract)\" — on an arXiv PDF the abstract normally sits on page 1, so verify the page before the edition pass or label it unverified per §3.8. Also consider quoting the abstract clause that assigns the two improvement factors (the antecedent of \"respectively\"), so the statement's \"about five times the previous best limit\" is self-supporting rather than resting on the operator's reading of which constraint got which factor."
+          - The session added no history entries for the four ledger edits (SRC-APRILE-2026, ORCH-C125, the SRC-LI-2025 URL/archivedUrl change, ORCH-R013) — the operator has scheduled this for the next session, but make sure the entries are written before the new assessment and edition so §3.14's revision histories aren't reconstructed after the fact.
+        summary: The change adds the 2026 XENONnT collapse bound as a source read in full and as a properly anchored, ai_extracted measurement claim (ORCH-C125), links it into the ORCH-R013 desk audit, and improves two existing source records by recording which copies were actually read and giving SRC-LI-2025 a working full-text address with a Wayback capture. It discloses honestly that the evidence records, history entries, the ORCH-C012 split, and the checks were all left for the next session, and it changes no verdicts or article text. The gains are real and nothing true is dropped; the incompleteness is disclosed rather than hidden, so the site is better, with the scheduled gaps as next-pass work.
+        cost:
+          inputTokens: 12679
+          outputTokens: 5444
+          usd: 0.004624
+harvestedAt: 2026-11-18T16:50:04.174Z

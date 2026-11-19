@@ -1,0 +1,158 @@
+runId: "2026-11-18-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-11-18"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing:
+    - ORCH-C001
+    - ORCH-C002
+    - ORCH-C010
+    - ORCH-C030
+  weakestLinks:
+    - ORCH-C010
+    - ORCH-C030
+    - ORCH-C126
+  synthesis: >-
+    Orchestrated Objective Reduction (Orch OR) is an ambitious multi-tiered hypothesis that combines a foundational physics conjecture with a specific neurobiological substrate and a pharmacological mechanism for anesthesia. When these rungs are evaluated strictly against the empirical evidence ledger, the physical and biological connections fail to cohere into a viable, supported model.
+
+    Steelmanning the affirmative case reveals genuine, notable progress on the lower observation rungs. Microtubules are clearly not inert structural scaffolds: ultraviolet excitation diffuses over 6.6 nm in polymerized tubulin (Kalra 2023), hierarchical tubulin lattices display collective optical superradiance and enhanced quantum yields (Babcock 2024, Gassab 2026A), and general anesthetics measurably alter these electronic phenomena. Furthermore, acute administration of epothilone B produces statistically large delays in anesthetic induction in rodents (Khan 2024, Huang 2026), and nuclear-spin-dependent potency differences in xenon isotopes (Li 2018) present a persistent puzzle for purely classical polarizability accounts.
+
+    However, the critical bridges required to elevate these observations into evidence for conscious state reduction are absent or directly undermined. First, on the biological mechanism rung (ORCH-C010), neither an entangled state nor a decoherence time approaching physiological relevance (tens of milliseconds) has ever been experimentally measured in microtubules. Proponents' own theoretical recalculations reach at best 10⁻⁵ to 10⁻⁴ seconds, which still falls orders of magnitude short of the required gamma-synchrony window without extreme unverified shielding assumptions. Second, the anesthesia narrative is deeply fractured: independent replication demonstrates that both microtubule stabilizers (epothilone D) and destabilizers (vinblastine) shift anesthetic sensitivity in the identical direction of heightened sensitivity (Li 2025), directly contradicting the claim that stabilizing microtubules confers resistance (ORCH-C126), while the exciton quenching effect in vitro is non-specifically replicated by the convulsant picrotoxin. Meanwhile, conventional pharmacology provides definitive causal target validation via point mutations (Jurd 2003) that Orch OR entirely lacks. Third, the collapse physics has suffered consecutive experimental blows: underground searches at Gran Sasso (Donadi 2021), Majorana (Arnquist 2023), and XENONnT (Aprile 2026) have ruled out the parameter-free Markovian Diósi–Penrose collapse model across three orders of magnitude. Penrose's heuristic relation survives only by lacking a specified dynamics, retreating into an untested framework.
+
+    In terms of sensitivity, the single evidence record whose removal would most alter this assessment is ORCH-E013 (Li et al. 2025). Without Li et al.'s rigorous concentration-response curves demonstrating that chronic epothilone D and vinblastine increase anesthetic sensitivity, the animal behavioral literature would appear unilaterally supportive of the microtubule anesthesia link via Khan et al. 2024. Nevertheless, the overall case verdict of weakly_supported easily survives the removal of ORCH-E013: even if acute microtubule stabilization delayed anesthesia reliably, Orch OR's core requirements—millisecond-scale quantum coherence in warm wet tissue and gravitationally induced state reduction—remain unevidenced and physically besieged.
+  steelman: >-
+    The 40–50% attenuation of anesthetic potency in nuclear-spin-bearing xenon isotopes (129Xe, 131Xe) compared to spin-zero isotopes (132Xe, 134Xe) at identical calculated polarizability in mice (Li et al. 2018), which defies classical Meyer–Overton solubility explanations and implicates an unexplained spin-dependent quantum degree of freedom in general anesthesia.
+claimAssessments:
+  - claimId: ORCH-C001
+    verdict: weakly_supported
+    confidence: high
+    reasoning: >-
+      The overarching causal thesis lacks any direct empirical measurement of quantum coherence, entanglement, or objective reduction occurring within living neuronal microtubules. While optical collectivity and exciton transport occur over nanometer scales, bridging these to macro-scale conscious moments requires speculative assumptions that are unsupported by current data. The strongest opposing consideration is the growing body of biophysical evidence demonstrating that microtubules possess nontrivial collective excitonic and electrodynamic states rather than behaving as passive structural rods.
+  - claimId: ORCH-C002
+    verdict: weakly_supported
+    confidence: high
+    reasoning: >-
+      General anesthetics bind tubulin and alter exciton diffusion in vitro, but there is no evidence that this disruption targets a quantum-coherent state necessary for consciousness. The in vitro photophysical disruption is mimicked by the convulsant picrotoxin, and live-animal stabilizer manipulations produce conflicting directional shifts in anesthetic sensitivity. The strongest opposing consideration is that acute epothilone B pretreatment produces a robust delay in isoflurane-induced loss of righting reflex in rats and mice.
+  - claimId: ORCH-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Classical receptor pharmacology is supported by gold-standard genetic point-mutation experiments, where a single amino acid substitution in the GABA_A β3 subunit (N265M) abolishes the immobilizing and profoundly reduces the hypnotic actions of etomidate and propofol in vivo. Classical synaptic and network models provide specific, reproducible mechanisms for clinical anesthesia. The strongest opposing consideration is that the same point mutations only minimally attenuate the effects of volatile anesthetics, and no single classical receptor channel accounts for volatile-induced immobility.
+  - claimId: ORCH-C004
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      The universal negative assertion that anesthetic action and cognition contain no quantum-coherent contribution exceeds the established evidence. Specific anomalies such as the xenon nuclear spin effect and unresolved debates surrounding non-classical brain signals leave open the theoretical possibility of non-trivial quantum contributions. The strongest opposing consideration is the overwhelming success of classical neuropharmacology and computational neuroscience in explaining neural signaling, sensory processing, and anesthetic hypnosis without invoking quantum state reduction.
+  - claimId: ORCH-C030
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      Penrose's heuristic criterion relating superposition collapse lifetime to gravitational self-energy (τ ≈ ℏ/E_G) has not been tested directly in mesoscopic superpositions. While stochastic master equations implementing the Diósi–Penrose model have been excluded across multiple underground radiation searches, Penrose's original geometric proposal does not strictly predict spontaneous radiation. The strongest opposing consideration is that every concrete, parameterized dynamical model formulated to realize gravity-related collapse has been progressively constrained or ruled out by underground and space-based tests.
+  - claimId: ORCH-C040
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      This interpretive philosophical claim regarding the non-computability of human mathematical understanding remains formally undecidable. While AI systems now achieve medal-level performance at the International Mathematical Olympiad and have disproved published conjectures, whether these computational accomplishments represent formal algorithmic deduction or cross into the realm of abductive framework generation remains contested. The strongest opposing consideration is the concrete disproof of long-standing mathematical conjectures by automated and learning-based systems.
+  - claimId: ORCH-C010
+    verdict: weakly_supported
+    confidence: high
+    reasoning: >-
+      No direct experimental measurement has demonstrated quantum coherence or entanglement surviving for tens of milliseconds across multiple tubulin dimers in physiological conditions. Even proponent re-analyses top out at calculated coherence times of 10⁻⁵ to 10⁻⁴ seconds, falling two to three orders of magnitude short of the required timescale without additional unverified shielding mechanisms. The strongest opposing consideration is theoretical work suggesting that structured water, actin gel encasement, or collective topological protection might extend coherence times beyond standard bulk decoherence limits.
+  - claimId: ORCH-C011
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Direct binding of anesthetics to tubulin has been validated through photolabeling with 1-aminoanthracene, and subsequent spectroscopy shows that clinical anesthetics such as etomidate and isoflurane reduce electronic exciton diffusion lengths in microtubules. Computational docking further corroborates specific anesthetic binding pockets in tubulin. The strongest opposing consideration is that non-anesthetic hydrophobic compounds and convulsants like picrotoxin produce comparable photophysical perturbations, undermining the pharmacological specificity of the interaction.
+  - claimId: ORCH-C012
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Multiple independent laboratories have confirmed that administering microtubule-stabilizing or destabilizing agents alters behavioral endpoints of general anesthesia in vivo, including tadpoles, rats, and mice. These behavioral shifts establish that microtubules sit somewhere on the functional pathway modulating anesthetic response. The strongest opposing consideration is that the observed behavioral shifts may stem from non-specific systemic toxicity, altered blood-gas physiology, or general disruptions of axonal transport rather than direct modulation of consciousness mechanisms.
+  - claimId: ORCH-C126
+    verdict: contradicted
+    confidence: high
+    reasoning: >-
+      The neat rule that stabilizers produce resistance while destabilizers produce sensitivity is directly refuted by Li et al. 2025, who found that chronic administration of the stabilizer epothilone D and the destabilizer vinblastine both shifted isoflurane sensitivity leftward toward increased sensitivity. In addition, the authors of the original acute epothilone B rat study conceded in peer review that their results did not demonstrate a stability mechanism and dropped the stability framing. The strongest opposing consideration is that acute administration of epothilone B produced delayed loss of righting reflex in two separate rodent studies.
+  - claimId: ORCH-C013
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Extensive physical experiments confirm that microtubules display collective electronic properties beyond simple structural scaffolding, including exciton energy migration over 6.6 nm, enhanced fluorescence quantum yields, and superradiant coupling of tryptophan networks. These findings establish that polymerized tubulin lattices support collective condensed-matter electrodynamics. The strongest opposing consideration is that many of these collective effects are substantially suppressed when physiological disorder and structural variability are incorporated.
+  - claimId: ORCH-C020
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Kalra et al. 2023 directly demonstrated that electronic energy migrates ~6.6 nm in polymerized microtubules via tryptophan lifetime quenching, exceeding classical Förster predictions, and showed that 50 μM etomidate or isoflurane reduces this migration length. These measurements provide concrete quantitative benchmarks for microtubule energy transfer. The strongest opposing consideration is that the diffusion length is inferred indirectly from bulk quencher lifetimes in purified in vitro tubulin rather than directly imaged in living neuronal environments.
+  - claimId: ORCH-C021
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Babcock et al. 2024 and Gassab et al. 2026A experimentally confirmed that fluorescence quantum yield increases with tubulin polymerization at 280 nm, matching the directional predictions of collective dipole superradiance models. This cooperative emission behavior is reproducible across independent laboratories. The strongest opposing consideration is that at 295 nm, which specifically excites tryptophan, the sign of the quantum-yield change reverses depending on the background scattering correction model chosen.
+  - claimId: ORCH-C022
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The reported self-similar triplet-of-triplet resonance patterns across tubulin, microtubules, and neurons originate entirely from a single research team and have not been replicated by any independent laboratory over a decade. Furthermore, electromagnetic resonance is a classical observable that does not witness quantum coherence or entanglement across scales. The strongest opposing consideration is the detailed empirical characterization published by Saxena et al. documenting consistent resonance frequency ratios across disparate structural scales.
+  - claimId: ORCH-C023
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Khan et al. 2024 and Huang et al. 2026 reported that acute subcutaneous epothilone B pretreatment increased the latency to isoflurane-induced loss of righting reflex by 69 seconds in rats (Cohen's d = 1.9) and 29 seconds in mice (Cohen's d = 0.8), with blinded scoring and tolerance controls. The numerical measurements are peer-reviewed and verified in the published record. The strongest opposing consideration is that the finding has only been reported by a single laboratory group, and the effect size in mice was acknowledged to be small relative to inter-animal variability.
+  - claimId: ORCH-C024
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Li et al. 2025 conclusively demonstrated in a randomized, blinded mouse study that two weeks of epothilone D or vinblastine shifted the isoflurane concentration-response curve leftward, with non-overlapping 95% confidence intervals demonstrating increased sensitivity. This rigorous study confirmed an effect running in the opposite direction from acute epothilone B. The strongest opposing consideration is that chronic two-week drug exposure introduces physiological confounds, including altered systemic blood pH and CO₂ levels, which are absent in acute dosing protocols.
+  - claimId: ORCH-C025
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Li et al. 2018 reported that nuclear-spin-bearing xenon isotopes (129Xe, 131Xe) showed higher ED50 values for loss of righting reflex than spin-zero isotopes (132Xe, 134Xe) despite identical calculated polarizability. However, re-analysis (ORCH-S002) reveals that the headline xenon-alone potencies were calculated from an isoflurane mixture rather than measured directly, the dispersions are of unstated type, and the study has never been independently replicated. The strongest opposing consideration is that the observed potency difference (~40–50%) tracks a binary spin step far better than a continuous mass trend across the four isotopes.
+  - claimId: ORCH-C026
+    verdict: mixed
+    confidence: moderate
+    reasoning: >-
+      Kerskens and López Pérez 2022 documented heartbeat-correlated zero-quantum-coherence MRI signals that attenuated during sleep, which they interpreted as evidence of non-classical brain function. However, Warren 2023 provided a robust critique demonstrating that classical multi-compartment tissue dynamics and intermolecular multiple-quantum coherences can produce these signals without requiring entanglement. The strongest opposing consideration is the authors' quantitative defense arguing that standard classical iZQC models underestimate the observed signal amplitude by an order of magnitude.
+  - claimId: ORCH-C031
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The Gran Sasso underground experiment by Donadi et al. 2021 searched for the spontaneous photon emission predicted by the continuous Diósi–Penrose collapse model and found no signal, setting a lower limit on the mass density cutoff three orders of magnitude above nuclear scales and definitively ruling out the parameter-free model. This null result has been corroborated by subsequent underground searches. The strongest opposing consideration is that this exclusion specifically targets the Markovian white-noise model and leaves non-Markovian or coloured-noise collapse variants formally viable.
+  - claimId: ORCH-C041
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The claim is factually verified by independent mathematics: Sawin 2026 confirms that an OpenAI internal model disproved Erdős's 1946 unit distance conjecture, while AlphaProof's Lean-verified silver-medal IMO performance is peer-reviewed in Nature and DeepMind's Gemini achieved an officially certified gold-medal standard. The strongest opposing consideration is that earlier claimed AI breakthroughs on Erdős problems proved to be duplicates of already-known literature solutions, though the unit-distance disproof survived independent verification and extension.
+  - claimId: ORCH-C044
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The modulation of microtubule polymerization by tryptophan/superoxide radical pairs is a computational hypothesis from Zadeh-Haghighi & Simon 2022, which fitted an existing hypomagnetic field experiment using adjustable kinetic rate parameters. There is no direct experimental measurement demonstrating that radical-pair spin dynamics govern microtubule density in vivo. The strongest opposing consideration is that the radical-pair mechanism provides a well-founded physical framework in quantum biology that reproduces the experimental hypomagnetic disorder ratio.
+  - claimId: ORCH-C046
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Helou et al. 2017 reanalyzed the relative acceleration noise between free-falling test masses aboard LISA Pathfinder and established that attributing residual noise to wave-function collapse bounds the Diósi–Penrose regularization scale to at least 40.1 ± 0.5 fm, exceeding the size of any atomic nucleus. The derivation is conservative and published in the peer-reviewed physics literature. The strongest opposing consideration is that LISA Pathfinder was not designed as a collapse test and its residual acceleration noise is dominated by unmodeled Brownian thermal noise.
+  - claimId: ORCH-C047
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Arnquist et al. 2023 (Majorana Collaboration) reported an exhaustive search for spontaneous collapse radiation in 37.5 kg-y of enriched germanium data, finding zero evidence of the predicted 1/E X-ray signature in the 19–100 keV window (best fit 6.3 ± 398.8 counts). This provides an independent, ultra-low-background experimental refutation of the standard Diósi–Penrose radiation prediction. The strongest opposing consideration is that the bound is restricted to white-noise collapse models and does not constrain dissipative or coloured-noise models with high-frequency cutoffs.
+  - claimId: ORCH-C125
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Aprile et al. 2026 (XENON Collaboration) analyzed 1.16 tonne-years of electronic recoil data from XENONnT and set a 90% confidence lower limit on the Diósi–Penrose correlation length R0 of 4.9 × 10⁻¹⁰ m, improving previous world-leading constraints by a factor of five. This measurement in liquid xenon confirms the absence of collapse radiation across a different detector technology and target nucleus. The strongest opposing consideration is that the constraint applies strictly to the Markovian formulation, leaving non-Markovian extensions open.
+  - claimId: ORCH-C057
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The assertion that no candidate molecular target other than tubulin reproduces the Meyer–Overton correlation stems from a brief commentary by Wiest 2025A referencing Craddock's 2017 docking study, rather than an exhaustive systematic review of the pharmacological literature. Decades of classical anesthesia research have demonstrated lipid solubility correlations across numerous membrane proteins and ion channels. The strongest opposing consideration is that Craddock et al. did publish a specific quantum chemical model showing that volatile anesthetic affinities for tubulin correlate with clinical potency.
+  - claimId: ORCH-C063
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Gassab and Craddock 2026A explicitly demonstrated through molecular dynamics simulations that incorporating thermal conformational variability and lattice disorder into microtubule models substantially degrades maximal superradiant enhancement relative to the idealized, static 1JFF crystallographic reference lattice. This provides important quantification of disorder effects in biological tryptophan networks. The strongest opposing consideration is that the modeled ensembles still maintained a baseline fluorescence quantum yield above 0.14 across the polymer lengths examined.

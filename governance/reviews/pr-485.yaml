@@ -1,0 +1,137 @@
+# Review of #485, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 485
+title: "Collapse, Not Computation: the XENONnT and LISA Pathfinder bounds get their evidence, the microtubule-drug claim is split by direction, and a new judgment and edition follow"
+url: https://github.com/ejhong/aletheia/pull/485
+outcome: merged
+outcomeAt: 2026-11-19T16:55:14Z
+cases:
+  - orch-or
+rounds:
+  - commit: 36e656a4d7276d3c674f7c0f77a22322a16723f1
+    date: 2026-11-18
+    protocol: review-v1
+    outcome: hold
+    reason: "held for a harm until answered: misattribution (GPT-5.6 Sol (OpenAI))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm:
+          kind: misattribution
+          where: ORCH-E129 sourceStatement, first quotation beginning “We agree with the Reviewer's point”
+          why: The locator distinguishes the peer-review synthesis from the authors’ response, and “your results” addresses the authors rather than speaking for them. The record incorrectly attributes that first passage to the authors; the subsequent “This suggestion is adopted…” passage is their response.
+        notes:
+          - "ORCH-E129 and the anesthesia section: after correcting the speakers, distinguish more carefully between weakening the stability-based causal interpretation and erasing the observation that a known stabilizer produced resistance; the concession supports the former, not the latter."
+          - "ORCH-E128: inspect Supplementary Figure S9 and record concentrations, effect sizes, uncertainty and controls before treating the result as moderate evidence; currently only the authors’ discussion summary was read."
+          - "ORCH-C012 and the article’s “every study finds a shift” sentence: narrow the wording to the tested compounds and preparations so evidence from this small selected set is not generalized to microtubule-modulating drugs as a class."
+        summary: The change substantially improves the case by adding current XENONnT and LISA Pathfinder evidence, separating susceptibility shifts from their disputed direction, and presenting the competing anesthesia results more fairly. The shorter edition is clearer and better qualified than the prior telling, while preserving the unresolved verdict. A localized speaker misattribution in ORCH-E129 must be corrected before publication.
+        cost:
+          inputTokens: 31172
+          outputTokens: 3414
+          usd: 0.192968
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - In research crux ORCH-R013, update the summary text to explicitly cite the new XENONnT bound (ORCH-C125) alongside the Gran Sasso, Majorana, and LISA Pathfinder limits.
+          - In content/cases/orch-or/evidence.yaml (ORCH-E128), verify Supplementary Figure S9 of Emerson et al. 2013 directly once graphical data can be extracted, confirming the exact concentration-response of propofol and isoflurane on tubulin polymerization.
+          - In content/cases/orch-or/evidence.yaml, inspect the full text of Huang et al. 2026 to verify whether the mouse study retained or modified the stability mechanism phrasing following the Khan et al. 2024 peer-review revision.
+        summary: This change completes the Orch-OR ledger update begun in the prior session. It adds rigorous evidence records for the LISA Pathfinder mechanical bound (ORCH-E125) and the XENONnT underground collapse radiation search (ORCH-E126, E127), and cleanly splits the general observation of anesthetic sensitivity shifts (ORCH-C012) from the contested directional stability hypothesis (ORCH-C126). The rewritten edition thoughtfully incorporates these findings and peer-review concessions while staying within the narrative word budget.
+        cost:
+          inputTokens: 33566
+          outputTokens: 1107
+          usd: 0.029326
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - "ORCH-E128: read Emerson 2013 Supplementary Figure S9 (propofol/isoflurane polymerization data) rather than relying only on the authors' discussion summary of it; the record already flags this gap."
+          - "ORCH-E129 / SRC-HUANG-2026: read the Huang et al. 2026 full text to check whether the mouse paper still uses the stability-disruption wording the rat paper dropped in review, as the E129 limitations already note."
+          - "ORCH-R013: run the deferred desk calculation now that ORCH-E126 supplies the xenon bound, and update the research-opportunity summary so it names XENONnT alongside the germanium and LISA channels rather than only linking C125 by id."
+        summary: "This change finishes the incomplete Orch-OR pass: it attaches primary evidence for the XENONnT null and bound and for the LISA Pathfinder cutoff, splits the microtubule-drug claim so “sensitivity changes” is graded separately from “direction follows stability,” and retells the case with those distinctions, the peer-review concession, and the in-vitro polymerization result. The new claim grades and the unchanged unresolved case verdict track the ledger rather than overclaim it, and nothing true is dropped. For a reader seeking the truth the map is more current, better evidenced, and fairer on the anesthesia arm than it was."
+        cost:
+          inputTokens: 31294
+          outputTokens: 308
+          usd: 0.064551
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - Two stamped editions exist for the same day (edition-2026-11-18-164426 and edition-2026-11-18-164735), and the second replaces the first only if the site makes that replacement visible. Confirm the interface renders the superseded 2,978-word telling as replaced or links to the current one; if it can surface both, readers may land on a stale edition with no mark that it was superseded hours later.
+          - "The covering-range locators in ORCH-E126 (\"pp. 2–5\") and ORCH-E127 (\"pp. 2–8\") are an honest workaround but a coarsening of §3.8's exact-provenance rule: each passage's true page is now recoverable only from the record's prose, not from the locator. When the quote checker accepts page lists (the change you propose to the founder), replace these with per-passage locators rather than leaving the covering ranges in place."
+          - The blind check run on the new ledger put one seat at Contradicted (gpt-5.6-sol) and one at Weakly supported (gemini-3.8-flash) against the operator's Unresolved. When the panel run lands, make sure the contest is displayed where the edition's verdict appears, and that the Contradicted seat's grounds are reachable — the article's "It is not refuted, because its central quantity has never been measured" line is the exact sentence that seat disputes, and a reader should be able to see why without opening the run files.
+        summary: "The change finishes the previous session's incomplete work: it attaches quoted evidence to the XENONnT and LISA Pathfinder bounds, splits ORCH-C012 into the sensitivity shift (well supported) and the directional claim ORCH-C126 (mixed, graded honestly against the best-designed contrary study and two recorded concessions from the supporting side), corrects the article's overstatement about what the underground nulls ruled out, and names the Gödel-section essay's author. The records disclose their own limits (shared theory input across the three nulls, the 8π convention, the unread supplementary figure, the unread Huang full text) rather than hiding them, and the claim split follows the panel's own grading rather than overriding it. The gains are real, nothing true is dropped, and the disclosed incompleteness is scheduled work, so the site is better."
+        cost:
+          inputTokens: 32734
+          outputTokens: 2931
+          usd: 0.006376
+  - commit: b6dcb209ff6976331e701011b50a09ab875675a6
+    date: 2026-11-19
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "content/cases/orch-or/claims.yaml, ORCH-C012: narrow the stored proposition itself to the handful of tested compounds, species and preparations, matching the current article wording, then have the revised claim judged in the next assessment rather than leaving a broader linked claim behind the narrower anchor text."
+          - "content/cases/orch-or/assessments: issue a fresh assessment after ORCH-E128 was downgraded from moderate to weak, explicitly reweighing ORCH-C126 and letting the panel judge the narrowed ORCH-C012; the current edition still re-adopts reasoning written before that evidential-strength change."
+          - "ORCH-R013: perform the stated desk audit using the XENONnT, Majorana, Gran Sasso and LISA Pathfinder bounds, with the Diósi/Penrose convention difference handled explicitly; this is now the clearest low-cost route to determining whether a dynamics that realizes Penrose's rate survives."
+        summary: The change substantially improves the case by adding primary evidence for the XENONnT and LISA Pathfinder bounds, separating the observed anesthetic-sensitivity shifts from the disputed directional mechanism, and presenting important contrary evidence fairly. It also fixes the earlier peer-review misattribution and appropriately downgrades the unread supplementary result. Some claim wording and assessment synchronization remain for the next pass, but the ledger and public account are more current, atomic and accurate overall.
+        cost:
+          inputTokens: 39549
+          outputTokens: 1337
+          usd: 0.184936
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - In the next assessment pass, reword the proposition of ORCH-C012 itself to narrow it to the tested compounds and animal preparations, matching the qualification already adopted in the narrative of edition-2026-11-19-164801.
+          - Obtain and verify Emerson 2013 Supplementary Figure S9 (concentration–response for propofol/isoflurane tubulin polymerization) and the Huang et al. 2026 full text via open repositories or author archives to resolve the unread limitations on ORCH-E128 and ORCH-E129.
+          - Execute the ORCH-R013 desk calculation now that the XENONnT bound (ORCH-C125, ORCH-E126) is integrated into the ledger, pricing the remaining parameter space for the Tilloy–Diósi dynamics.
+        summary: This update satisfactorily resolves the misattribution harm flagged in Round 1 by correctly separating Reviewer 2's comments from the authors' response in ORCH-E129, while clarifying the distinction between the empirical observation and its causal explanation. It integrates the XENONnT and LISA Pathfinder bounds with primary evidence, splits the directional stability claim into ORCH-C126, and adopts a concise, well-calibrated new edition. The change leaves the Orch-OR case substantially more rigorous, current, and accurate.
+        cost:
+          inputTokens: 42521
+          outputTokens: 1268
+          usd: 0.036646
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - "ORCH-C012: on the next assessment, narrow the claim statement itself to the tested compounds and animals (matching the edition’s ‘handful of drugs’ wording) so the graded proposition is not broader than the evidence set."
+          - "ORCH-E128: obtain Emerson 2013 Supplementary Figure S9 (or an archived capture) and record concentrations, effect sizes, uncertainty and controls before any later upgrade from weak; the publisher 403 is already noted."
+          - "ORCH-R013: run the desk calculation with the XENONnT bound now named in the summary; it is the cheapest remaining physics task and prices the under-specification escape."
+        summary: "The change finishes the incomplete Orch-OR pass: it attaches primary evidence for the XENONnT null and bound and for the LISA Pathfinder cutoff, splits the microtubule-drug claim into sensitivity-change versus stability-direction so grades match wording, and updates the article and assessment without changing the unresolved case verdict. The round-1 misattribution in ORCH-E129 is fixed by re-attributing the reviewer’s words and separating observation from mechanism, and ORCH-E128 is honestly downgraded to weak while its figure remains unread. For a truth-seeking reader the ledger is more current, more atomic, and fairer to both the supporting and undermining anesthesia results, with nothing true dropped."
+        cost:
+          inputTokens: 39643
+          outputTokens: 304
+          usd: 0.081225
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - The assessment 2026-11-18-operator-164426 still weighs the anesthesia arm while ORCH-E128 carried moderate strength and ORCH-C012's statement still reads as a generalization over the drug class. When the next assessment is written, re-weigh ORCH-E128 as weak and reword ORCH-C012 to the tested compounds and preparations in the same pass, so the graded judgment and the record strengths the reader sees agree; the operator's deferral reasoning is sound but the mismatch should not survive another panel cycle.
+          - When the quote checker accepts a list of pages, replace the covering-range locators on ORCH-E126 ('pp. 2–5') and ORCH-E127 ('pp. 2–8') with per-passage locators, so each quoted passage carries its own exact locator under §3.8 rather than one whose page is recoverable only from the record's prose.
+          - "Interface: surface the blind-panel disagreement where the case verdict appears. The 2026-11-18 check seats split (Contradicted, Weakly supported, Unresolved ×2), and the seat at Contradicted disputes precisely the article's 'It is not refuted, because its central quantity has never been measured' line; a reader should be able to reach that seat's grounds from the verdict display without opening run files."
+        summary: "The change completes the stalled Orch-OR update: the XENONnT null and LISA Pathfinder bound get their evidence records, the microtubule-drug claim is split into the sensitivity change (well supported) and the direction-follows-stability claim (mixed, honestly told with the concessions on both sides), and the article now distinguishes the parameter-free collapse model from Penrose's lifetime rule. The misattribution flagged in round 1 is fixed in ORCH-E129 with the reviewer's and authors' words correctly separated and located, and the operators' answers to every note are reasoned and recorded. The remaining gaps — an assessment that predates the ORCH-E128 downgrade and the narrowed ORCH-C012 wording — are disclosed next-pass work, so the site is left better."
+        cost:
+          inputTokens: 41259
+          outputTokens: 1435
+          usd: 0.006906
+harvestedAt: 2026-11-22T15:51:18.869Z

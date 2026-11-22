@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MAX_ROUNDS, planSession, roundsForOperator, type OpenChange } from "./operator.ts";
+import { MAX_ROUNDS, STALL_HOURS, planSession, roundsForOperator, waitingForOperator, type OpenChange } from "./operator.ts";
 import type { ReviewBlob } from "./review.ts";
 
 /**
@@ -15,7 +15,8 @@ const round = (commit: string, outcome: ReviewBlob["outcome"]): ReviewBlob => ({
   reason: "r",
   seats: [{ seat: "openai", label: "GPT", model: "m", verdict: "worse", harm: outcome === "hold" ? { kind: "fabrication", where: "X-E001", why: "not in the source" } : null, notes: ["tighten the opening"], summary: "s" }],
 });
-const change = (number: number, rounds: ReviewBlob[], over: Partial<OpenChange> = {}): OpenChange => ({ number, title: `t${number}`, branch: `operator/2099-01-0${number}-1`, head: rounds.at(-1)?.commit ?? "h", draft: false, rounds, ...over });
+const change = (number: number, rounds: ReviewBlob[], over: Partial<OpenChange> = {}): OpenChange => ({ number, title: `t${number}`, branch: `operator/2099-01-0${number}-1`, head: rounds.at(-1)?.commit ?? "h", draft: false, since: "2099-01-01T00:00:00Z", rounds, ...over });
+const hoursAfter = (h: number) => Date.parse("2099-01-01T00:00:00Z") + h * 3_600_000;
 
 describe("a session's mode", () => {
   it("answers the oldest change the reviewers held or sent back, at its reviewed head", () => {
@@ -51,5 +52,31 @@ describe("a session's mode", () => {
     expect(text).toContain("- x X-E004: quoted passage not found in the text of SRC-A");
     expect(text).toMatch(/never by a reply/);
     expect(text).toMatch(/check-quotes --fresh/);
+  });
+  it("starts the review again of a change whose latest commit went unreviewed past the stall limit", () => {
+    // 2026-11-09 and 11-16: GitHub's brownouts kept the review from starting, and the changes waited for good.
+    const never = change(1, []);
+    const moved = change(2, [round("a", "hold")], { head: "b" });
+    const fresh = change(3, [], { since: "2099-01-01T10:00:00Z" });
+    const plan = planSession([never, moved, fresh], hoursAfter(STALL_HOURS + 1));
+    expect(plan.restart.map((c) => c.number)).toEqual([1, 2]);
+    if (plan.mode === "new") {
+      expect(plan.waiting.map((w) => w.number)).toEqual([1, 2, 3]);
+      expect(plan.waiting[0].why).toMatch(/reopened so the review runs again/);
+      expect(plan.waiting[2].why).toBe("not yet reviewed");
+    }
+  });
+  it("leaves alone a change reviewed at its head, however old", () => {
+    const plan = planSession([change(1, [round("a", "publish")]), change(2, [round("c", "undecided")])], hoursAfter(1000));
+    expect(plan.restart).toEqual([]);
+  });
+  it("tells a new session what of its own still waits, so it does not open a second change on the same work", () => {
+    // 2026-11-10: #480 waited unreviewed; the session, told nothing, redid its case as #481.
+    const plan = planSession([change(480, [], { title: "Before Sputnik: three claims" })], hoursAfter(1));
+    if (plan.mode !== "new") throw new Error("expected new work");
+    const text = waitingForOperator(plan.waiting);
+    expect(text).toContain('#480 "Before Sputnik: three claims": not yet reviewed.');
+    expect(text).toMatch(/do not open a second change/);
+    expect(waitingForOperator([])).toBe("");
   });
 });

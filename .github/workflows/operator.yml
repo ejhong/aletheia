@@ -94,11 +94,13 @@ jobs:
         if: steps.gate.outputs.go == 'yes'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Only to reopen a change whose review never ran, so that the reopen fires the review (main's code, before any session).
+          RESTART_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
           CASE: ${{ github.event.inputs.case }}
           FOCUS: ${{ github.event.inputs.focus }}
         run: |
           mkdir -p plan
-          plan=$(node scripts/site.ts plan-session --rounds plan/review-rounds.md)
+          plan=$(node scripts/site.ts plan-session --rounds plan/review-rounds.md --waiting plan/waiting.md)
           echo "$plan"
           mode=$(node -e 'console.log(JSON.parse(process.argv[1]).mode)' "$plan")
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
@@ -117,7 +119,7 @@ jobs:
           echo "charter=charter@$(git log -1 --format=%h -- operator/charter.md)" >> "$GITHUB_OUTPUT"
           echo "model=$(node -e 'const y=require("yaml");console.log(y.parse(require("fs").readFileSync("config/models.yaml","utf8")).operator.model)')" >> "$GITHUB_OUTPUT"
           echo "effort=$(node -e 'const y=require("yaml");console.log(y.parse(require("fs").readFileSync("config/models.yaml","utf8")).operator.effort)')" >> "$GITHUB_OUTPUT"
-          touch plan/review-rounds.md
+          touch plan/review-rounds.md plan/waiting.md
           # The session's instructions and first message, from main: never from the tree the session works in.
           cat operator/charter.md config/site-rules.md > plan/instructions.md
           # And the script that digests its trace on its machine afterwards: main's too, whatever the session changes.
@@ -125,7 +127,7 @@ jobs:
           cp scripts/session-trace.ts plan/trace/scripts/
           cp src/engine/trace.ts plan/trace/src/engine/
           echo '{"type": "module"}' > plan/trace/package.json
-          args=(kickoff --run "$run" --mode "$mode" --cap "${{ steps.gate.outputs.cap }}")
+          args=(kickoff --run "$run" --mode "$mode" --cap "${{ steps.gate.outputs.cap }}" --waiting plan/waiting.md)
           [ "$mode" = "answer" ] && args+=(--pr "$(node -e 'console.log(JSON.parse(process.argv[1]).pr)' "$plan")" --branch "$branch" --rounds plan/review-rounds.md)
           [ -n "$CASE" ] && args+=(--case "$CASE")
           [ -n "$FOCUS" ] && args+=(--focus "$FOCUS")

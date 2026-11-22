@@ -9,13 +9,19 @@ import { REVIEW_LOGIN } from "./harvest.ts";
  * first: one the reviewers held or sent back is answered before any new
  * work, and one answered twice without publishing is withdrawn — closed with
  * a comment, its attempt on the record — so that nothing waits on a person
- * and no change is argued forever. Otherwise the session is new work, and
- * the operator chooses it (operator/charter.md).
+ * and no change is argued forever. A change whose latest commit has gone
+ * unreviewed for STALL_HOURS is reopened, so that its review runs again (a
+ * review that never started — GitHub's brownouts of 2026-11-09 and 11-16 —
+ * once left changes waiting for good). Otherwise the session is new work, and
+ * the operator chooses it (operator/charter.md), told what of its own still
+ * waits so it does not open a second change on the same work.
  */
 
 export const OPERATOR_BRANCH = /^operator\//;
 /** Rounds a change may have before it is withdrawn: the first review and two answers. */
 export const MAX_ROUNDS = 3;
+/** Hours a change's latest commit may go unreviewed before its review is started again; a review takes minutes. */
+export const STALL_HOURS = 12;
 
 export interface OpenChange {
   number: number;
@@ -23,29 +29,50 @@ export interface OpenChange {
   branch: string;
   head: string;
   draft: boolean;
+  /** The later of its head commit's time and its last activity (a reopen, a comment): the stall clock's start. */
+  since: string;
   rounds: ReviewBlob[];
 }
 
+export interface Waiting {
+  number: number;
+  title: string;
+  why: string;
+}
+
 export type Plan =
-  | { mode: "answer"; change: OpenChange; withdraw: OpenChange[] }
-  | { mode: "new"; withdraw: OpenChange[]; waiting: { number: number; why: string }[] };
+  | { mode: "answer"; change: OpenChange; withdraw: OpenChange[]; restart: OpenChange[] }
+  | { mode: "new"; withdraw: OpenChange[]; restart: OpenChange[]; waiting: Waiting[] };
 
 /** The session's mode, from the operator's open changes and their review rounds. Pure. */
-export function planSession(changes: OpenChange[]): Plan {
+export function planSession(changes: OpenChange[], now: number = Date.now()): Plan {
   const mine = changes.filter((c) => OPERATOR_BRANCH.test(c.branch) && !c.draft).sort((a, b) => a.number - b.number);
   const withdraw: OpenChange[] = [];
-  const waiting: { number: number; why: string }[] = [];
+  const restart: OpenChange[] = [];
+  const waiting: Waiting[] = [];
+  const wait = (c: OpenChange, why: string) => waiting.push({ number: c.number, title: c.title, why });
   let answer: OpenChange | null = null;
   for (const c of mine) {
     const last = c.rounds.at(-1);
-    if (!last) waiting.push({ number: c.number, why: "not yet reviewed" });
-    else if (last.commit !== c.head) waiting.push({ number: c.number, why: "its latest commit is not yet reviewed" });
-    else if (last.outcome === "publish") waiting.push({ number: c.number, why: "judged better; merging" });
-    else if (last.outcome === "undecided") waiting.push({ number: c.number, why: "too few reviewers answered; the review is to be run again" });
+    if (!last || last.commit !== c.head) {
+      const stalled = now - Date.parse(c.since) > STALL_HOURS * 3_600_000;
+      if (stalled) restart.push(c);
+      wait(c, stalled ? `its latest commit went ${STALL_HOURS} hours without a review; reopened so the review runs again` : last ? "its latest commit is not yet reviewed" : "not yet reviewed");
+    } else if (last.outcome === "publish") wait(c, "judged better; merging");
+    else if (last.outcome === "undecided") wait(c, "too few reviewers answered; the review is to be run again");
     else if (c.rounds.length >= MAX_ROUNDS) withdraw.push(c);
     else if (!answer) answer = c;
   }
-  return answer ? { mode: "answer", change: answer, withdraw } : { mode: "new", withdraw, waiting };
+  return answer ? { mode: "answer", change: answer, withdraw, restart } : { mode: "new", withdraw, restart, waiting };
+}
+
+/** What the session is told of its own changes still waiting, so that it does not open a second change on their work. */
+export function waitingForOperator(waiting: Waiting[]): string {
+  if (!waiting.length) return "";
+  return [
+    "Your changes still open, each waiting on the review or the merge — their work is in hand, so do not open a second change on the same case's same claims:",
+    ...waiting.map((w) => `- #${w.number} "${w.title}": ${w.why}.`),
+  ].join("\n");
 }
 
 /** What answers a quote check's failure, said to the operator beside the failures (operator/charter.md, "Answering a review"). */
@@ -82,17 +109,20 @@ const gh = (args: string[]) => JSON.parse(execFileSync("gh", args, { encoding: "
 
 /** The repository's open changes with their review rounds, from GitHub. */
 export function openChanges(): OpenChange[] {
-  const prs = gh(["pr", "list", "--state", "open", "--limit", "100", "--json", "number,title,headRefName,headRefOid,isDraft"]) as {
+  const prs = gh(["pr", "list", "--state", "open", "--limit", "100", "--json", "number,title,headRefName,headRefOid,isDraft,updatedAt"]) as {
     number: number;
     title: string;
     headRefName: string;
     headRefOid: string;
     isDraft: boolean;
+    updatedAt: string;
   }[];
   return prs.map((p) => {
     const comments = gh(["api", `repos/{owner}/{repo}/issues/${p.number}/comments`, "--paginate", "--jq", "[.[] | {author: .user.login, body: .body}]"]) as { author: string; body: string }[];
     const rounds = comments.filter((c) => c.author === REVIEW_LOGIN).map((c) => blobFromComment(c.body)).filter((b): b is ReviewBlob => b !== null);
-    return { number: p.number, title: p.title, branch: p.headRefName, head: p.headRefOid, draft: p.isDraft, rounds };
+    const committed = gh(["api", `repos/{owner}/{repo}/commits/${p.headRefOid}`, "--jq", "{date: .commit.committer.date}"]) as { date: string };
+    const since = [p.updatedAt, committed.date].sort().at(-1)!;
+    return { number: p.number, title: p.title, branch: p.headRefName, head: p.headRefOid, draft: p.isDraft, since, rounds };
   });
 }
 

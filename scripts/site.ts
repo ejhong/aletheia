@@ -39,7 +39,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import { parse as parseYaml } from "yaml";
 import { loadOperation } from "../src/domain/governance.ts";
-import { guardSession, openChanges, planSession, roundsForOperator } from "../src/engine/operator.ts";
+import { guardSession, openChanges, planSession, roundsForOperator, waitingForOperator } from "../src/engine/operator.ts";
 import { loadModels } from "../src/lib/models.mjs";
 import { archiveUrl } from "../src/engine/archive.ts";
 import { runCheck } from "../src/engine/check.ts";
@@ -247,7 +247,20 @@ async function main() {
       for (const c of plan.withdraw) {
         execFileSync("gh", ["pr", "close", String(c.number), "--comment", `Withdrawn: reviewed ${c.rounds.length} times without being judged better (the last round: ${c.rounds.at(-1)!.reason}). The branch and every review stay on the record; a later session may take the work up again from what the reviewers said. (src/engine/operator.ts)`], { stdio: "inherit" });
       }
+      // A change whose review never ran is reopened with the maintenance token: a reopen made with the Actions token fires nothing.
+      for (const c of plan.restart) {
+        const token = process.env.RESTART_TOKEN;
+        if (!token) {
+          console.error(`#${c.number}: its latest commit has gone unreviewed, and no RESTART_TOKEN is set to reopen it`);
+          continue;
+        }
+        const env = { ...process.env, GH_TOKEN: token };
+        execFileSync("gh", ["pr", "comment", String(c.number), "--body", "Reopened so that its review runs: its latest commit went unreviewed, and a review run that never started leaves a change waiting for good. (src/engine/operator.ts)"], { stdio: "inherit", env });
+        execFileSync("gh", ["pr", "close", String(c.number)], { stdio: "inherit", env });
+        execFileSync("gh", ["pr", "reopen", String(c.number)], { stdio: "inherit", env });
+      }
       if (plan.mode === "answer") fs.writeFileSync(flag("rounds") ?? "review-rounds.md", roundsForOperator(plan.change));
+      if (plan.mode === "new" && flag("waiting")) fs.writeFileSync(flag("waiting")!, waitingForOperator(plan.waiting));
       console.log(JSON.stringify(plan.mode === "answer" ? { mode: "answer", pr: plan.change.number, branch: plan.change.branch } : { mode: "new", waiting: plan.waiting }));
       return;
     }
@@ -255,11 +268,13 @@ async function main() {
       // The session's first message: what it is for and what it may spend. Its standing instructions are the charter.
       const mode = need("mode");
       const rounds = flag("rounds") && fs.existsSync(flag("rounds")!) ? fs.readFileSync(flag("rounds")!, "utf8") : "";
+      const waiting = flag("waiting") && fs.existsSync(flag("waiting")!) ? fs.readFileSync(flag("waiting")!, "utf8").trim() : "";
       const lines = [
         `This is operator session ${need("run")} on ${site.name}, ${new Date().toISOString().slice(0, 10)}. Your standing instructions are operator/charter.md and config/site-rules.md, which you have.`,
         mode === "answer"
           ? `This session answers the review of your change #${need("pr")} (branch ${need("branch")}, checked out). Read every round below, answer each harm and note — by a fix or by a reasoned reply in your log — and change nothing else.`
           : `This session is new work.${flag("case") ? ` The founder asks for work on the case ${flag("case")}.` : " Choose it by the charter."}${flag("focus") ? ` The founder's focus: ${flag("focus")}` : ""}`,
+        ...(mode === "answer" || !waiting ? [] : [waiting]),
         `You may spend up to $${need("cap")}; the session ends at the cap.`,
         `Begin with \`node scripts/site.ts status\`. Write your log at runs/${need("run")}/log.md, its front matter first. You do not commit, push or open pull requests: when you finish, the workflow records your session, convenes the panel on any case your log names under \`panel:\`, and opens the pull request with your log as its description.`,
       ];

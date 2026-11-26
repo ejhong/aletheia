@@ -1,0 +1,135 @@
+# What operator session 2026-11-26-session-site-174800 did, as its trace recorded it: the digest the workflow made on the session's machine
+# (src/engine/trace.ts), checked here (src/engine/session.ts). The session's own account of its work is its log.
+version: 1
+ended: success
+model: claude-opus-5-5
+permissionMode: dontAsk
+turns: 115
+minutes: 13.3
+usd: 5.325
+compactions: 0
+unreadableLines: 0
+tools:
+  - tool: Bash
+    calls: 42
+    failed: 0
+    refused: 6
+  - tool: Read
+    calls: 25
+    failed: 0
+    refused: 0
+  - tool: Edit
+    calls: 21
+    failed: 1
+    refused: 0
+  - tool: Grep
+    calls: 17
+    failed: 1
+    refused: 0
+  - tool: Glob
+    calls: 3
+    failed: 0
+    refused: 0
+  - tool: WebSearch
+    calls: 3
+    failed: 0
+    refused: 0
+  - tool: Write
+    calls: 3
+    failed: 0
+    refused: 0
+commands:
+  - command: node scripts/site.ts read
+    calls: 10
+    failed: 0
+    refused: 0
+  - command: grep
+    calls: 8
+    failed: 0
+    refused: 0
+  - command: ls
+    calls: 4
+    failed: 0
+    refused: 1
+  - command: node scripts/site.ts check-quotes
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts ids
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts status
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: tail
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: (other)
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: cat
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: cd
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: curl
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: for
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: git status
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts help
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts stamp
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm run build
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm test
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: timeout
+    calls: 1
+    failed: 0
+    refused: 0
+fetched: []
+read:
+  - source: escholarship.org
+    calls: 4
+    failed: 0
+  - source: geopolymer.org
+    calls: 2
+    failed: 0
+  - source: 10.1016/j.ceramint.2019.01.024
+    calls: 1
+    failed: 0
+  - source: api.openalex.org
+    calls: 1
+    failed: 0
+  - source: export.arxiv.org
+    calls: 1
+    failed: 0
+  - source: hal-u-picardie.archives-ouvertes.fr
+    calls: 1
+    failed: 0
+filesEdited: 8
+repeatedFailures: 0

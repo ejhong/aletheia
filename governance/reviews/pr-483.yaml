@@ -1,0 +1,75 @@
+# Review of #483, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 483
+title: "Deep Memory: the four 'navel of the world' names traced to their first records — one ancient Greek usage, and three later glosses"
+url: https://github.com/ejhong/aletheia/pull/483
+outcome: closed
+outcomeAt: 2026-11-22T17:49:05Z
+cases:
+  - deep-memory
+rounds:
+  - commit: 13da480afc0853e42eaf2bfe93a0e6a2f29d3c4e
+    date: 2026-11-22
+    protocol: review-v1
+    outcome: hold
+    reason: "held for a harm until answered: fabrication (GPT-5.6 Sol (OpenAI))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm:
+          kind: fabrication
+          where: DEEP-C018 assessment rationale, DEEP-R002 statusNote, and the article sentence “Traced to their first records, they are”
+          why: DEEP-E096 establishes only that Göbekli Tepe was recognized as an archaeological site in 1963; it does not establish the toponym’s first written record or that recognition occurred “under that name.” DEEP-R006 itself acknowledges that the first record of the Turkish toponym remains outstanding, so these passages present an unestablished provenance date as established.
+        notes:
+          - "DEEP-E087/DEEP-E088 and “The navel of the world”: distinguish Pindar’s contemporary Greek literary usage from builder or local-community usage. Pausanias reports Delphian usage six centuries later; neither source establishes that the sanctuary’s builders used the designation."
+          - "DEEP-E097 and DEEP-C034: classify the record as “qualifies” or “context only,” and replace “the retelling mechanism at work” with the narrower observation that comparative readers aligned details. The record’s own limitation correctly says it does not show a later version of the story becoming more Genesis-like."
+          - "The final “What would change the picture” bullet: specify that the needed Rapanui evidence is a pre-contact/early-contact or independently corroborated indigenous use that survives linguistic scrutiny. As written, E093 already reports the islanders’ own name with a navel gloss, so merely asking for an “early record” does not clearly distinguish the missing evidence."
+        summary: The change substantially improves the case by replacing an unsupported navel comparison with ancient, colonial, ethnographic and linguistic records, documenting rival Cusco and Rapanui readings, and keeping the overall case unresolved. The revised article is clearer and more diagnostic about why these names do not establish cultural transmission. However, its repeated claim to have reached the names’ first records exceeds the evidence, especially by treating Göbekli Tepe’s 1963 archaeological recognition as the toponym’s first attestation.
+        cost:
+          inputTokens: 29701
+          outputTokens: 4232
+          usd: 0.203444
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - In DEEP-C094 / DEEP-E092, follow up on DEEP-R006 by reading Cerrón-Palomino 1999 (Revista Andina 33) so the linguistic refutation of Garcilaso's Cusco etymology is grounded in the primary phonological/morphological demonstration rather than an unverified reference in a speech.
+          - In DEEP-C034 and the civilisers section, secure a critical source such as Townsend 2003 ('Burying the White Gods') to provide direct evidence for post-contact reshaping of Mesoamerican or Andean civiliser myths, rather than relying solely on Garcilaso's comment on Noah's ark comparisons (DEEP-E097).
+          - Address the remaining unevidenced method claims highlighted from earlier panel splits (DEEP-C002, DEEP-C026, DEEP-C035, DEEP-C065) by either grounding them in archaeological methodology citations or refining their truth conditions.
+        summary: This change significantly strengthens the Deep Memory case by investigating primary and linguistic sources for the four 'navel of the world' names (DEEP-R002). It introduces ten new evidence records detailing the distinct linguistic, chronological, and cultural origins of the names at Delphi, Cusco, Rapa Nui, and Göbekli Tepe, along with rival readings and linguistic critiques. The updated article narrative accurately reflects these primary sources, improving the epistemic rigor of the case.
+        cost:
+          inputTokens: 33249
+          outputTokens: 2117
+          usd: 0.032876
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - "DEEP-C094 / DEEP-R006: read Cerrón-Palomino 1999 (Revista Andina 33) so the Cusco rejection rests on the demonstration, not only the 2002 conclusion, and promote or re-grade C094 accordingly."
+          - "DEEP-R006: pull Roussel 1908, Pinart 1877, and Englert 1948/dictionary on Te Pito o te Henua (form, gloss, whether island-name) before treating the ‘land’s end’ rival as settled against an indigenous navel usage."
+          - "DEEP-C015 / DEEP-E096: still no first written record of the Turkish toponym or a Kurdish lexical source for Girê Mirazan (DEEP-C016); keep those debts visible beside the belly-mountain gloss so ‘well supported’ is not read as a full toponym history."
+        summary: The change answers DEEP-R002 with primary and specialist sources for the four navel names, adds ten name-history records plus one on retelling, and introduces rival-reading claims C093 and C094 with honest provisional grading where the 1999 proof was unread. DEEP-C018 and DEEP-C015 move to well supported on real evidence; the article’s navel section becomes a source-traced account instead of an unretrieved assertion; the case rightly stays unresolved. For a truth-seeking reader the ledger and narrative are more accurate, fairer, and clearer, with nothing true dropped.
+        cost:
+          inputTokens: 30743
+          outputTokens: 340
+          usd: 0.063641
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - "DEEP-C018 was moved to well supported, but one of its three stated components is not fully discharged: the first written record of the toponym Göbekli Tepe itself is untraced (DEEP-E096 and the C015 rationale note only 1963 recognition of the site, and the point is deferred to DEEP-R006). Reword the C018 rationale to say 'earliest record found so far' per name, or name the Turkish toponym's first record as outstanding, so the grade does not outrun what R006 will test."
+          - "The article's navel section now presents Göbekli Tepe as 'belly mountain', a description of the mound's shape, without mentioning what DEEP-E096's limitations record: that göbek means both 'belly' and 'navel' in Turkish and the excavators chose 'belly'. Since the section's argument is that three of the four names are not really 'navel' names, one clause noting the word's dual meaning (and that the 'belly' reading is the excavators' gloss among alternatives) would keep the retelling from slightly overweighting its own case."
+          - DEEP-E092/DEEP-C094 rest on one specialist's conclusion whose demonstration (Cerrón-Palomino 1999, Revista Andina 33) was not read, and the source's own copy notes it cites Garcilaso as I, XVII, 46 while the edition read places the passage in I, XVIII. When DEEP-R006 reaches the 1999 article, add a line to the C094 rationale recording whether the demonstration confirms the quoted sentence, so the provisional grade's basis is explicit in the claim history.
+        summary: "The change answers research item DEEP-R002 by reading nine primary or specialist sources and entering eleven evidence records tracing the four 'navel' names to their first records, adding two honestly-graded new claims (C093 well supported, C094 provisional), retelling the article's weakest section from those records, and correcting a real fault (the old text asserted Göbekli Tepe means 'navel hill' with no source; the excavators' own gloss is 'belly mountain'). It also strengthens DEEP-C034 with the first record showing the retelling mechanism at work, while keeping its verdict and the case verdict unchanged. Nothing true is dropped, the limits are stated in the records, and the gains are substantive and evidence-led: better for a reader seeking the truth."
+        cost:
+          inputTokens: 31488
+          outputTokens: 2460
+          usd: 0.005953
+harvestedAt: 2026-11-26T18:03:42.026Z

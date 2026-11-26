@@ -1,0 +1,72 @@
+# Review of #486, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 486
+title: "Deep Memory: the four 'navel of the world' names traced to their oldest texts — Greek and ancient at Delphi, a 1609 gloss for Cusco, a name disputed from its first records on Rapa Nui, modern Turkish "
+url: https://github.com/ejhong/aletheia/pull/486
+outcome: merged
+outcomeAt: 2026-11-22T16:10:58Z
+cases:
+  - deep-memory
+rounds:
+  - commit: fa9be64c9bc90c29f3745a7d434a2842e2de9090
+    date: 2026-11-22
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - In edition-2026-11-22-154648’s “The navel of the world,” DEEP-C018’s assessment rationale, and DEEP-R002, replace definitive phrases such as “the oldest texts bear that out,” “differ on every count,” and “answered” with “earliest records located in this pass” or a partial-answer formulation. The first Göbekli attestation remains unread, Garcilaso’s gloss does not settle the etymology, and Rapanui antiquity and usage remain disputed, so first-record dates and builder use are not fully traced.
+          - "In DEEP-E098 and the article’s Göbekli paragraph, remove “not a sacred name”: the unsigned presentation supports “potbelly hill” and a description of appearance, but a descriptive etymology does not establish the absence of sacred associations. DEEP-R006 should obtain a Turkish linguistic or toponymic source and the 1963 survey before strengthening the naming history."
+          - In assessment 2026-11-22-operator-154533’s steelman, revise “Churchill’s rejection rests on one informant.” DEEP-E096 shows that Churchill also argued from comparative philology; the single chart informant in DEEP-E097 is a limitation on his direct indigenous testimony, not the whole basis of his conclusion.
+        summary: The change substantially improves a previously unsourced comparison by adding early textual witnesses for Delphi and Cusco, exposing the disagreement in early Rapanui records, and correcting Göbekli Tepe from “navel hill” to the attested “potbelly hill.” It keeps the larger case unresolved and records contrary details, including Thomson’s Hotu Matua tradition, rather than forcing a conclusion. Some wording overstates how completely the names’ earliest histories and meanings have been settled, but the resulting article and ledger are materially more accurate and useful overall.
+        cost:
+          inputTokens: 36907
+          outputTokens: 2806
+          usd: 0.203748
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - "content/cases/deep-memory/sources.yaml (SRC-GARCILASO-1609): inspect the 1609 Spanish original (*Comentarios Reales de los Incas*, Lisbon) when feasible to verify the exact Spanish phrasing ('ombligo') and confirm Markham's 1869 translation fidelity."
+          - "content/cases/deep-memory/sources.yaml (SRC-GAC-GOBEKLI-2018): replace or supplement the unsigned Google Arts & Culture presentation with an official UNESCO nomination dossier citation or an academic Turkish toponymy source for the etymology and first survey recording of Göbekli Tepe."
+          - "content/cases/deep-memory/editions/edition-2026-11-22-154648.yaml: the article is currently at 2,657 words; continue trimming toward the target ~2,500 words during the next edition pass as noted in the session log."
+        summary: This change delivers primary source grounding for DEEP-R002 by examining the historical record for each of the four 'navel of the world' designations (Delphi, Cusco, Rapa Nui, Göbekli Tepe). It introduces 8 verified sources, 14 evidence records, and 3 new claims, revealing that the names represent fundamentally distinct linguistic and historical categories rather than a unified ancient tradition. The updated article integrates these findings with precision, keeping the overall case verdict calibrated as unresolved while substantially strengthening the evidential ledger.
+        cost:
+          inputTokens: 41375
+          outputTokens: 1476
+          usd: 0.036566
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - "DEEP-E099 and the Göbekli paragraph: replace the disclosed general-history prior that Turkish arrived millennia after the mound with a citable ledger source (or keep the builder-use point on the Pre-Pottery date alone and drop the language-arrival clause until sourced)."
+          - "DEEP-R006: read Roussel 1908 and Englert (and later Rapanui dictionaries) next; that is the only remaining route by which Te Pito o te Henua could still count as a first-settlers’ navel name, and it decides whether DEEP-C093 stays a live dispute or narrows."
+          - Edition length is still ~2,657 words against the ~2,500 target; a further trim pass should cut non-navel repetition rather than the new primary-text material.
+        summary: "The change finally traces the four navel names to the oldest reachable texts (Pindar/Strabo/Pausanias, Garcilaso 1609, Thomson and Churchill, UNESCO/Schmidt), adds eight sources and fourteen evidence records with disclosed limits, and correctly upgrades DEEP-C018 while holding DEEP-C015 provisional and the case unresolved. It also corrects the Göbekli gloss from “navel hill” to “potbelly hill” and features the early Rapanui disagreement as DEEP-C093. For a truth-seeking reader the parallel is no longer a prior: it is evidenced, fairer to the Hotu Matua tradition, and clearer about what still would restore one settler-era name."
+        cost:
+          inputTokens: 38126
+          outputTokens: 343
+          usd: 0.078425
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - DEEP-C018's move to 'well supported' rests in part on the Turkish-arrival premise in DEEP-E099, which is disclosed as a prior from general history and has no ledger source of its own; route that premise into DEEP-R006 (a toponymic or historical source for Turkish's arrival in Anatolia) or record it as its own provisional claim, so the load-bearing claim's strength does not lean on an unsourced prior.
+          - Two same-day editions exist (edition-2026-11-22-154533 and edition-2026-11-22-154648), the second replacing the first within minutes; confirm the interface marks the 2,731-word telling as superseded or links to the current one, so readers do not land on a stale edition with no signal (the same issue noted for orch-or on 2026-11-18).
+          - The Thomson locator (printed p. 452, inferred from the transcription's 'p. 453' marker) is honestly labelled, but it should be confirmed against the Smithsonian scan when the 403 lifts, and the inferred marker removed or confirmed at that point; likewise the Garcilaso printed-page locators rest on the OCR's own page markers and should be spot-checked against the scan images.
+        summary: "The change replaces the navel-names section, previously held on priors and the founding page's own assertions, with readings from the oldest texts the operator could reach: Pindar, Strabo and Pausanias for Delphi, Garcilaso 1609 (in Markham's translation) for Cusco, Thomson 1891 and Churchill 1912 for Rapa Nui, and the UNESCO presentation plus Schmidt 2010 for Göbekli Tepe. The new claim DEEP-C093 — that the Rapanui name's meaning and referent were disputed from its first records — is a genuine finding, and the records are unusually honest about single witnesses, shared literary traditions, unread originals and inferred locators. The judgment moves with the evidence (C018 to well supported, C015 only provisionally on one unsigned page, the case verdict unchanged), the steelman is updated to face Thomson's Hotu Matua tradition, and follow-up work is given a decision rule. Nothing true is lost, and the article's modest growth earns its words, so the site is left better."
+        cost:
+          inputTokens: 38735
+          outputTokens: 2846
+          usd: 0.007233
+harvestedAt: 2026-11-26T18:03:42.026Z

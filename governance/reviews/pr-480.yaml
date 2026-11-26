@@ -1,0 +1,75 @@
+# Review of #480, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 480
+title: "Before Sputnik: the defect-rate, flash-sharpness and alignment claims the panel split on, read from their sources — all three move from unresolved"
+url: https://github.com/ejhong/aletheia/pull/480
+outcome: closed
+outcomeAt: 2026-11-22T17:28:36Z
+cases:
+  - transients
+rounds:
+  - commit: d252a5dc597f0663de6a68321aa011f24fa60db8
+    date: 2026-11-08
+    protocol: review-v1
+    outcome: hold
+    reason: "held for a harm until answered: weakens_checks (GLM 5.3 Flash (Z.ai, via Venice))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "SRC-VILLARROEL-2025-PASP and TRN-E227/E228/E231/E233/TRN-C104: obtain a stable, directly fetchable full-text or archived copy before publication, or mark these records provisional until the required fresh quote check passes; the initial successful read is credible but should not substitute for the fail-closed check."
+          - "TRN-C101 and the article’s “Four accounts of a dot” section: replace “Such marks are plainly common” with wording that distinguishes common look-alike detections from demonstrated flaws. TRN-E230 counts transient-like detections, while TRN-E234 establishes that convincing artifacts occur but gives no rate."
+          - "TRN-C102: split the physical image-wander argument from the empirical prediction for sub-second flashes on period emulsion. TRN-E235 reports three narrower images of unknown duration and does not establish greater roundness, so describe it as consistent with the mechanism rather than direct support for the full current proposition."
+        summary: The change substantially improves the case by reading the alignment paper directly, adding evidence and qualifications for three previously unsupported claims, correcting the Busko plate-pair count, and proposing a useful search-wide alignment test. The revised article is fairer and more informative while retaining the unresolved case verdict and clearly explaining why the reported alignments have little diagnostic force. Some wording and claim structure still overstate what the defect-rate and flash-sharpness observations establish, and the PASP quotations must clear the existing mechanical check, but these do not outweigh the evidential gains.
+        cost:
+          inputTokens: 34211
+          outputTokens: 2222
+          usd: 0.181284
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - Address the IOPscience Radware captcha block in the fetch engine (e.g. enabling clean Wayback fallback fetches) so automated quote verification passes reliably on fresh runs for PASP records without triggering bot mitigation.
+          - In TRN-C102 and its supporting records, keep prominent the distinction between the physical atmospheric wander mechanism and the uncalibrated photographic response of vintage emulsions under reciprocity failure.
+          - Follow through on splitting TRN-E018 (Doherty 2026b) in a subsequent session so its alignment findings link cleanly to TRN-C104 without mixing directional classifications in a single record.
+        summary: This change resolves the three claims on which the panel had split (TRN-C101, TRN-C102, TRN-C104) by adding primary evidence records extracted directly from Villarroel et al. (PASP), Hambly & Blair, and Busko's revised preprint. It successfully removes the overstated 'commonest flaw' phrasing that held PR 475, presents balanced qualifications on defect rates and alignment significance, and adds a concrete research crux for catalog-wide alignment testing against shuffled controls. The site is left substantially more accurate, well-evidenced, and fair to both sides of the dispute.
+        cost:
+          inputTokens: 38103
+          outputTokens: 3155
+          usd: 0.040408
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - Mark TRN-E227, TRN-E228, TRN-E231, TRN-E233 and the TRN-C104 sourceAnchor provisional (or restore a fetch path that can read a real full-text copy, e.g. a working archivedUrl once the engine stops rewriting Wayback+DOI to the live OA route) until check-quotes can match those passages again; non-provisional weight on TRN-C104 should not rest on a captcha page.
+          - In the article alignments paragraph and the TRN-C104 assessment text, keep the ‘reported’ grade visibly separate from search-wide significance—state up front that 3.9σ is per-image for a post-selected group and that the authors say the survey-wide correction cannot yet be made (TRN-E228), so readers do not take ‘well supported’ as a demonstrated excess.
+          - "Next content pass: read Doherty 2026b and split TRN-E018 so its alignment finding can support TRN-C104 with the right direction; and retrieve Greiner, Wenzel & Degel 1990 (blocked in dispositions) as the primary star-like-defect rate study both camps cite."
+        summary: The change finally grounds the three panel-split claims (defect contamination, flash sharpness, reported alignments) in primary-text evidence from Hambly & Blair, Busko v4 and the PASP alignments paper, with honest qualifications, a plate-pair correction on TRN-E014, a sharper article, and a concrete search-wide alignment test (TRN-R204). The regrades are calibrated to what the new records actually carry—provisional where rates and flash calibration are missing, and ‘well supported’ only for the thin ‘alignments are reported’ claim—while the case verdict stays unresolved. That leaves a truth-seeking reader better off, provided the PASP quotations are not left carrying non-provisional weight while the live source returns a captcha.
+        cost:
+          inputTokens: 35134
+          outputTokens: 435
+          usd: 0.072993
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm:
+          kind: weakens_checks
+          where: check-quotes final fresh run against the five PASP-quoted records (TRN-E227, TRN-E228, TRN-E231, TRN-E233, and the TRN-C104 source anchor)
+          why: The fail-closed quote check fails on the final fresh run for these five records, and the change is submitted with them left as full-read rather than provisional, so it would publish without a passing mechanical check. The quotes appear genuine (the first fresh run passed all 28 passages, so the failure is the captcha, not the text), but the constitution's own remedies — provisional labelling with the route, or the Wayback fetch fix — exist for exactly this and should be applied before merge rather than after.
+        notes:
+          - "Before this merges, apply one of the operator's two stated remedies for the five PASP-quoted records: enter them as provisional with the recorded route (DOI, open access, CC BY 4.0), or fix src/engine/fetch.ts to fetch a Wayback capture as given so the check can pass against the 20260519084437 capture. Either restores a passing check; declining both because provisional labelling would lower TRN-C104's grade is precisely the pressure fail-closed checks exist to resist."
+          - The new synthesis drops one sentence on the modelling preprint's concession about the plate background to stay within budget. That concession bears directly on the shadow account's strongest criticism and on the case's most-cited pattern; if the budget is tight, trim elsewhere or let the synthesis grow — the concession should not vanish from the reader's synthesis while it still stands in the record.
+          - SRC-BUSKO-2026B's publication status (accepted at Scientific Reports, in press) rests on proponent-group correspondence and is honestly marked NOT confirmed; next pass, verify it against the journal itself, and while there, split TRN-E018 (Doherty 2026b) as the operator already queues, so its alignment finding carries TRN-C104 with the right direction.
+        summary: "The change reads three previously thin sources in full and gives the three panel-split claims their own evidence: the overlap-region count and both camps' admission that no defect rate is measured (TRN-C101), the Hamburg sharpness observation with its caveats (TRN-C102), and the alignments paper's 83 groups with its own search-wide-odds concession and the critics' audit beside it (TRN-C104, kept low-diagnosticity). It also corrects the 532-to-278 plate-pairs error with the version history recorded. The grades are supported by the records shown and told fairly to both camps; the case verdict is untouched. Verdict: better — but the disclosed failing quote check on the PASP records must be resolved by the operator's own remedies before this publishes."
+        cost:
+          inputTokens: 35766
+          outputTokens: 3527
+          usd: 0.007128
+harvestedAt: 2026-11-26T18:03:42.026Z
